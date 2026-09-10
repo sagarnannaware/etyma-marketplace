@@ -13,6 +13,22 @@ lib/kit.mjs           the builder every definition is written against
 scripts/              build · validate · verify-against-core
 ```
 
+## What is being shipped here — and what is not
+
+Three operations are easy to confuse, so they are named apart:
+
+| | What moves | In what form | For |
+|---|---|---|---|
+| **Export / Publish** | the whole **solution** | generated **source code** — React, Node, Prisma, Docker, CI | deploying your app |
+| **Share to the marketplace** | **one module** | the **model** — `project.json`, `actions/*.json`, `blocks/*.tsx` | reuse by other solutions |
+| **Install from the marketplace** | **one module** | the same model files | your solution |
+
+**A marketplace entry is a module, not a solution, and model, not code.** Export turns your solution into an app; this moves a *module* between solutions, in model form, so the receiving IDE can open it in its editors and that app's own generators compile it in.
+
+Shipping a whole solution would be wrong for a library. A `Solution` is a deployment manifest — `projectIds`, theme, environments, home page — and installing someone else's manifest into yours means nothing. The unit of reuse in Etyma is the module, which is why `Add Reference` is module-to-module.
+
+There **is** a solution-shaped marketplace entry, but it is a different thing: a **template**, a whole solution you start *from* rather than install *into* (Acme Service Desk is already one, offered by `Etyma: Initialize Workspace`). Templates are not in this repository yet.
+
 ## Installing a library
 
 An Etyma solution keeps its model in `.etyma/` in your repository, so installing is a copy:
@@ -74,7 +90,13 @@ That last one loads every library through Etyma's **real** `WorkspaceStorage` an
 
 ## Adding a library
 
-Read `libraries-src/dates.lib.mjs` (a logic library) or `libraries-src/insight.lib.mjs` (a UI one) first — every other file is one of those two with different nouns. Then:
+There are two authoring paths, and the second is the better one.
+
+**Contributed — built in the IDE.** Make a module of type `library` in your own solution, mark its actions public, then share it. The folder you get out is already exactly what belongs in `libraries/<slug>/`; its marketplace metadata goes in `meta/<slug>.json`, kept outside the folder so the folder stays a byte-identical copy. `build.mjs` validates a contributed library like any other and never regenerates it — there is no definition to regenerate from, and inventing one would mean this repository silently rewriting somebody's module.
+
+> The `Etyma: Share Module as Library…` command that produces that folder does not exist yet — it is the export half of the round trip, tracked in the main repository. Until it lands, a contributed library is a hand-copied folder plus a `meta/<slug>.json`.
+
+**Curated — written as code.** For the libraries maintained here: exact npm pins, deterministic ids and a CI rebuild all want a definition rather than a snapshot, which is why `cryptoLibrary.ts` in the main repository works the same way. Read `libraries-src/dates.lib.mjs` (logic) or `libraries-src/insight.lib.mjs` (UI) first — every other file is one of those two with different nouns. Then:
 
 1. `libraries-src/<slug>.lib.mjs`, default-exporting `library({...})` from `lib/kit.mjs`
 2. `docs/<slug>.md` — what it is for, and when *not* to reach for it
