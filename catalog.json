@@ -29,6 +29,23 @@
           ]
         },
         {
+          "name": "Format In Time Zone",
+          "description": "Render an instant in a named IANA zone — 'Asia/Singapore', 'Europe/London'. The one that matters when the server runs in UTC and the people using it do not.",
+          "params": [
+            "date",
+            "timeZone",
+            "pattern"
+          ]
+        },
+        {
+          "name": "From Local Time",
+          "description": "Wall-clock text a person typed in their own zone, back to a real instant as canonical UTC. The conversion an appointment form always gets wrong.",
+          "params": [
+            "localDateTime",
+            "timeZone"
+          ]
+        },
+        {
           "name": "Add Days",
           "description": "Shift an ISO date by a number of days and return ISO. Negative subtracts.",
           "params": [
@@ -101,7 +118,11 @@
       "packages": [
         {
           "name": "date-fns",
-          "version": "2.30.0"
+          "version": "4.1.0"
+        },
+        {
+          "name": "date-fns-tz",
+          "version": "3.2.0"
         }
       ],
       "source": "curated"

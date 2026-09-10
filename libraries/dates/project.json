@@ -14,7 +14,7 @@
   "npmPackages": [
     {
       "name": "date-fns",
-      "version": "2.30.0",
+      "version": "4.1.0",
       "typesSource": "bundled",
       "environments": [
         "node",
@@ -31,22 +31,6 @@
           ],
           "returns": "Date",
           "jsdoc": "Parse an ISO-8601 string into a Date. The entry point for every other function here."
-        },
-        {
-          "export": "formatISO",
-          "params": [
-            {
-              "name": "date",
-              "type": "Date"
-            },
-            {
-              "name": "options",
-              "type": "object",
-              "optional": true
-            }
-          ],
-          "returns": "string",
-          "jsdoc": "Format a Date back to ISO-8601, which is how a date should be stored and passed."
         },
         {
           "export": "format",
@@ -196,6 +180,69 @@
       "components": [],
       "unsupported": [],
       "introspectedAt": "2026-09-10T00:00:00.000Z"
+    },
+    {
+      "name": "date-fns-tz",
+      "version": "3.2.0",
+      "typesSource": "bundled",
+      "environments": [
+        "node",
+        "browser"
+      ],
+      "functions": [
+        {
+          "export": "formatInTimeZone",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "timeZone",
+              "type": "string"
+            },
+            {
+              "name": "formatStr",
+              "type": "string"
+            }
+          ],
+          "returns": "string",
+          "jsdoc": "Render an instant in a named IANA zone — 'Asia/Singapore', 'Europe/London'. Also how a canonical UTC string is produced."
+        },
+        {
+          "export": "toZonedTime",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "timeZone",
+              "type": "string"
+            }
+          ],
+          "returns": "Date",
+          "jsdoc": "An instant re-expressed as wall-clock time in a zone, for arithmetic that must land on the local day."
+        },
+        {
+          "export": "fromZonedTime",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "timeZone",
+              "type": "string"
+            }
+          ],
+          "returns": "Date",
+          "jsdoc": "Wall-clock text somebody typed in their zone, back to a real instant. The conversion an appointment form always gets wrong."
+        }
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-10T00:00:00.000Z"
     }
   ],
   "createdAt": "2026-09-10T00:00:00.000Z",
@@ -203,6 +250,8 @@
   "_order": {
     "actions": [
       "format-date",
+      "format-in-time-zone",
+      "from-local-time",
       "add-days",
       "add-business-days",
       "days-between",

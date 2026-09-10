@@ -64,9 +64,9 @@
         "y": 330
       },
       "data": {
-        "packageName": "date-fns",
-        "exportName": "formatISO",
-        "args": "[\"{{shifted}}\"]",
+        "packageName": "date-fns-tz",
+        "exportName": "formatInTimeZone",
+        "args": "[\"{{shifted}}\",\"{{= \\\"UTC\\\" }}\",\"{{= \\\"yyyy-MM-dd'T'HH:mm:ss'Z'\\\" }}\"]",
         "outputVariable": "result"
       }
     },

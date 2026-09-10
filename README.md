@@ -67,7 +67,7 @@ A library cannot own pages, database entities or integrations.
 Everything here is checked by `scripts/validate.mjs` on every build, because a marketplace's only real promise is *install this and it works*, and the cost of breaking it lands somewhere none of our error messages reach — in a generated app, at `npm run build`, on someone else's afternoon.
 
 - **Exact versions, never ranges.** A library that floats its dependency breaks on somebody else's Tuesday.
-- **CommonJS only.** A generated Etyma app is CJS. An ESM-only package resolves badly under Node's dual-package rules, so where a package went ESM-first we pin the last CJS line and say why in the file.
+- **`require()` is tested, not assumed.** A generated Etyma app is CommonJS, so every package here is actually required under Node 20 before it is pinned. An assumption cost us once already: date-fns was pinned to 2.30.0 on the belief that 3.x+ was ESM-only. It is not — 4.1.0 requires cleanly — and believing it had cost the library time-zone support entirely.
 - **Every call is checked against its own manifest** — the export exists, and the argument count matches the signature. This is the failure that otherwise surfaces as a type error inside your app.
 - **Theme tokens only.** Not one `bg-blue-600`. A component that hard-codes a hue looks wrong in every app but the one it was written in, and unreadable in the other colour scheme.
 - **Ids are derived, not random.** The same library has the same ids forever, so a rebuild shows real change only, and an importer can tell an update from a duplicate.

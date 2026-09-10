@@ -1,0 +1,3360 @@
+{
+  "catalogue": [
+    {
+      "slug": "dates",
+      "name": "Dates & Formatting",
+      "tagline": "Format, parse and time-zone a date once, so the server and the page agree.",
+      "kind": "logic",
+      "category": "Data",
+      "why": "Every case, claim and permit carries dates that are read by a person and stored by a machine, and the two must not disagree. Without this, a developer writes toLocaleDateString in a page and a hand-rolled ISO slice in a flow, and the same instant renders as two different days for a user in another office. One call each for render-with-an-explicit-pattern, render-in-a-named-zone, parse, and canonical storage form.",
+      "risk": "Every function returns or takes a Date object, and a Date in a flow's context round-trips through JSON differently in the preview interpreter than in the exported Node server \u2014 so a stored value must go through To ISO String, and that discipline is unenforced. Patterns are date-fns tokens, where YYYY means week-year and yyyy means year: the classic silent off-by-a-year every New Year's Eve. Time-zone names resolve through Node's ICU data, and a slim base image built without full ICU falls back to UTC silently rather than failing. Verified working under Node 20 CommonJS: date-fns 4.1.0 and date-fns-tz 3.2.0 both require() and type-check; formatInTimeZone(2026-09-10T00:00Z, 'Asia/Singapore') returned 2026-09-10 08:00.",
+      "packages": [
+        {
+          "name": "date-fns",
+          "exports": [
+            "format",
+            "parseISO",
+            "formatISO",
+            "startOfDay",
+            "endOfDay",
+            "endOfMonth",
+            "formatDistanceToNowStrict"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "date-fns-tz",
+          "exports": [
+            "formatInTimeZone",
+            "toZonedTime",
+            "fromZonedTime",
+            "getTimezoneOffset"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Format Date",
+          "description": "Render a date with an explicit pattern, so a letter, a page and an export all read the same.",
+          "params": [
+            "date",
+            "pattern (e.g. \"dd MMM yyyy\")"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Format In Time Zone",
+          "description": "Render an instant in a named IANA zone \u2014 the one that matters when the server runs in UTC and the agency does not.",
+          "params": [
+            "date",
+            "timeZone (e.g. \"Asia/Singapore\")",
+            "pattern"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Parse ISO Date",
+          "description": "Turn an ISO 8601 string from a form, a CSV or an API into a date.",
+          "params": [
+            "text"
+          ],
+          "returns": "Date"
+        },
+        {
+          "name": "To ISO String",
+          "description": "The canonical string form for storage and for an API response. Pair it with every function that returns a Date.",
+          "params": [
+            "date"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Start Of Day",
+          "description": "Midnight of that date \u2014 the left edge of a day filter.",
+          "params": [
+            "date"
+          ],
+          "returns": "Date"
+        },
+        {
+          "name": "End Of Day",
+          "description": "The right edge of a day filter.",
+          "params": [
+            "date"
+          ],
+          "returns": "Date"
+        },
+        {
+          "name": "End Of Month",
+          "description": "Period close, reporting cut-off, billing boundary.",
+          "params": [
+            "date"
+          ],
+          "returns": "Date"
+        },
+        {
+          "name": "Time Ago",
+          "description": "\"3 days\" for a case-age column or an activity line.",
+          "params": [
+            "date"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "To Time Zone",
+          "description": "An instant re-expressed as wall-clock time in a zone, for date arithmetic that must happen on the local day.",
+          "params": [
+            "date",
+            "timeZone"
+          ],
+          "returns": "Date"
+        },
+        {
+          "name": "From Time Zone",
+          "description": "Wall-clock text a person typed in their zone, back to a real instant \u2014 the conversion an appointment form always gets wrong.",
+          "params": [
+            "localDateText",
+            "timeZone"
+          ],
+          "returns": "Date"
+        }
+      ]
+    },
+    {
+      "slug": "lists",
+      "name": "Lists, Groups & Summaries",
+      "tagline": "Sort, group, de-duplicate and total rows \u2014 the list operations behind every console and dashboard.",
+      "kind": "logic",
+      "category": "Data",
+      "why": "Every list page sorts by two keys, every dashboard groups by status and counts, every bulk send needs rows chunked, and every import needs the rows that are new. Written by hand each is ten lines of reduce inside an expression that nobody can read a month later. These make each one node with named inputs, which is also the difference between a flow a reviewer can follow and one they cannot.",
+      "risk": "Group By returns a keyed OBJECT and the composable canvas repeats over ARRAYS, so the common case costs two nodes \u2014 Group By then Group Entries \u2014 and a developer who forgets gets a page that renders nothing with no error. Iteratee arguments arrive as {{= [\"dueDate\"] }} expressions, so a mistyped field name sorts by nothing and fails silently rather than erroring. Everything is in memory: these are for a page of rows, not a table scan, and Sum By over an unbounded Query is the wrong shape however well it reads. Pinned at lodash 4.17.21 with @types/lodash 4.17.x because the types line still trails the runtime; verified requiring and grouping under CommonJS.",
+      "packages": [
+        {
+          "name": "lodash",
+          "exports": [
+            "orderBy",
+            "groupBy",
+            "toPairs",
+            "keyBy",
+            "uniqBy",
+            "differenceBy",
+            "chunk",
+            "sumBy",
+            "countBy",
+            "maxBy"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Order By",
+          "description": "Sort with a direction per field \u2014 the list page's two-key sort.",
+          "params": [
+            "rows",
+            "fields (array)",
+            "directions (array of \"asc\"/\"desc\")"
+          ],
+          "returns": "array"
+        },
+        {
+          "name": "Group By",
+          "description": "Group rows by a field into a keyed object.",
+          "params": [
+            "rows",
+            "field"
+          ],
+          "returns": "object"
+        },
+        {
+          "name": "Group Entries",
+          "description": "Turn a grouped object into [key, rows] pairs so a list can repeat over it. Call it after Group By, every time.",
+          "params": [
+            "grouped (object)"
+          ],
+          "returns": "array"
+        },
+        {
+          "name": "Key By",
+          "description": "Index rows by id for O(1) lookup across a join done in the flow.",
+          "params": [
+            "rows",
+            "field"
+          ],
+          "returns": "object"
+        },
+        {
+          "name": "Unique By",
+          "description": "De-duplicate rows on a field \u2014 the bulk-upload guard.",
+          "params": [
+            "rows",
+            "field"
+          ],
+          "returns": "array"
+        },
+        {
+          "name": "Difference By",
+          "description": "Rows in the first list that are not in the second, by a field \u2014 what an import is actually adding.",
+          "params": [
+            "rows",
+            "other",
+            "field"
+          ],
+          "returns": "array"
+        },
+        {
+          "name": "Chunk",
+          "description": "Split rows into fixed-size batches for paged sending or bulk writes.",
+          "params": [
+            "rows",
+            "size"
+          ],
+          "returns": "array"
+        },
+        {
+          "name": "Sum By",
+          "description": "Total a numeric field, for a claim, an order or a tile.",
+          "params": [
+            "rows",
+            "field"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Count By",
+          "description": "Counts per value \u2014 the status breakdown behind every summary bar.",
+          "params": [
+            "rows",
+            "field"
+          ],
+          "returns": "object"
+        },
+        {
+          "name": "Max By",
+          "description": "The row with the largest value of a field \u2014 the latest event, the biggest line.",
+          "params": [
+            "rows",
+            "field"
+          ],
+          "returns": "object"
+        }
+      ]
+    },
+    {
+      "slug": "record-fields",
+      "name": "Record Detail & Fields",
+      "tagline": "The read half of a record page \u2014 labelled fields, typed values, before/after diffs, masked and copyable values.",
+      "kind": "ui",
+      "category": "Display",
+      "why": "Half of a case-management screen is not a form: it is the record as read-only fields, the request as 'what changed', a payload as JSON, a hierarchy as a tree, and one or two values that must not be shown to everyone. Each is rebuilt slightly differently on every project, and the diff in particular is the single thing an approver actually reads before clicking Approve.",
+      "risk": "DescriptionList takes an array of objects assembled in an expression, which is the least pleasant binding in a low-code inspector \u2014 a comma-separated field list over a bound record would be friendlier and should be prototyped before this ships. JsonViewer and TreeView recurse, and a self-import is a cycle that CODE-006 refuses, so each recurses through an inner function in the same file: valid, but long, and long code components are what the platform's own page rules push back on. RichTextView renders HTML it did not sanitize \u2014 it is only safe when the HTML came from the Markdown library's Sanitize HTML on the server, and nothing enforces that pairing. MaskedValue's onReveal is a convention, not a guarantee: the component cannot make anyone record the audit event.",
+      "components": [
+        {
+          "name": "DescriptionList",
+          "description": "The labelled field panel every detail page is mostly made of: two columns on a laptop, stacked on a phone.",
+          "props": [
+            "items (Array<{label, value, hint?, span?}>)",
+            "columns (1-4)",
+            "layout ('stacked' | 'inline')",
+            "dense",
+            "dividers",
+            "emptyValue (default \"\u2014\")"
+          ],
+          "notes": "A <dl> on a CSS grid. A missing value renders an em-dash in text-muted-foreground so an empty field reads as deliberate rather than as a rendering bug."
+        },
+        {
+          "name": "FieldValue",
+          "description": "One labelled value formatted by its declared type \u2014 the prop that stops an ISO timestamp reaching a screen a citizen reads.",
+          "props": [
+            "label",
+            "value",
+            "type ('text'|'number'|'currency'|'date'|'datetime'|'boolean'|'email'|'phone'|'url')",
+            "timeZone",
+            "currency",
+            "emptyValue",
+            "copyable",
+            "hint"
+          ],
+          "notes": "Intl.NumberFormat and Intl.DateTimeFormat only \u2014 no date or money library in the browser. Booleans render a lucide Check/X pair; contacts render mailto:/tel: anchors."
+        },
+        {
+          "name": "FieldDiffTable",
+          "description": "What changed in this request \u2014 field, before, after \u2014 with unchanged fields hidden by default.",
+          "props": [
+            "before (object)",
+            "after (object)",
+            "fieldLabels (object)",
+            "fields (comma-separated, to order and restrict)",
+            "showUnchanged",
+            "redactedFields (string[])",
+            "timeZone"
+          ],
+          "notes": "A key-by-key comparison, not a diff algorithm. Old value text-muted-foreground with a strikethrough, new value text-foreground, changed rows carry a left border \u2014 two channels, so the direction survives a greyscale print of the case file. Pairs with the audit library's Field Changes."
+        },
+        {
+          "name": "FieldDiffRow",
+          "description": "A single before \u2192 after pair, for embedding in a feed or an audit row.",
+          "props": [
+            "label",
+            "before",
+            "after",
+            "type",
+            "timeZone",
+            "inline"
+          ],
+          "notes": "Exported separately so the timeline library's AuditTrail renders a change identically instead of inventing its own arrow."
+        },
+        {
+          "name": "JsonViewer",
+          "description": "An integration payload or an agent transcript, explorable rather than dumped.",
+          "props": [
+            "value",
+            "initialDepth",
+            "maxDepth",
+            "showTypes",
+            "copyable",
+            "maxHeight"
+          ],
+          "notes": "Recursion through an inner function component in the same file \u2014 never a self-import, which validation refuses as a cycle. A collapsed object previews as '{3 keys}' so a deep payload stays scannable."
+        },
+        {
+          "name": "TreeView",
+          "description": "Hierarchies \u2014 org units, category codes, document folders \u2014 with keyboard navigation.",
+          "props": [
+            "nodes (Array<{id, label, children, count?, icon?, disabled?}>)",
+            "expandedIds",
+            "selectedId",
+            "defaultExpandedDepth",
+            "showCounts",
+            "maxHeight",
+            "onSelect",
+            "onToggle"
+          ],
+          "notes": "Rows are buttons carrying role=treeitem, aria-expanded and aria-level with arrow-key movement \u2014 the part hand-rolled trees skip and an accessibility audit always finds. A 1px guide rule per level keeps deep nesting traceable."
+        },
+        {
+          "name": "MaskedValue",
+          "description": "A restricted field, revealed on purpose and on the record.",
+          "props": [
+            "value",
+            "mask ('last4'|'first2'|'all')",
+            "revealed",
+            "revealable",
+            "requireReason",
+            "hint",
+            "onReveal",
+            "onHide"
+          ],
+          "notes": "Never unmasks itself: revealed is controlled by the page, so the parent can await an audit write before flipping it. Optional reason prompt on @radix-ui/react-dialog; the value is font-mono so a revealed identifier reads character by character."
+        },
+        {
+          "name": "CopyableValue",
+          "description": "The reference number a user will paste into a ticket or an email.",
+          "props": [
+            "value",
+            "label",
+            "truncate",
+            "successLabel",
+            "mono"
+          ],
+          "notes": "lucide Copy swapping to Check for 1.5s, over navigator.clipboard, falling back to selecting the text node where the clipboard API is unavailable \u2014 an intranet on plain http, which this audience has more of than it should."
+        },
+        {
+          "name": "RichTextView",
+          "description": "Case notes or a knowledge article stored as markdown and rendered to HTML on the server.",
+          "props": [
+            "html",
+            "size ('sm'|'base')",
+            "className"
+          ],
+          "notes": "A hand-written prose scale in Tailwind arbitrary variants ([&_h2]:text-lg, [&_ul]:list-disc, [&_th]:border-b) because the typography plugin is not available. Trusts its input: pass only HTML that went through Sanitize HTML."
+        }
+      ]
+    },
+    {
+      "slug": "status-sla",
+      "name": "Status, Priority & SLA",
+      "tagline": "A record's state said the same way on every screen \u2014 badges, priority, countdowns, handling markings.",
+      "kind": "ui",
+      "category": "Display",
+      "why": "Every case, claim, requisition and ticket has a state, and in practice each screen invents its own colours and words for it. One tone map applied by a component means 'Awaiting approval' looks identical in the list, the detail header and the task inbox, and a status added to the model does not mean editing six pages. It also enforces the rule these apps are audited against: state is never colour alone.",
+      "risk": "The built-in word\u2192tone map is a guess about someone else's domain \u2014 a registry where 'Closed' is success and one where it is failure both exist \u2014 so it must be overridable per instance, and developers will forget on half their screens; a per-app tone map is what this really wants and a code component has nowhere to put one. SlaIndicator's per-minute interval is fine for one badge and wasteful in a 200-row table, where one shared clock would be right and there is nowhere to put it either. timeZone must be an explicit prop rather than the browser's, or a reviewer in another office sees the wrong due date \u2014 a bug that never appears on the developer's machine. Classification levels map onto theme tokens (muted \u2192 secondary \u2192 primary \u2192 destructive), so the ordering reads but the exact colour of a paper handling scheme will not match.",
+      "components": [
+        {
+          "name": "StatusBadge",
+          "description": "A record's state as a word, an icon and a reserved tone.",
+          "props": [
+            "status",
+            "tone ('success'|'warning'|'destructive'|'info'|'neutral')",
+            "variant ('solid'|'soft'|'outline'|'dot')",
+            "icon (lucide name)",
+            "size",
+            "tooltip"
+          ],
+          "notes": "Tone resolves from the prop first, then a built-in map of the words these apps use (draft, submitted, pending, in review, approved, rejected, on hold, closed, overdue). Soft fill is color-mix(in oklab, currentColor 12%, transparent) so ink and fill move together and dark mode needs no dark: variant. Always word plus icon."
+        },
+        {
+          "name": "StatusDot",
+          "description": "A compact state marker for dense tables and list rows.",
+          "props": [
+            "status",
+            "tone",
+            "pulse",
+            "label",
+            "size ('xs'|'sm')"
+          ],
+          "notes": "An 8px round span with an sr-only label, so a screen reader gets what a sighted user gets from the colour. pulse is reserved for genuinely live states."
+        },
+        {
+          "name": "PriorityChip",
+          "description": "Low / Medium / High / Critical, with the icon doing as much work as the colour.",
+          "props": [
+            "priority",
+            "showIcon",
+            "showLabel",
+            "size"
+          ],
+          "notes": "lucide ChevronsDown / Minus / ChevronUp / AlertTriangle ramping alongside muted \u2192 warning \u2192 destructive, so priority survives the greyscale printing a case file gets."
+        },
+        {
+          "name": "SlaIndicator",
+          "description": "Time remaining against a due date, in words, going warning then breached.",
+          "props": [
+            "dueAt (ISO)",
+            "startedAt",
+            "status (stops the clock when closed or paused)",
+            "timeZone",
+            "warnWithinMinutes",
+            "breachedLabel",
+            "compact"
+          ],
+          "notes": "Intl.RelativeTimeFormat gives the phrase with no date library; unit selection is a threshold table over the millisecond delta. A paused or closed status freezes the clock rather than counting into a breach that never happened \u2014 the difference between a useful indicator and a wall of false red."
+        },
+        {
+          "name": "SlaMeter",
+          "description": "The same clock as a bar from start to due, with a tick at the deadline.",
+          "props": [
+            "startedAt",
+            "dueAt",
+            "now",
+            "pausedMinutes",
+            "warnWithinHours",
+            "label"
+          ],
+          "notes": "Inline SVG: one track rect, one fill rect with a computed width attribute, one tick line. SVG geometry is attributes, not class names, so nothing dynamic touches Tailwind. now is a prop, never Date.now(), so the canvas renders it deterministically."
+        },
+        {
+          "name": "StatusSummaryBar",
+          "description": "A queue's composition above the table it filters \u2014 32 open, 8 overdue, 4 on hold.",
+          "props": [
+            "counts (object of status \u2192 number)",
+            "order (comma-separated)",
+            "showCounts",
+            "height",
+            "onSegmentClick"
+          ],
+          "notes": "A flex row of divs with flex-grow per value and gap-[2px] \u2014 flexbox does the proportional arithmetic, so it reflows at any width with no measurement and no re-render. Clicking a segment emits the status, which turns it from decoration into a filter."
+        },
+        {
+          "name": "StatusLegend",
+          "description": "The tone map declared on the page, so badges are not the only explanation.",
+          "props": [
+            "statuses (comma-separated)",
+            "layout ('row'|'column')",
+            "compact"
+          ],
+          "notes": "Dull, and the thing that makes a page of colour-coded rows defensible in an accessibility review."
+        },
+        {
+          "name": "ClassificationBanner",
+          "description": "A handling banner across the top of a page or a printed document, so a screenshot carries its own marking.",
+          "props": [
+            "level ('OFFICIAL'|'OFFICIAL-SENSITIVE'|'RESTRICTED'|'CONFIDENTIAL'|'SECRET')",
+            "caveat",
+            "position ('top'|'bottom'|'both')",
+            "sticky",
+            "dense"
+          ],
+          "notes": "Levels map onto theme tokens in increasing weight; uppercase tracking-wide text-xs. Sticky uses top-0 z-40 over the page's own background."
+        },
+        {
+          "name": "RetentionBadge",
+          "description": "How long a record is kept and what that makes it \u2014 active, due for review, expired, or under legal hold.",
+          "props": [
+            "retainUntil",
+            "daysRemaining",
+            "state ('active'|'due'|'expired'|'hold')",
+            "policyLabel"
+          ],
+          "notes": "lucide Clock / AlertTriangle / Trash2 / Lock. Hold always outranks expired and renders with the lock, since a record under hold must never read as disposable."
+        }
+      ]
+    },
+    {
+      "slug": "working-days",
+      "name": "Working Days & Deadlines",
+      "tagline": "Weekend-skipping SLA arithmetic and calendar maths for retention and appeal windows.",
+      "kind": "logic",
+      "category": "Data",
+      "why": "Two deadlines run through every regulated app and both get computed wrong by hand. An SLA \u2014 'respond within 5 working days' \u2014 is written as addDays(date, days * 1.4) in a hurry. A retention date \u2014 'destroy 7 years after the case closes' \u2014 needs month-end and leap-year behaviour and is the field a records manager audits first. Each of these is one correctly-implemented call.",
+      "risk": "date-fns knows WEEKENDS and does NOT know PUBLIC HOLIDAYS, which for a public-sector deployment is most of the reason a working-day calendar exists \u2014 an SLA is wrong by up to a fortnight over Christmas or Lunar New Year. The only npm package with holiday calendars, date-holidays, exposes a class you must construct, which this contract cannot call, so holidays belong in a lookup table the customer maintains and the caller adds the days itself. Say that in the first sentence of the docs or the name will mislead. Its weekend is also fixed at Saturday and Sunday, so a Friday\u2013Saturday jurisdiction is not served at all. There is no working-hours clock either: '8 working hours from 4pm Friday' must be composed in the caller's flow. Verified under Node 20 CJS: addBusinessDays('2026-09-11', 5) = 2026-09-18, and date-fns v4 accepts an ISO string directly, so no separate parse step is needed.",
+      "packages": [
+        {
+          "name": "date-fns",
+          "exports": [
+            "addBusinessDays",
+            "differenceInBusinessDays",
+            "isWeekend",
+            "addDays",
+            "addMonths",
+            "addYears",
+            "differenceInCalendarDays",
+            "differenceInMinutes",
+            "isAfter"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Add Business Days",
+          "description": "The due date N working days out, skipping weekends. Add public holidays from your own calendar table.",
+          "params": [
+            "start",
+            "days"
+          ],
+          "returns": "Date"
+        },
+        {
+          "name": "Business Days Between",
+          "description": "Working days elapsed \u2014 the number an SLA report and a breach calculation are both built on.",
+          "params": [
+            "from",
+            "to"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Is Weekend",
+          "description": "Whether a date falls on Saturday or Sunday, for a flow that must defer to the next working day.",
+          "params": [
+            "date"
+          ],
+          "returns": "boolean"
+        },
+        {
+          "name": "Add Days",
+          "description": "Calendar days, for a statutory clock that runs through weekends \u2014 a 28-day appeal window.",
+          "params": [
+            "date",
+            "days"
+          ],
+          "returns": "Date"
+        },
+        {
+          "name": "Add Months",
+          "description": "Months added, clamped correctly at month end: 31 January plus one month is 28 or 29 February.",
+          "params": [
+            "date",
+            "months"
+          ],
+          "returns": "Date"
+        },
+        {
+          "name": "Add Years",
+          "description": "The retention calculation \u2014 retain until seven years after closure, leap years handled.",
+          "params": [
+            "date",
+            "years"
+          ],
+          "returns": "Date"
+        },
+        {
+          "name": "Calendar Days Between",
+          "description": "Whole calendar days, counting date boundaries rather than 24-hour periods, so a report is not off by one because of the time of day.",
+          "params": [
+            "from",
+            "to"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Minutes Between",
+          "description": "Minutes between two timestamps \u2014 the raw elapsed figure an SLA subtracts paused time from.",
+          "params": [
+            "from",
+            "to"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Is Past Due",
+          "description": "Whether one timestamp is after another; with now and the due date, this is the breach test.",
+          "params": [
+            "date",
+            "comparison"
+          ],
+          "returns": "boolean"
+        }
+      ]
+    },
+    {
+      "slug": "money",
+      "name": "Money & Tax",
+      "tagline": "Exact decimal money arithmetic on strings \u2014 no floating point, no half-cent surprises.",
+      "kind": "logic",
+      "category": "Money",
+      "why": "0.1 + 0.2 is not 0.3, and in an invoicing, claims, grants or procurement app that becomes a one-cent variance an accountant will not sign off. Every function here works on two-decimal strings, so the amount that goes into the database is the amount that came out of the arithmetic. Percent Of applies GST/VAT/levy with half-up rounding at the cent \u2014 the rule most tax authorities state \u2014 with the rate supplied by the caller, so a rate change is a data change and not a release.",
+      "risk": "money-math is fixed at TWO decimal places: JPY and KRW (0 dp) and BHD, KWD, JOD, TND (3 dp) are simply wrong, so a multi-currency deployment must check Currency Info's digits before trusting it. Verified trap worth putting on the action itself: mul('19.99','3') returns 0.60, because '3' is read as 0.03 \u2014 both operands must be two-decimal strings, which is why Amount From Number is in this list. Rounding is half-up everywhere, so a jurisdiction requiring banker's rounding is not served. The package is small, dependency-free and stable but was last published years ago and its @types are community-maintained; the popular alternatives are all unusable here because their APIs chain (big.js, currency.js, decimal.js) or need currency objects (dinero.js, which is also ESM-only), and this contract permits exactly one call per action. Tax RATES and rules \u2014 thresholds, reverse charge, place of supply \u2014 are deliberately absent: they belong in the app's lookup tables. Verified: add('10.00','2.50')='12.50', percent('119.99','9.00')='10.80', format('USD','1234.50')='1,234.50' (grouping, no symbol).",
+      "packages": [
+        {
+          "name": "money-math",
+          "exports": [
+            "add",
+            "subtract",
+            "mul",
+            "div",
+            "percent",
+            "cmp",
+            "floatToAmount",
+            "amountToCents",
+            "format"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "currency-codes",
+          "exports": [
+            "code"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Add Amounts",
+          "description": "Exact addition of two two-decimal amount strings.",
+          "params": [
+            "a (\"1234.50\")",
+            "b"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Subtract Amounts",
+          "description": "Exact subtraction.",
+          "params": [
+            "a",
+            "b"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Multiply Amount",
+          "description": "Amount times a quantity or rate. Both operands must be two-decimal strings \u2014 pass 3.00 for three, never 3.",
+          "params": [
+            "amount",
+            "factor (\"3.00\")"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Divide Amount",
+          "description": "Amount divided by a two-decimal divisor, rounded half-up at the cent. Check the remainder separately when a split must be exact.",
+          "params": [
+            "amount",
+            "divisor"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Percent Of",
+          "description": "GST, VAT or a levy \u2014 a percentage of an amount, exactly, with the rate supplied as data.",
+          "params": [
+            "amount",
+            "ratePercent (\"9.00\")"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Compare Amounts",
+          "description": "Ordering for approval thresholds and reconciliation: negative, zero or positive.",
+          "params": [
+            "a",
+            "b"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Amount From Number",
+          "description": "A number from a form becomes a safe two-decimal amount string \u2014 3 becomes 3.00.",
+          "params": [
+            "value (number)"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Amount To Cents",
+          "description": "Minor units, for a payment gateway that wants integers.",
+          "params": [
+            "amount"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Format Amount",
+          "description": "Group an amount by the currency's convention, for an invoice line or a statement.",
+          "params": [
+            "currencyCode (\"SGD\")",
+            "amount"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Currency Info",
+          "description": "The ISO 4217 record \u2014 numeric code, minor-unit digits, name, countries. Check digits before trusting two-decimal arithmetic for that currency.",
+          "params": [
+            "currencyCode"
+          ],
+          "returns": "object { code, number, digits, currency, countries }"
+        }
+      ]
+    },
+    {
+      "slug": "page-states",
+      "name": "Empty, Loading & Error States",
+      "tagline": "The three screens a data page spends most of its life in, made deliberate instead of blank.",
+      "kind": "ui",
+      "category": "Display",
+      "why": "A list page is empty before its query returns, empty again when a filter matches nothing, and broken when a service is down \u2014 and by default all three render as nothing at all, which every user reads as a bug. This is those states with the right words, one action each, and a skeleton shaped like the content that is coming so the page does not jump when data lands.",
+      "risk": "This overlaps the built-in shadcn pack, which already has empty, skeleton and spinner, so the honest justification is shape rather than novelty: flat-prop components a designer binds in one gesture, plus the three states the built-ins have no answer for \u2014 NoResults, a table-shaped skeleton and PermissionDenied. If the built-in Empty grows props, half of this should be deleted rather than maintained beside it. The second risk is illustration: inline SVG is exactly where 'genuinely good, not placeholder-grade' is hardest with simple shapes, and a weak illustration is worse than none, so the default is an icon in a soft circle and the illustration is opt-in.",
+      "components": [
+        {
+          "name": "EmptyState",
+          "description": "Nothing here yet \u2014 with the one action that changes that.",
+          "props": [
+            "title",
+            "description",
+            "icon (lucide name)",
+            "actionLabel",
+            "secondaryActionLabel",
+            "size",
+            "illustration ('none'|'documents'|'inbox'|'search')",
+            "onAction",
+            "onSecondaryAction"
+          ],
+          "notes": "A centred icon in a soft circle (color-mix over the muted token), title, one line, one primary action. The optional illustration is inline SVG in border and muted tones, never an image asset, so it themes instead of being a light-mode PNG on a dark page."
+        },
+        {
+          "name": "NoResults",
+          "description": "The filtered-empty state, which is a different message from the empty one.",
+          "props": [
+            "query",
+            "filterCount",
+            "entityLabel",
+            "suggestions (comma-separated)",
+            "onClearFilters"
+          ],
+          "notes": "Separate from EmptyState on purpose: 'no cases yet' invites creating one, 'no cases match' invites clearing the filter, and conflating them is how users get stuck on a screen they filtered themselves into. Clear filters is the primary action."
+        },
+        {
+          "name": "ErrorState",
+          "description": "Something failed, in language a user can act on, with the id the service desk will ask for.",
+          "props": [
+            "title",
+            "message",
+            "correlationId",
+            "retryLabel",
+            "supportHref",
+            "technicalDetails",
+            "compact",
+            "onRetry"
+          ],
+          "notes": "A destructive-toned lucide AlertTriangle, a plain-language message, Retry, and a copyable correlation id \u2014 the reason to render this rather than a toast. technicalDetails hides the stack behind a native details/summary."
+        },
+        {
+          "name": "PermissionDenied",
+          "description": "The 403 as a screen, naming the role required.",
+          "props": [
+            "title",
+            "message",
+            "requiredRole",
+            "requestAccessHref",
+            "onRequestAccess"
+          ],
+          "notes": "A lucide Lock and a way to ask. Deliberately says nothing about whether the record exists, since confirming existence to someone who may not read it is itself a disclosure."
+        },
+        {
+          "name": "SkeletonTable",
+          "description": "A placeholder shaped like the table that is loading.",
+          "props": [
+            "rows",
+            "columns",
+            "columnWidths (comma-separated ratios)",
+            "showHeader",
+            "dense"
+          ],
+          "notes": "Matches the real table's column count and width ratios so the page does not jump when data arrives \u2014 the entire reason to prefer a skeleton over a spinner. Row width variation is a deterministic pattern, never Math.random, so it does not shimmer differently on every render."
+        },
+        {
+          "name": "LoadingOverlay",
+          "description": "A refresh over content that is already there \u2014 not a first load.",
+          "props": [
+            "visible",
+            "label",
+            "blur",
+            "delayMs"
+          ],
+          "notes": "An absolute scrim over existing content. delayMs suppresses it below ~200ms so a fast query produces no flash \u2014 the detail that separates a considered loading state from an irritating one."
+        }
+      ]
+    },
+    {
+      "slug": "identity-validation",
+      "name": "Identifiers & Contact Data",
+      "tagline": "Check-digit validation and normalisation for national ids, tax numbers, IBANs, postcodes, phones and emails.",
+      "kind": "logic",
+      "category": "Compliance",
+      "why": "A registry, a claims system or a procurement portal is mostly a pile of identifiers, and the same three bugs recur: the same person stored twice because one record has +65 91234567 and the other 9123 4567; a payment bounced on a mistyped IBAN nobody check-summed; an intake form that accepts a national id with a wrong check digit and fails three weeks later at the department that consumes it. Client-side validation is not validation \u2014 these are the server-side answers, one call each, with the country as a parameter so one flow serves several jurisdictions.",
+      "risk": "Coverage is per-locale and uneven, and that is the honest limit. isIdentityCard covers 15 locales (ES, FI, IN, IR, IT, LK, NO, PL, TH, he-IL, ar-LY, ar-TN, zh-CN, zh-HK, zh-TW) and does NOT cover Singapore NRIC/FIN or UEN, UK NINO or Malaysian MyKad \u2014 which is the first thing this audience will ask for, and the honest answer is a small code component with the check-digit loop, since one CallFunction cannot express one. isTaxID covers 36 mostly-EU locales, isPostalCode 70. An unsupported locale THROWS rather than returning false, so every call needs an exception handler in the flow \u2014 a real trap. Everything here checks FORMAT and CHECK DIGITS only: whether an identifier belongs to a live person or company needs a registry feed no package supplies. libphonenumber's metadata is a point-in-time snapshot of numbering plans and goes stale between pins, and its full metadata is ~150 kB inherited by every consumer (irrelevant on Node, but it is inherited). validator's isVAT did not validate genuine GB numbers in testing and is deliberately excluded. Verified under CJS: isPostalCode('018956','SG')=true, formatNumber({country:'SG',phone:'91234567'},'E.164')='+6591234567', isValidIBAN('DE89370400440532013000')=true.",
+      "packages": [
+        {
+          "name": "validator",
+          "exports": [
+            "isEmail",
+            "normalizeEmail",
+            "isIdentityCard",
+            "isTaxID",
+            "isPostalCode"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "libphonenumber-js",
+          "exports": [
+            "isValidPhoneNumber",
+            "formatNumber"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "ibantools",
+          "exports": [
+            "isValidIBAN",
+            "electronicFormatIBAN",
+            "friendlyFormatIBAN",
+            "isValidBIC"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Is Email",
+          "description": "Whether a string is a deliverable-shaped email address.",
+          "params": [
+            "value"
+          ],
+          "returns": "boolean"
+        },
+        {
+          "name": "Normalise Email",
+          "description": "Canonical form for de-duplicating accounts \u2014 lower-cases the domain and applies provider rules, so A.B+ref@Gmail.com and ab@gmail.com match as one subject.",
+          "params": [
+            "value"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Check Phone Number",
+          "description": "A real, dialable number for that country \u2014 the numbering plan, not a regex.",
+          "params": [
+            "value",
+            "country (\"SG\")"
+          ],
+          "returns": "boolean"
+        },
+        {
+          "name": "Normalise Phone Number",
+          "description": "A locally-typed number to E.164 for storage, so the same person is never stored twice.",
+          "params": [
+            "value",
+            "country",
+            "format (pass \"E.164\")"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Check Postal Code",
+          "description": "Country-specific postcode check across 70 locales, or 'any'.",
+          "params": [
+            "value",
+            "locale"
+          ],
+          "returns": "boolean"
+        },
+        {
+          "name": "Check National Id",
+          "description": "A national identity number against its country's format and check digit \u2014 Aadhaar's Verhoeff, the Spanish DNI letter, the Italian codice fiscale. Throws on an unsupported locale, so branch on country first.",
+          "params": [
+            "value",
+            "locale"
+          ],
+          "returns": "boolean"
+        },
+        {
+          "name": "Check Tax Id",
+          "description": "A tax identification number for 36 locales, including US SSN/ITIN (en-US) and most EU national schemes.",
+          "params": [
+            "value",
+            "locale (\"en-US\", \"de-DE\")"
+          ],
+          "returns": "boolean"
+        },
+        {
+          "name": "Check IBAN",
+          "description": "Country length, structure and the mod-97 check. Call it before a payment run, not after the rejection.",
+          "params": [
+            "iban"
+          ],
+          "returns": "boolean"
+        },
+        {
+          "name": "Normalise IBAN",
+          "description": "Strip spaces and upper-case into the electronic form, which is what to store and compare on.",
+          "params": [
+            "iban"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Check BIC",
+          "description": "SWIFT/BIC structure and country segment, for the other half of a payment instruction.",
+          "params": [
+            "bic"
+          ],
+          "returns": "boolean"
+        }
+      ]
+    },
+    {
+      "slug": "text-matching",
+      "name": "Text, Names & Matching",
+      "tagline": "Case conversion, slugs, transliteration and the fuzzy match that maps an imported name onto a record you hold.",
+      "kind": "logic",
+      "category": "Text",
+      "why": "Two string chores nobody plans for. The first is shape: a case title into a URL slug, a field name into a column header, a CJK or accented supplier name into a Latin search key. The second is the hard part of every import \u2014 the file says 'Ministry of Health (HQ)' and your table says 'Ministry of Health'. Every team writes that fuzzy match by hand and gets it wrong; here it is two calls used together.",
+      "risk": "Closest Match always returns something: given 400 supplier names it hands back the least-wrong one for an input that matches nothing, so used alone it silently writes bad references into a database. It must be paired with Edit Distance and a threshold the caller chooses, and a one-call-per-action library cannot enforce that discipline \u2014 the right shape would be one action returning { match, distance } and there is no upstream export for it. Levenshtein is character distance, so 'Health, Ministry of' scores worse than a plain typo; token-based matching (Jaro-Winkler, trigram) suits reconciliation better and no pure-function CommonJS package offers it in one call. change-case is frozen at 4.1.2 because 5.x is ESM-only, so that pin can never move. Every popular slug package is default-export-only or ESM; transliteration is used because it genuinely exposes a named slugify and also handles CJK and Cyrillic, which a multilingual registry needs. Verified: slugify('Minist\u00e8re de Sant\u00e9')='ministere-de-sante', transliterate('\u5317\u4eac')='Bei Jing', distance('Acme Pte Ltd','Acme Pte. Ltd')=1.",
+      "packages": [
+        {
+          "name": "change-case",
+          "exports": [
+            "camelCase",
+            "capitalCase",
+            "paramCase",
+            "snakeCase",
+            "sentenceCase"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "transliteration",
+          "exports": [
+            "slugify",
+            "transliterate"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "fastest-levenshtein",
+          "exports": [
+            "distance",
+            "closest"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "To Camel Case",
+          "description": "\"case status\" \u2192 \"caseStatus\", for an API payload key.",
+          "params": [
+            "text"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "To Capital Case",
+          "description": "\"case_status\" \u2192 \"Case Status\", for a column header derived from a field name.",
+          "params": [
+            "text"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "To Kebab Case",
+          "description": "\"Case Status\" \u2192 \"case-status\", for routes and ids.",
+          "params": [
+            "text"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "To Snake Case",
+          "description": "\"caseStatus\" \u2192 \"case_status\", for a legacy database or a CSV header a partner specified.",
+          "params": [
+            "text"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "To Sentence Case",
+          "description": "\"caseStatus\" \u2192 \"Case status\", for a generated label.",
+          "params": [
+            "text"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Slugify",
+          "description": "Any title \u2014 accented, Cyrillic or CJK \u2014 to a URL-safe slug.",
+          "params": [
+            "text"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Transliterate",
+          "description": "Non-Latin names to Latin script, for search keys and printed forms.",
+          "params": [
+            "text"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Edit Distance",
+          "description": "How many single-character edits separate two strings. Zero is exact; 2-3 catches typos without inventing matches.",
+          "params": [
+            "a",
+            "b"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Closest Match",
+          "description": "The nearest candidate in a list \u2014 an imported department or supplier mapped onto the value you already hold. Always pair it with Edit Distance and refuse a match above your threshold.",
+          "params": [
+            "value",
+            "candidates (array)"
+          ],
+          "returns": "string"
+        }
+      ]
+    },
+    {
+      "slug": "form-fields",
+      "name": "Masked & Formatted Fields",
+      "tagline": "Currency, percent, phone and identifier inputs that format as you type and emit clean values.",
+      "kind": "ui",
+      "category": "Input",
+      "why": "Line-of-business forms capture money, rates, phone numbers, identifiers and reporting periods. Without masks a user types '1,250.00' into a Decimal field and the action stores a string, or types a national id without separators and validation fires after submit. These format on the way in, hand the action a clean number or a digits-only string, and share one label/hint/error frame so a form looks like one form.",
+      "risk": "Caret management in a controlled masked input is the classic bug source: every reformat must restore selectionStart in a useLayoutEffect, and paste, IME composition, Android soft keyboards and Backspace over a mask literal each need their own case. The platform sharpens it \u2014 coerceParam turns an empty Decimal binding into 0, so 'empty' and 'zero' are indistinguishable unless the component keeps a private draft string, which means it holds state about a value the page also owns and can desynchronise on an external write. Checksum rules go stale, so IdentifierInput offers generic Luhn and mod-11 rather than naming a national scheme it cannot keep current. MonthPicker and TimePicker exist because the built-in shadcn calendar is a date input and has neither; DatePicker deliberately is NOT here, since reimplementing react-day-picker's keyboard and locale handling would be a regression.",
+      "components": [
+        {
+          "name": "FieldFrame",
+          "description": "The shared label / required marker / hint / error frame the other fields sit in.",
+          "props": [
+            "label",
+            "hint",
+            "error",
+            "required",
+            "htmlFor",
+            "children"
+          ],
+          "notes": "Imported by the others as @/components/FieldFrame \u2014 the local specifier the contract allows for a sibling of the same library \u2014 so label and error styling exist once."
+        },
+        {
+          "name": "CurrencyInput",
+          "description": "Grouped, symbol-prefixed money entry that emits a number, not a formatted string.",
+          "props": [
+            "value (Decimal)",
+            "currency (ISO code)",
+            "locale",
+            "min",
+            "max",
+            "allowNegative",
+            "disabled",
+            "onChange"
+          ],
+          "notes": "Intl.NumberFormat, a browser built-in, so no money library in the browser. Formats on blur and keeps raw digits editable while focused, which is what stops the caret jumping mid-entry."
+        },
+        {
+          "name": "PercentInput",
+          "description": "Percentage entry that states whether it stores 15 or 0.15.",
+          "props": [
+            "value",
+            "decimals",
+            "storeAsFraction",
+            "min",
+            "max",
+            "onChange"
+          ],
+          "notes": "The fraction-versus-percent trap is a declared prop rather than a guess, because the same rate is stored both ways across two tables in most real schemas."
+        },
+        {
+          "name": "NumberStepper",
+          "description": "Bounded quantity input with minus/plus and a unit suffix.",
+          "props": [
+            "value",
+            "step",
+            "min",
+            "max",
+            "unit",
+            "disabled",
+            "onChange"
+          ],
+          "notes": "lucide Minus and Plus; hold-to-repeat is a setInterval started on pointerdown and cleared on pointerup AND pointercancel, so a finger lifted outside the button still stops it."
+        },
+        {
+          "name": "PhoneInput",
+          "description": "Pattern-masked phone entry showing '+65 9123-4567' and emitting digits only.",
+          "props": [
+            "value",
+            "pattern (\"+65 ####-####\")",
+            "placeholder",
+            "disabled",
+            "onChange",
+            "onValidityChange"
+          ],
+          "notes": "A literal mask where # is a digit \u2014 deliberately not libphonenumber, which is not an allowed browser import; real validation belongs in the identifier library on the server. Country rules are app data: pass a pattern per country from a lookup table."
+        },
+        {
+          "name": "IdentifierInput",
+          "description": "Masked registry identifiers with an optional checksum \u2014 case, policy, licence and account numbers.",
+          "props": [
+            "value",
+            "mask (# digit, A letter, * either)",
+            "uppercase",
+            "checksum ('none'|'luhn'|'mod11')",
+            "invalidMessage",
+            "onChange",
+            "onValidityChange"
+          ],
+          "notes": "Luhn and mod-11 are about ten lines each, written inline, and are generic algorithms \u2014 the component never claims to validate a jurisdiction it cannot keep current."
+        },
+        {
+          "name": "MonthPicker",
+          "description": "Reporting-period picker: a 3\u00d74 month grid with a year pager, no day grid at all.",
+          "props": [
+            "value (YYYY-MM)",
+            "min",
+            "max",
+            "onChange"
+          ],
+          "notes": "Deliberately not a calendar with the days hidden \u2014 a period is a different thing from a date, and this is twelve buttons and two chevrons."
+        },
+        {
+          "name": "TimePicker",
+          "description": "Hour and minute columns in a popover, stepped and bounded.",
+          "props": [
+            "value (HH:mm)",
+            "minuteStep",
+            "use24Hour",
+            "min",
+            "max",
+            "onChange"
+          ],
+          "notes": "Two scrollable columns of buttons rather than <input type=\"time\">, whose rendering and keyboard behaviour differ per browser and cannot be styled to match the rest of the form."
+        },
+        {
+          "name": "WorkingDaysHint",
+          "description": "'Target: 14 Mar (10 working days)' under a date field, counting forward past weekends and given holidays.",
+          "props": [
+            "startValue",
+            "days",
+            "holidays (ISO dates)",
+            "weekendDays (number[])",
+            "label",
+            "onComputed"
+          ],
+          "notes": "A loop over [y, m, d] integers \u2014 integers inside, ISO at the edges, which is the discipline that keeps a picker from showing the wrong day west of Greenwich. The holiday list is app data, usually a lookup table, and weekendDays covers Fri/Sat regions the server library cannot."
+        }
+      ]
+    },
+    {
+      "slug": "audit-change",
+      "name": "Audit Trail & Change Tracking",
+      "tagline": "What changed field by field, canonical bytes that hash the same in five years, and time-ordered audit ids.",
+      "kind": "logic",
+      "category": "Compliance",
+      "why": "'Show me the audit trail' is the first thing an auditor asks and the last thing an app is built for. Two questions have to be answerable: who changed what, from what value to what \u2014 normally a per-entity comparison loop that goes stale the day someone adds an attribute \u2014 and whether a row was edited afterwards, which a timestamp column proves nothing about. Canonical Record is RFC 8785 JCS, so the same record always serialises to the same bytes; Record Digest chains an entry to its predecessor; Audit Id is a ULID, so an append-only table sorts in creation order as plain text without trusting a clock column.",
+      "risk": "This is a hash chain, not notarisation: anyone who can rewrite the whole table can recompute every digest, so the tamper evidence only holds if the head digest is periodically published somewhere the app cannot write \u2014 a nightly mail to the auditor, a second store, a regulator's receipt. That step is a deployment decision the library cannot make. There is no keyed HMAC (js-sha256's hmac hangs off sha256.hmac and is not a named export), so an insider with write access and the code can forge a chain. The chaining itself is a concatenation the CALLER performs in an Assign, because one CallFunction is one call, and verifying a whole chain is a loop in the caller's flow. And the diff is structural JSON while a Prisma row is not: updatedAt differs on every save, Decimal and Date compare by shape, relations arrive nested \u2014 hand it a whole row and it reports noise on every write, so the caller MUST project the fields it cares about first (the PII library's Pick Fields, or a Query projection). Verified: detailedDiff returns {added, deleted, updated}; canonicalize({b:2,a:1})='{\"a\":1,\"b\":2}'; and ulid exports NO isValid, so an id-format check must be a length-and-charset rule in the flow.",
+      "packages": [
+        {
+          "name": "deep-object-diff",
+          "exports": [
+            "detailedDiff",
+            "updatedDiff"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "json-canonicalize",
+          "exports": [
+            "canonicalize"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "js-sha256",
+          "exports": [
+            "sha256"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "ulid",
+          "exports": [
+            "ulid",
+            "decodeTime"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Field Changes",
+          "description": "The three-way detail between two versions of a record \u2014 added, deleted, updated \u2014 as one audit row built from data rather than a hand-written comparison.",
+          "params": [
+            "before",
+            "after"
+          ],
+          "returns": "object { added, deleted, updated }"
+        },
+        {
+          "name": "Changed Values",
+          "description": "Only the fields whose value actually changed, flat. The short form for a timeline entry or a change-request summary.",
+          "params": [
+            "before",
+            "after"
+          ],
+          "returns": "object of field \u2192 new value"
+        },
+        {
+          "name": "Canonical Record",
+          "description": "RFC 8785 canonical JSON \u2014 keys sorted, numbers and unicode in one fixed form \u2014 so a digest taken today still matches in five years.",
+          "params": [
+            "record"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Record Digest",
+          "description": "SHA-256 as lower-case hex. Feed it the canonical record, or the previous digest concatenated with it, to chain an entry to its predecessor.",
+          "params": [
+            "text"
+          ],
+          "returns": "string (64 hex characters)"
+        },
+        {
+          "name": "Audit Id",
+          "description": "A ULID: 26 characters whose leading bits are the timestamp, so ids sort in creation order as plain text \u2014 the primary key for an append-only table nobody can reconcile across services otherwise.",
+          "params": [],
+          "returns": "string"
+        },
+        {
+          "name": "Audit Id Time",
+          "description": "The creation time recovered from a ULID, so an entry's own id proves when it was written without trusting a separate column.",
+          "params": [
+            "id"
+          ],
+          "returns": "number (ms since epoch)"
+        }
+      ]
+    },
+    {
+      "slug": "timelines",
+      "name": "Timelines, Audit Trails & People",
+      "tagline": "Who did what, when \u2014 activity feeds, approval chains and audit trails, with the people attached.",
+      "kind": "ui",
+      "category": "Compliance",
+      "why": "Audit history is a statutory requirement in most of these apps and is always rebuilt from scratch: audit rows turned into readable prose, grouped by day, with the actor's initials and a relative time that says '4 hours ago' without a date library. This is that, plus the approval chain a reviewer scrolls to before deciding \u2014 the two read-only surfaces on nearly every record page in case management.",
+      "risk": "Feeds are where someone else's data model shows through: these take generic key props because the row shape belongs to the developer, which means the component cannot make the sentence read naturally \u2014 'Sagar changed Status from Draft to Submitted' needs a template, and a template prop is a small language nobody wants to learn; the children slot covers it but is awkward to bind in a low-code inspector. A long trail needs virtualisation to stay usable past a few thousand rows and no virtualisation library is on the allow-list, so paging is the only honest answer. The deterministic avatar hue borrows the chart ramp for identity, so a page carrying both a chart and an avatar group has two meanings for the same five colours \u2014 defensible, but decide it deliberately.",
+      "components": [
+        {
+          "name": "ActivityFeed",
+          "description": "A stream of events on a record, grouped by day with sticky headings.",
+          "props": [
+            "events (object[])",
+            "actorKey",
+            "actionKey",
+            "timestampKey",
+            "detailKey",
+            "iconKey",
+            "groupByDay",
+            "timeZone",
+            "maxItems",
+            "dense",
+            "emptyMessage",
+            "onItemClick"
+          ],
+          "notes": "The rail is one absolutely-positioned 1px div behind the items, with each icon dot in bg-card so the rail appears to break at the dot rather than run underneath it \u2014 the detail that separates a timeline from a bulleted list. Day grouping compares Intl.DateTimeFormat parts in the supplied timeZone, never local midnight, so a burst of events does not split at the wrong hour for a reader in another region."
+        },
+        {
+          "name": "TimelineItem",
+          "description": "One event on the rail, usable alone inside a detail panel.",
+          "props": [
+            "title",
+            "description",
+            "timestamp",
+            "timeZone",
+            "actorName",
+            "actorImageUrl",
+            "icon",
+            "tone",
+            "badge",
+            "children"
+          ],
+          "notes": "Composes @/components/InitialsAvatar and @/components/RelativeTime so an item, a feed and an audit row render a person and a time identically. The children slot takes something richer \u2014 a comment, an attachment row, a field diff."
+        },
+        {
+          "name": "ApprovalChain",
+          "description": "The decision path \u2014 who approved, who rejected, and where it stopped.",
+          "props": [
+            "steps (Array<{approver, role, outcome, decidedAt, comment}>)",
+            "orientation",
+            "showComments",
+            "currentStep",
+            "timeZone",
+            "compact"
+          ],
+          "notes": "Avatar, name, outcome badge and time joined by a 2px rail that turns primary once passed and destructive at a rejection, so the point of failure is findable without reading. Pending steps are dashed and muted \u2014 the one place a dashed line earns itself, because it means 'not yet'."
+        },
+        {
+          "name": "AuditTrail",
+          "description": "The compliance view of the same events: actor, action, field, before, after, stamp.",
+          "props": [
+            "entries (object[])",
+            "fieldLabels",
+            "timeZone",
+            "showFieldChanges",
+            "pageSize",
+            "onLoadMore"
+          ],
+          "notes": "Tabular, with tabular-nums on the timestamp column so stamps align down the page and an explicit zone suffix on every one \u2014 the thing an auditor asks for first. Field changes render through the record library's FieldDiffRow where present, so 'what changed' is not drawn two ways in one app."
+        },
+        {
+          "name": "RelativeTime",
+          "description": "'4 hours ago', with the exact stamp one hover away.",
+          "props": [
+            "value (ISO)",
+            "timeZone",
+            "mode ('relative'|'absolute'|'both')",
+            "locale",
+            "refreshMs",
+            "tooltipFormat"
+          ],
+          "notes": "Intl.RelativeTimeFormat for the phrase, Intl.DateTimeFormat for the title attribute \u2014 no date library, localisation free. Renders a <time dateTime> and an em-dash for an unparseable value rather than 'Invalid Date'. The tooltip always carries the absolute time with its zone, because a relative time alone is not an audit record."
+        },
+        {
+          "name": "InitialsAvatar",
+          "description": "A person as initials or a photo, the same colour on every screen.",
+          "props": [
+            "name",
+            "imageUrl",
+            "size",
+            "shape",
+            "tone (overrides the derived slot)",
+            "title"
+          ],
+          "notes": "A small string hash mod 5 onto chart-1..chart-5, so one person keeps one colour across the app. Falls back to initials when the image 404s (an onError swap, the case hand-rolled avatars always forget) and to a lucide User when the name is empty. Identity colour only \u2014 it never reaches for the status tones."
+        },
+        {
+          "name": "AvatarGroup",
+          "description": "Assignees or watchers, overlapped, with an overflow chip.",
+          "props": [
+            "people (Array<{name, imageUrl}>)",
+            "max",
+            "size",
+            "showNames",
+            "onOverflowClick"
+          ],
+          "notes": "-space-x-2 with a 2px ring in the card colour \u2014 the ring, not a border, is what separates them cleanly against any surface. The overflow chip carries the remaining names in its title."
+        }
+      ]
+    },
+    {
+      "slug": "approval-actions",
+      "name": "Approval & Case Actions",
+      "tagline": "The decision bar, the reasoned dialog, the four-eyes panel and the case comment thread.",
+      "kind": "ui",
+      "category": "Workflow",
+      "why": "Every approval app rebuilds the same surfaces on its task page: a decision bar, a confirm dialog that will not close until a reason is typed, a sign-off panel showing which of three roles have signed, a comment thread with internal notes, and a bulk bar over a selected list. They are the difference between a workflow that runs and one an officer can work in, and none of them is in the widget vocabulary today.",
+      "risk": "These sit next to the platform's own TaskInbox widget and the workflow engine's Approval and HumanTask nodes, so there is a real duplication question: if a component decides what 'approve' means it will drift from the workflow definition. The library is only defensible while it stays strictly presentational and the decision keys come from the model \u2014 it reports, it never applies. canDecide is a HINT the page wires from session.hasRole(...), and a careless integrator gets a sign-off button that looks authoritative while the server enforces nothing, which is worse than no button at all. CommentThread takes an unbounded array with no virtualisation available, so collapsedCount is load-bearing rather than cosmetic.",
+      "components": [
+        {
+          "name": "DecisionBar",
+          "description": "The sticky decision bar on a task page: due date, assignee, and the decisions available.",
+          "props": [
+            "decisions (Array<{key, label, tone, requiresReason?}>)",
+            "busy",
+            "disabledReason",
+            "dueValue",
+            "assigneeName",
+            "onDecide"
+          ],
+          "notes": "One primary button and the rest outline, so a page never shows two competing primaries \u2014 the platform's one-primary-action rule expressed as a component rather than left to a review. tone maps through a three-entry static table of full class strings, never an interpolated class name."
+        },
+        {
+          "name": "DecisionDialog",
+          "description": "Confirm with a mandatory reason: canned reasons, a minimum length, no dismiss-by-clicking-away.",
+          "props": [
+            "open",
+            "title",
+            "prompt",
+            "confirmLabel",
+            "tone",
+            "reasonRequired",
+            "reasonMinLength",
+            "reasons (Array<{key,label}>)",
+            "onConfirm",
+            "onCancel"
+          ],
+          "notes": "@radix-ui/react-alert-dialog, so it is modal and focus-trapped. Confirm stays disabled until the reason clears reasonMinLength \u2014 the control auditors ask about, expressed once instead of per page."
+        },
+        {
+          "name": "SignOffPanel",
+          "description": "Four-eyes approval: which roles must sign, who already has, with what comment, and whether the viewer may still decide.",
+          "props": [
+            "requiredRoles (string[])",
+            "approvals (Array<{role, name, at, decision, comment}>)",
+            "currentRole",
+            "canDecide",
+            "reasonRequired",
+            "onApprove",
+            "onReject"
+          ],
+          "notes": "Approve is the single primary action; Reject is a quiet outline button, so the panel presents one visual decision rather than two competing ones."
+        },
+        {
+          "name": "CommentThread",
+          "description": "Case correspondence: public replies and internal notes, with attachments and relative times.",
+          "props": [
+            "comments (object[])",
+            "currentUserName",
+            "allowInternal",
+            "collapsedCount",
+            "busy",
+            "emptyText",
+            "onPost",
+            "onDelete"
+          ],
+          "notes": "Internal notes take a distinct left border and a bg-muted ground so nobody mails an internal note to an applicant. Posting emits an event; the component never makes a request."
+        },
+        {
+          "name": "AssigneePicker",
+          "description": "Reassign or delegate, showing each candidate's current workload.",
+          "props": [
+            "value",
+            "candidates (Array<{id, name, role, load?, available?}>)",
+            "allowUnassign",
+            "searchable",
+            "onChange",
+            "onSearch"
+          ],
+          "notes": "Radix Popover with initials, name, role and a small load bar, so a supervisor sees who is free without opening a report."
+        },
+        {
+          "name": "BulkActionBar",
+          "description": "Appears when rows are selected: the count, the bulk actions, and clear.",
+          "props": [
+            "selectedCount",
+            "actions (Array<{key, label, tone, requiresConfirm?}>)",
+            "busy",
+            "onAction",
+            "onClear"
+          ],
+          "notes": "Renders null at zero so the page needs no If wrapper. It emits only \u2014 confirmation is DecisionDialog's job, which keeps reason capture in one place."
+        }
+      ]
+    },
+    {
+      "slug": "csv",
+      "name": "CSV & Delimited Files",
+      "tagline": "Read and write CSV, TSV and pipe-delimited files the way partners actually send them.",
+      "kind": "logic",
+      "category": "Documents",
+      "why": "Every registry, claims and procurement app has an import screen and an export button, and CSV is what finance, HR, banks and government partners send \u2014 not xlsx. Without this a developer writes split(\",\") and then meets quoted commas, embedded newlines, CRLF, ragged rows and a semicolon-delimited file from a European ERP in production. This is the missing half of the built-in Excel nodes: the same import screen has to accept both.",
+      "risk": "parse returns a wrapper { data, errors, meta }, not rows, and a one-call body cannot unwrap it \u2014 every caller writes {{result.data}} and one who forgets gets an object where they expected an array. In the other direction, unparse produces a STRING and a library cannot write an AppFile, so 'download this as CSV' still needs a server action returning the text or a REST response: this makes the bytes, not the file, and that gap is the first thing anyone will ask about. No BOM can be prepended inside a single call, so Excel on a European desktop will mangle accented names in an exported file. Parsing is fully in memory (papaparse's streaming API is callback-based and unusable through CallFunction), so a 200 MB extract is out of scope. Interop is the safe part: papaparse 5.4.1 is UMD CommonJS with real named exports and @types that declare them \u2014 verified parsing a header row with dynamic typing and requiring unparse.",
+      "packages": [
+        {
+          "name": "papaparse",
+          "exports": [
+            "parse",
+            "unparse"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Parse CSV",
+          "description": "Parse a CSV string into objects keyed by the header row. Read {{result.data}} for the rows and {{result.errors}} to tell the person which lines were ragged.",
+          "params": [
+            "text"
+          ],
+          "returns": "{ data, errors, meta }"
+        },
+        {
+          "name": "Parse Delimited Text",
+          "description": "The same for a file that is not comma-separated \u2014 semicolon from a European export, tab, or pipe.",
+          "params": [
+            "text",
+            "delimiter"
+          ],
+          "returns": "{ data, errors, meta }"
+        },
+        {
+          "name": "Parse CSV Rows",
+          "description": "Parse a headerless file into arrays of cells, for fixed-position extracts from a mainframe or a bank.",
+          "params": [
+            "text"
+          ],
+          "returns": "{ data (string[][]), errors, meta }"
+        },
+        {
+          "name": "Detect Delimiter",
+          "description": "Read the first line only and report the delimiter that was inferred, so an import screen can say what it thinks the file is before parsing all of it.",
+          "params": [
+            "text"
+          ],
+          "returns": "{ meta: { delimiter } }"
+        },
+        {
+          "name": "Build CSV",
+          "description": "An array of objects to a CSV string, header row taken from the first object's keys.",
+          "params": [
+            "rows"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Build CSV With Columns",
+          "description": "Exactly these columns, in exactly this order, whatever else the rows carry \u2014 the export an interface agreement specifies.",
+          "params": [
+            "rows",
+            "columns (array)"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Build Delimited Text",
+          "description": "Write with a chosen delimiter and line ending, for a partner whose spec says semicolon and CRLF.",
+          "params": [
+            "rows",
+            "delimiter",
+            "newline"
+          ],
+          "returns": "string"
+        }
+      ]
+    },
+    {
+      "slug": "pickers",
+      "name": "Pickers, Tags & Lookups",
+      "tagline": "Searchable pickers whose results come from your own action instead of a fetch.",
+      "kind": "ui",
+      "category": "Input",
+      "why": "Back-office forms are full of 'pick the vendor', 'tag this case', 'choose the officers to notify'. A plain Select cannot search, and the built-in Command palette is a keyboard surface rather than a record picker with a subtitle line and a workload column. Each of these is driven by an onSearch event, so the module's own Query action supplies the rows and the component never touches the network.",
+      "risk": "Real overlap with what already ships \u2014 the built-in shadcn pack has command, select and popover \u2014 so the justification has to be the business affordances (server-driven results, two-line record rows, emitting id and label together) and not the widget existing. Accessibility is the hard part and nothing type-checks it: a hand-rolled listbox that omits aria-activedescendant and roving focus is a regression in exactly the public-sector settings this targets. Debouncing inside the component also fights the platform: the thing being debounced is the page's action, and a slow response can land after a newer one with no request id to discard it, so a stale result can overwrite a fresh one \u2014 the page must guard that, and nothing reminds it to.",
+      "components": [
+        {
+          "name": "Combobox",
+          "description": "Single-select with a search box, loading state and an empty state.",
+          "props": [
+            "value",
+            "options (Array<{value, label, description?, disabled?}>)",
+            "placeholder",
+            "searchPlaceholder",
+            "loading",
+            "clearable",
+            "emptyText",
+            "onChange",
+            "onSearch"
+          ],
+          "notes": "Radix Popover plus a filtered <ul> \u2014 no cmdk. Filtering is local String.includes when onSearch is unbound and server-driven when it is bound (the page action refills options). The component never fetches; it only reports the query."
+        },
+        {
+          "name": "MultiCombobox",
+          "description": "Multi-select with checkbox rows and an 'n selected' summary on the closed trigger.",
+          "props": [
+            "value (string[])",
+            "options (Array<{value, label, group?}>)",
+            "maxVisible",
+            "summaryNoun",
+            "placeholder",
+            "onChange",
+            "onSearch"
+          ],
+          "notes": "@radix-ui/react-checkbox rows so the checked state is accessible; sticky group headers inside a max-h-72 scroll area. Past maxVisible the trigger reads '4 departments' rather than growing without bound."
+        },
+        {
+          "name": "RecordLookup",
+          "description": "A record picker with two-line results \u2014 a subtitle and a meta column \u2014 for vendors, cases or officers.",
+          "props": [
+            "value",
+            "displayValue",
+            "results (Array<{id, title, subtitle, meta}>)",
+            "minChars",
+            "loading",
+            "emptyText",
+            "onSearch",
+            "onChange",
+            "onClear"
+          ],
+          "notes": "Debounce is a setTimeout in a useEffect with a cleanup \u2014 no lodash. It emits both the id and the label, so the page stores a foreign key and still shows a name after reload without a second read."
+        },
+        {
+          "name": "TagInput",
+          "description": "Free-text chips with optional suggestions, a max count and duplicate rejection.",
+          "props": [
+            "value (string[])",
+            "suggestions",
+            "placeholder",
+            "maxTags",
+            "allowNew",
+            "disabled",
+            "onChange",
+            "onSearch"
+          ],
+          "notes": "Enter and comma commit, Backspace on an empty field removes the last chip. Suggestions render in a Radix Popover as a role=listbox with a roving arrow-key index."
+        },
+        {
+          "name": "HierarchySelect",
+          "description": "Pick from a tree \u2014 org units, categories, account codes \u2014 flattened from parentId.",
+          "props": [
+            "value",
+            "nodes (Array<{id, parentId, label, selectable?}>)",
+            "placeholder",
+            "expandedByDefault",
+            "onChange"
+          ],
+          "notes": "Depth becomes indentation through a six-entry static class map (pl-0 \u2026 pl-20), because pl-${depth*4} would not compile. Expansion is a useState<Set<string>>."
+        },
+        {
+          "name": "TokenTextArea",
+          "description": "A textarea with an insert-token menu, for notification and letter templates.",
+          "props": [
+            "value",
+            "tokens (Array<{token, label, sample?}>)",
+            "rows",
+            "placeholder",
+            "onChange"
+          ],
+          "notes": "A plain textarea plus a Radix dropdown; inserting splices {{token}} at selectionStart and restores the caret after it in a useLayoutEffect. Pairs with the Merge Fields functions that render the result."
+        }
+      ]
+    },
+    {
+      "slug": "kpi-tiles",
+      "name": "Metrics & KPI Tiles",
+      "tagline": "The KPI row every console opens with \u2014 stat tiles, deltas, sparklines, rings and proportional bars.",
+      "kind": "ui",
+      "category": "Display",
+      "why": "Every service desk, claims console and procurement dashboard opens with a row of numbers: open cases, overdue, this week against last. Without this a developer hand-builds a Box+Text stack per tile, formats the number by hand, and ships no trend at all \u2014 or reaches for a charting package that is not on the allow-list. This removes the dashboard header as a build task and makes the most-looked-at element of the app consistent between screens.",
+      "risk": "Deliberately stops short of a chart library: the forms here are the ones that need no axis, no tick selection and no measurement \u2014 a polyline in a stretched viewBox, a dash-offset ring, a flex-grow strip. A full BarChart/LineChart set was considered and dropped, because the cheap parts are not the hard parts (nice ticks on ugly ranges, label collision, negative values, irregular time axes) and it quietly becomes an unmaintained chart library with a bug queue; anything needing axes should stay a table or a server-rendered image until that is a deliberate project. Number formatting is the remaining deep end: Intl covers compact, currency and percent, but durations ('2d 4h') and a sensible precision policy are hand-written and wrong is visible on the element people look at first. The sparkline's degenerate case \u2014 every value equal \u2014 collapses onto the baseline and reads as 'no data' unless special-cased.",
+      "components": [
+        {
+          "name": "StatTile",
+          "description": "One headline metric with an optional delta, icon and inline trend \u2014 the unit a KPI row is made of.",
+          "props": [
+            "label",
+            "value",
+            "format ('number'|'compact'|'currency'|'percent'|'duration')",
+            "currency",
+            "delta",
+            "deltaLabel",
+            "deltaGoodWhen ('up'|'down'|'neutral')",
+            "icon",
+            "trend (number[])",
+            "tone",
+            "loading",
+            "onClick"
+          ],
+          "notes": "Type and spacing, no SVG in the tile itself. Value through Intl.NumberFormat (notation compact for 12.9K). Delta tone is direction \u00d7 deltaGoodWhen rather than the sign, because a falling backlog is good news, and it carries a lucide arrow so it is never colour-alone."
+        },
+        {
+          "name": "StatTileGroup",
+          "description": "The responsive band that holds a row of tiles and keeps them reading as one object.",
+          "props": [
+            "columns (1-6)",
+            "dense",
+            "divided",
+            "children"
+          ],
+          "notes": "CSS grid stepping from one column at phone width. When divided, tiles share a 1px border-border rule instead of gaps, so the row reads as a console header rather than a pile of floating cards."
+        },
+        {
+          "name": "Sparkline",
+          "description": "A 12-to-60 point trend line sized to whatever column it lands in.",
+          "props": [
+            "values (number[])",
+            "height",
+            "tone",
+            "area",
+            "showEnd",
+            "baseline"
+          ],
+          "notes": "A <polyline> in a fixed viewBox '0 0 100 32' with preserveAspectRatio=none, so it stretches to any width with no ResizeObserver. vector-effect=non-scaling-stroke keeps the line 2px under that non-uniform scale \u2014 the trap that makes most hand-rolled sparklines look smeared. Colour is stroke=currentColor under a text-* class."
+        },
+        {
+          "name": "DeltaBadge",
+          "description": "A signed change chip whose colour means good or bad, not up or down.",
+          "props": [
+            "value",
+            "format",
+            "goodWhen",
+            "showArrow",
+            "size"
+          ],
+          "notes": "Soft background as color-mix(in oklab, currentColor 12%, transparent), so one class controls ink and fill and dark mode needs no dark: variant."
+        },
+        {
+          "name": "ProgressRing",
+          "description": "A circular percentage \u2014 SLA consumed, budget drawn down, completion.",
+          "props": [
+            "value",
+            "max",
+            "size",
+            "thickness",
+            "label",
+            "sublabel",
+            "tone",
+            "showValue"
+          ],
+          "notes": "Two concentric circles, strokeDasharray 2\u03c0r and strokeDashoffset 2\u03c0r\u00b7(1\u2212value/max), rotated \u221290\u00b0 so it starts at twelve o'clock. strokeLinecap round is dropped below ~2% or the cap alone renders as a full dot at zero. The centred value is HTML over the SVG, never <text>, which ignores the app's type scale and clips at small sizes."
+        },
+        {
+          "name": "Meter",
+          "description": "A linear gauge with severity thresholds, for capacity and utilisation.",
+          "props": [
+            "value",
+            "max",
+            "thresholds (Array<{at, tone}>)",
+            "label",
+            "showTicks",
+            "height",
+            "format"
+          ],
+          "notes": "A div track with a width-% fill, no SVG. The unfilled track is a lighter step of the same ramp rather than a grey, so the state reads across the whole bar. Threshold marks are 1px absolutely-positioned rules."
+        },
+        {
+          "name": "ComparisonBar",
+          "description": "Actual against target in the space of one line \u2014 the bullet chart.",
+          "props": [
+            "value",
+            "target",
+            "range",
+            "label",
+            "targetLabel",
+            "format",
+            "tone"
+          ],
+          "notes": "Three plain divs: a muted range band, an 8px actual bar, a 2px full-height target tick. No axis and no gridlines \u2014 the two labels carry the numbers, which is the point of the form."
+        },
+        {
+          "name": "StackedBarStrip",
+          "description": "A queue's composition as one proportional band \u2014 32 open, 8 overdue, 4 on hold.",
+          "props": [
+            "data (object[])",
+            "labelKey",
+            "valueKey",
+            "toneMap",
+            "height",
+            "showLabels",
+            "format",
+            "onSegmentClick"
+          ],
+          "notes": "A flex row of divs with flex-grow per value and gap-[2px], rounded on the outer ends only. Flexbox does the proportional arithmetic, so it reflows at any width with zero measurement \u2014 the cheapest correct chart there is, and usually the right answer when someone asked for a pie."
+        }
+      ]
+    },
+    {
+      "slug": "markup",
+      "name": "Markdown, Merge Fields & Safe HTML",
+      "tagline": "Render markdown, sanitise it, fill a letter's merge fields, and write an amount in words.",
+      "kind": "logic",
+      "category": "Text",
+      "why": "Business apps are full of authored text that is not an email: case notes and knowledge articles stored as markdown and shown on a page, a decision letter whose wording is a template with {{applicantName}} in it, a PDF body composed before the built-in PdfExport node draws it, a payment voucher that must carry the amount in words. The built-in EmailTemplate covers email and only email, deliberately; everything else is currently string concatenation inside expressions, which is where escaping bugs live.",
+      "risk": "The sanitiser was the thing most likely to make this unbuildable, so I checked it rather than assumed: sanitize-html is `export = sanitizeHtml` and unreachable by a generator that emits a named import, but `xss` genuinely exposes filterXSS as a named export and requires cleanly under Node 20 CJS \u2014 verified, and it stripped an onerror attribute from an <img> while keeping the markup around it. The cost is that its allow-list is a per-call options object passed as a {{= }} expression, so a default-deny policy has to be written by whoever wires it, and a caller who renders markdown from a public form without calling Sanitize HTML has stored XSS \u2014 pair it in the docs and in the RichTextView notes. marked's CommonJS story moved across majors, so 12.0.2 is a deliberate pin and an upgrade is a compatibility check rather than a bump. mustache escapes {{ }} by default, which is right for HTML and wrong for plain text and file names, hence a separate action passing an identity escape \u2014 a subtlety that will be got wrong at least once. Amount In Words is English only, which rules out a bilingual voucher.",
+      "packages": [
+        {
+          "name": "marked",
+          "exports": [
+            "parse",
+            "parseInline"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "xss",
+          "exports": [
+            "filterXSS"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "mustache",
+          "exports": [
+            "render"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "he",
+          "exports": [
+            "encode",
+            "decode"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "number-to-words",
+          "exports": [
+            "toWords"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Render Markdown",
+          "description": "Markdown to HTML, GitHub-flavoured, single newlines kept as line breaks \u2014 what people expect when they type into a notes box.",
+          "params": [
+            "markdown"
+          ],
+          "returns": "string of HTML"
+        },
+        {
+          "name": "Render Markdown Inline",
+          "description": "The same with no surrounding block element, for a one-line notice, a table cell or a heading that carries emphasis.",
+          "params": [
+            "markdown"
+          ],
+          "returns": "string of HTML"
+        },
+        {
+          "name": "Sanitize HTML",
+          "description": "Strip scripts, event handlers and javascript: links from HTML before it is stored or rendered. Call it on anything that did not come from your own staff.",
+          "params": [
+            "html",
+            "options (optional allow-list)"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Escape HTML",
+          "description": "Escape a value from outside before it is placed in HTML you are assembling \u2014 a partner's product name, a field from an uploaded row.",
+          "params": [
+            "text"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Decode HTML Entities",
+          "description": "Turn &eacute; and &#233; back into \u00e9. Legacy CSV and XML feeds are full of double-encoded entities and this is the fix.",
+          "params": [
+            "text"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Merge Fields Into HTML",
+          "description": "Fill {{placeholders}} in a template from an object, escaping every substituted value. The template is authored by staff; the values are data.",
+          "params": [
+            "template",
+            "data"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Merge Fields Into Text",
+          "description": "The same for plain text \u2014 a PDF body, an SMS, a file name, a reference pattern \u2014 with escaping off so an ampersand stays an ampersand.",
+          "params": [
+            "template",
+            "data"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Amount In Words",
+          "description": "1234 \u2192 \"one thousand, two hundred thirty-four\", for a cheque, a voucher or a deed.",
+          "params": [
+            "number"
+          ],
+          "returns": "string"
+        }
+      ]
+    },
+    {
+      "slug": "wizard-import",
+      "name": "Wizards & Data Import",
+      "tagline": "Multi-step intake and the five screens every import needs: drop, map, check, run, review.",
+      "kind": "ui",
+      "category": "Input",
+      "why": "Every application form, licence renewal and onboarding flow is the same shape \u2014 a step tracker, a framed body, a sticky Back/Next footer, a 'check your answers' screen \u2014 and every line-of-business app eventually grows an import wizard on top of it. The column mapper alone (target field on the left, a select of the file's headers on the right, a sample value underneath, required-but-unmapped flagged) is a day of work repeated per app and never quite consistent, and the part everyone skips is showing the errors before anything is written.",
+      "risk": "These are chrome: the wizard's state machine still lives in page variables and client actions, so a developer wires currentKey and several events per page \u2014 if that wiring is the real cost, this moves work rather than removing it, and the honest alternative is an Etyma-native wizard page template. WizardFrame depends on the children slot, which is the least-exercised path in the page designer. FileDropzone reads the whole file into browser memory and hands it to an action as a string; roughly 5 MB of base64 in a JSON action call is the practical ceiling and business users do send 50 MB spreadsheets \u2014 the component can report that failure but cannot fix it, and the real answer is a direct-to-storage upload route, which is platform work. ValidationPreview re-renders its whole table on every issue change with no virtualisation available, so paging is the mitigation and a 5,000-row file will feel slow. Every error cell needs aria-invalid and a text alternative, not a colour ring, or the library fails procurement.",
+      "components": [
+        {
+          "name": "StepTracker",
+          "description": "The numbered step rail \u2014 done, current, upcoming, error \u2014 horizontal or vertical.",
+          "props": [
+            "steps (Array<{key, label, description?, state?}>)",
+            "currentKey",
+            "orientation",
+            "clickableCompleted",
+            "onStepSelect"
+          ],
+          "notes": "Circles are divs, connectors are flex-1 rules of bg-border, the done mark is a lucide Check. State styling goes through a four-entry const map of full literal class strings \u2014 never bg-${state}, which Tailwind does not compile. Below sm it collapses to 'Step 2 of 4 \u2014 Map columns' and carries aria-current=step."
+        },
+        {
+          "name": "WizardFrame",
+          "description": "Title, step caption, a slot for the step body, and the sticky action footer.",
+          "props": [
+            "title",
+            "stepLabel",
+            "currentIndex",
+            "totalSteps",
+            "canGoNext",
+            "isLastStep",
+            "busy",
+            "children",
+            "onBack",
+            "onNext",
+            "onSaveDraft",
+            "onCancel"
+          ],
+          "notes": "acceptsChildren is on, so the page drops its real widgets into the slot and the model keeps owning the fields. One primary button (Next, or Submit when isLastStep); Back and Save draft are ghost buttons, so the footer never shows two competing primaries."
+        },
+        {
+          "name": "ReviewSummary",
+          "description": "The final 'check your answers' screen: grouped label/value pairs with an Edit link per section.",
+          "props": [
+            "sections (Array<{title, stepKey, items: Array<{label, value}>}>)",
+            "editable",
+            "emptyValueText",
+            "onEditSection"
+          ],
+          "notes": "A definition-list grid collapsing to one column at sm. Nested items arrive as unknown inside Object[], so the component narrows with a small typed reader rather than casting \u2014 strict tsc runs on the export."
+        },
+        {
+          "name": "RequiredFieldsNotice",
+          "description": "A validation summary that names what is missing and jumps back to the step that owns it.",
+          "props": [
+            "missing (Array<{label, stepKey}>)",
+            "title",
+            "onJumpTo"
+          ],
+          "notes": "role=alert with a lucide TriangleAlert, bg-destructive/10 border-destructive/30 \u2014 token colours with an alpha modifier, which Tailwind resolves statically."
+        },
+        {
+          "name": "FileDropzone",
+          "description": "A drop target and browse button that reads a chosen file and hands its contents to a bound action.",
+          "props": [
+            "label",
+            "hint",
+            "accept",
+            "maxSizeMb",
+            "readAs ('text'|'base64')",
+            "busy",
+            "fileName",
+            "onFileSelected",
+            "onCleared",
+            "onError"
+          ],
+          "notes": "Native drag events on a div plus a visually hidden <input type=file> \u2014 no react-dnd. FileReader per readAs, with the data-URL prefix stripped before sending. Focusable and Enter/Space-activated, so it is not mouse-only."
+        },
+        {
+          "name": "UploadList",
+          "description": "Per-file rows with size, status, a progress track and retry.",
+          "props": [
+            "files (Array<{id, name, size, status, progress?, error?}>)",
+            "removable",
+            "onRemove",
+            "onRetry",
+            "onPreview"
+          ],
+          "notes": "Icons from a static mime-prefix map so class strings stay literal; the progress track is an inner div with an inline style width, which is a value rather than a class name and therefore the safe way to express a computed size."
+        },
+        {
+          "name": "ColumnMapper",
+          "description": "Maps the file's columns onto the fields your entity expects, with a sample value under each choice.",
+          "props": [
+            "sourceColumns (string[])",
+            "sampleRows (object[])",
+            "targetFields (Array<{name, label, required, type}>)",
+            "mapping (Record<string, string|null>)",
+            "autoMatch",
+            "onMappingChange",
+            "unmappedLabel"
+          ],
+          "notes": "Radix Select per target field with a 'Not imported' option and the first sample value beneath in text-xs. Auto-match lowercases and strips punctuation on both sides. Required-and-unmapped rows take a destructive ring and a lucide AlertCircle; unclaimed source columns are listed in a footer so nothing disappears silently."
+        },
+        {
+          "name": "ValidationPreview",
+          "description": "The parsed rows as a table with failing cells marked and a count of what will be rejected \u2014 before anything is written.",
+          "props": [
+            "rows (object[])",
+            "columns (Array<{field, header}>)",
+            "issues (Array<{row, field?, message, severity}>)",
+            "pageSize",
+            "onlyProblems",
+            "onOnlyProblemsChange",
+            "onRowClick"
+          ],
+          "notes": "A hand-rolled table with a sticky header; a cell with an issue takes ring-1 ring-destructive plus aria-invalid and a title carrying the message. A summary bar reads '12 errors, 3 warnings in 400 rows' with a toggle to show only problem rows."
+        },
+        {
+          "name": "ImportSummary",
+          "description": "The end-of-run panel: created, updated, skipped, rejected, with one way to get the rejected rows and one way to finish.",
+          "props": [
+            "created",
+            "updated",
+            "skipped",
+            "failed",
+            "durationMs",
+            "errorFileUrl",
+            "onDownloadErrors",
+            "onDone",
+            "doneLabel"
+          ],
+          "notes": "Four figures in a responsive grid, the failed one destructive-toned only when non-zero, one primary Done button and a quiet link for the rejected-rows file."
+        }
+      ]
+    },
+    {
+      "slug": "pii",
+      "name": "PII Masking & Redaction",
+      "tagline": "Mask a value, drop a field, or pseudonymise a subject before data reaches a log, an export or a screenshot.",
+      "kind": "logic",
+      "category": "Security",
+      "why": "Every line-of-business app leaks PII sideways: into request logs, into a CSV a caseworker mails out, into an error report, into a support screenshot. Developers hand-roll a substring-and-asterisks helper per field, get the boundary wrong, and ship an audit finding. Mask Record covers a 40-column entity in one call; Pick Fields and Omit Fields are the projection step before a record is diffed, logged or sent; Pseudonym For gives a stable irreversible token so analytics and de-duplication survive removing the identifier itself.",
+      "risk": "maskdata masks by POSITION, not by meaning: it never finds PII inside free text, and free-text detection is a genuine gap here \u2014 redact-pii exposes a constructor, which this contract cannot call, so scanning a case note needs a model call or a component of its own. Pseudonym For is a plain SHA-256, not a keyed HMAC (js-sha256's hmac hangs off sha256.hmac and is not a named export), so the salt must be concatenated by the caller and a leaked salt makes a short identifier \u2014 a 9-digit number, a national id \u2014 brute-forceable in seconds. maskdata is a small single-maintainer package whose maskString is already deprecated in favour of maskStringV2. And this is a hygiene layer, not a control: it cannot stop a query that selected the column in the first place. Verified under CJS: maskEmail2, maskPhone, maskCard, maskStringV2, maskJSON2 and maskJwt all resolve as named exports and maskEmail2 masked a real address.",
+      "packages": [
+        {
+          "name": "maskdata",
+          "exports": [
+            "maskEmail2",
+            "maskPhone",
+            "maskCard",
+            "maskStringV2",
+            "maskJSON2",
+            "maskJwt"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "js-sha256",
+          "exports": [
+            "sha256"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "lodash",
+          "exports": [
+            "pick",
+            "omit"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Mask Email",
+          "description": "Keep enough of an address to be recognisable in a log and hide the rest, with options for how many characters survive either side of the @.",
+          "params": [
+            "email",
+            "options"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Mask Phone Number",
+          "description": "Keep the trailing digits a caseworker uses to confirm identity over the counter.",
+          "params": [
+            "phone",
+            "options"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Mask Card Number",
+          "description": "Mask a payment card to the last four \u2014 the form every receipt and refund screen is expected to show.",
+          "params": [
+            "cardNumber",
+            "options"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Mask Identifier",
+          "description": "Any fixed-shape identifier \u2014 a national id, a case reference, a licence number \u2014 keeping a set number of characters at each end.",
+          "params": [
+            "value",
+            "options"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Mask Record",
+          "description": "Mask named fields of a whole object in one call, each by its kind. The one to call before a record reaches a log, an outbound webhook or a support export.",
+          "params": [
+            "record",
+            "options (per-kind options plus the field lists each applies to)"
+          ],
+          "returns": "object (a masked copy)"
+        },
+        {
+          "name": "Mask Bearer Token",
+          "description": "Mask a JWT or bearer token so a request trace can be kept without keeping the credential.",
+          "params": [
+            "token",
+            "options"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Pseudonym For",
+          "description": "A stable, irreversible SHA-256 pseudonym, so the same subject is the same token every time. Pass the deployment's salt concatenated with the identifier \u2014 never the bare value.",
+          "params": [
+            "saltedValue"
+          ],
+          "returns": "string (64 hex characters)"
+        },
+        {
+          "name": "Pick Fields",
+          "description": "Keep only named fields \u2014 the projection before a record is returned, logged or diffed.",
+          "params": [
+            "record",
+            "fields (array)"
+          ],
+          "returns": "object"
+        },
+        {
+          "name": "Omit Fields",
+          "description": "Drop named fields \u2014 the redaction step before an export leaves the building.",
+          "params": [
+            "record",
+            "fields (array)"
+          ],
+          "returns": "object"
+        }
+      ]
+    },
+    {
+      "slug": "evidence",
+      "name": "Evidence, Attachments & Attestation",
+      "tagline": "Files, signatures, photos, consent and the declaration block above Submit.",
+      "kind": "ui",
+      "category": "Compliance",
+      "why": "Claims, inspections and licence applications end in evidence: the attached invoice, the signed declaration, the site photos, the three statements the applicant is attesting to, and the consent record an auditor will ask about. Each is normally a small pile of custom code with a canvas or a hidden file input, done slightly differently on every page \u2014 and the attachment list is on nearly every record screen in the product.",
+      "risk": "SignaturePad is the component most likely to fail on this platform specifically: it measures a canvas, and the page designer mounts components before layout settles \u2014 this repository already records 'a canvas measured before it had width' as a lost session \u2014 so without a ResizeObserver and a redraw-from-value path the stroke vanishes on every re-render the model triggers. Data URLs are the second cost: a full-width signature is 30-100 KB of base64 living in a page variable and travelling through an action input, so maxSizeMb has to be a low, documented ceiling with real uploads going through a server action and the platform's AppFile storage. DocumentPreviewDialog's iframe is blocked by strict CSP and by X-Frame-Options on a file route, so download must be the assumed path and preview the bonus. ConsentList records a decision but is not a lawful-basis engine: which consent is required, and whether consent is even the right basis, is a legal question the app answers.",
+      "components": [
+        {
+          "name": "AttachmentList",
+          "description": "The files on a record: type icon, name, size, when it arrived, a download link and an optional remove.",
+          "props": [
+            "files (Array<{id, name, mimeType, size, url, uploadedAt, uploadedBy?, digest?}>)",
+            "dense",
+            "emptyText",
+            "canRemove",
+            "onOpen",
+            "onRemove"
+          ],
+          "notes": "A lucide icon per mime prefix in a rounded bg-muted square, the name truncating with min-w-0, size in tabular-nums. Remove is a two-step in-row confirm ('Remove?') rather than a dialog, so a mis-click costs nothing. The empty state is a line of muted text, never a blank box."
+        },
+        {
+          "name": "DocumentPreviewDialog",
+          "description": "Opens a file in place \u2014 images inline, PDFs in a frame, everything else as a download \u2014 so a reviewer does not lose the page.",
+          "props": [
+            "file ({id, name, mimeType, url})",
+            "open",
+            "onOpenChange",
+            "downloadLabel"
+          ],
+          "notes": "@radix-ui/react-dialog at max-w-3xl. The download button is present in all three states, not just the fallback one, because the frame is assumed to fail somewhere."
+        },
+        {
+          "name": "SignaturePad",
+          "description": "Draw-to-sign on a canvas with a declaration line and a clear button; emits a PNG data URL.",
+          "props": [
+            "value (data URL)",
+            "penColor",
+            "height",
+            "declaration",
+            "signerName",
+            "disabled",
+            "onChange",
+            "onClear"
+          ],
+          "notes": "Pointer events with quadratic smoothing, scaled by devicePixelRatio and re-measured through a ResizeObserver; touch-action:none so a finger stroke does not scroll the page. On re-render the stored value is drawn back through an Image, so a model write never blanks the pad."
+        },
+        {
+          "name": "PhotoGrid",
+          "description": "Thumbnail grid for inspection photos, with a lightbox and per-tile remove.",
+          "props": [
+            "images (Array<{id, url, caption?}>)",
+            "columns",
+            "removable",
+            "emptyText",
+            "onRemove",
+            "onOpen"
+          ],
+          "notes": "aspect-square object-cover tiles; the lightbox is a Radix Dialog so focus is trapped and Escape closes. Column count maps through a five-entry static table because grid-cols-${n} does not compile."
+        },
+        {
+          "name": "RatingScale",
+          "description": "Stars, a 1-5 scale or a 0-10 NPS row, read-only or interactive.",
+          "props": [
+            "value",
+            "max",
+            "variant ('stars'|'numeric'|'nps')",
+            "labels (endpoint captions)",
+            "readOnly",
+            "onChange"
+          ],
+          "notes": "lucide Star with fill-current toggled per index \u2014 two literal class strings, never interpolated. NPS is eleven buttons that wrap below sm, with arrow-key support over a radiogroup role."
+        },
+        {
+          "name": "AttestationBox",
+          "description": "The declaration block above Submit: statements to tick, a signer line, a gated confirm.",
+          "props": [
+            "statements (Array<{key, text}>)",
+            "checkedKeys",
+            "requireAll",
+            "signerName",
+            "confirmLabel",
+            "onChange",
+            "onConfirm"
+          ],
+          "notes": "@radix-ui/react-checkbox rows in a bordered card; the confirm button stays disabled until requireAll is satisfied, which is the rule an auditor actually asks about."
+        },
+        {
+          "name": "ConsentList",
+          "description": "The purposes a subject has or has not consented to, with when and how each was captured.",
+          "props": [
+            "purposes (Array<{id, label, description, required, granted, grantedAt, source}>)",
+            "readOnly",
+            "onChange",
+            "emptyMessage"
+          ],
+          "notes": "Required rows are disabled and marked rather than hidden. grantedAt and source render as a text-xs muted line under the label \u2014 the record an auditor asks for, not just the current state."
+        }
+      ]
+    },
+    {
+      "slug": "interchange",
+      "name": "XML, YAML & Schema Validation",
+      "tagline": "Read the formats partners hand over, and refuse a bad payload at the door.",
+      "kind": "logic",
+      "category": "Documents",
+      "why": "Public-sector and financial integrations are XML long after everything else moved on \u2014 UBL invoices, PEPPOL, ISO 20022, statutory returns \u2014 and Etyma can fetch such a document today but cannot read it, so the only route is a regex in an expression, which is how a production interface breaks on the first self-closing tag. YAML is what operators and partners hand over as configuration (mapping tables, fee schedules, code lists) because they will edit it and JSON is hostile to that. And JSON Schema is how you refuse a bad batch before Prisma throws halfway through a 400-row import with the first 180 rows committed.",
+      "risk": "Both package choices are compromises forced by the one-call contract. fast-xml-parser is better maintained but its API is a class, so xml-js is used instead: no publish since 2019, no CVE and no dependencies but also no fixes, and its ergonomics are felt daily \u2014 compact mode wraps text as _text and attributes as _attributes, so a read is {{doc.Invoice.Total._text}} and a typo is silent. There is no XSD, Relax NG or namespace resolution, so prefixes stay inside key names and the day a partner moves ns2: to ns3: every binding breaks. ajv is likewise unusable (constructor plus compile), so jsonschema is used: its validate() is a plain function but it implements draft-04 through draft-07, which means a schema written today with $defs, prefixItems or unevaluatedProperties parses and then silently UNDER-validates \u2014 the worst failure mode a validator has. Its errors are objects with property/message ('instance.a does not conform'), so per-field form messages are caller work every time, and validating rows individually needs a loop, which Validate Rows works around by wrapping the row schema in an array schema \u2014 errors then key on instance[3].field rather than by row. js-yaml's load throws on malformed input instead of returning an error, so every caller needs an exception handler; YAML is for operator-authored config and JSON Schema for untrusted payloads, never the reverse. All three verified requiring and running under Node 20 CJS.",
+      "packages": [
+        {
+          "name": "xml-js",
+          "exports": [
+            "xml2js",
+            "js2xml"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "js-yaml",
+          "exports": [
+            "load",
+            "loadAll",
+            "dump"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "jsonschema",
+          "exports": [
+            "validate"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Parse XML",
+          "description": "Parse a document into a compact object \u2014 element text under _text, attributes under _attributes, numbers and booleans converted.",
+          "params": [
+            "xml"
+          ],
+          "returns": "object"
+        },
+        {
+          "name": "Parse XML Preserving Order",
+          "description": "The verbose form, which keeps element order and repeated siblings exactly as they appeared \u2014 a statement of transactions, a sequence of line items.",
+          "params": [
+            "xml"
+          ],
+          "returns": "object"
+        },
+        {
+          "name": "Build XML",
+          "description": "A compact object to an XML string, optionally indented for a document that gets archived and read.",
+          "params": [
+            "data",
+            "spaces (0 or 2)"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Parse YAML",
+          "description": "A YAML document to an object. Throws on malformed input \u2014 wrap it in an exception handler and show the parser's message, which names the line.",
+          "params": [
+            "text"
+          ],
+          "returns": "object"
+        },
+        {
+          "name": "Write YAML",
+          "description": "An object back to YAML, sorted and reference-free, for an operator to edit or a config file the deployment commits.",
+          "params": [
+            "data"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Validate Against Schema",
+          "description": "Check one object against a JSON Schema. Read {{r.valid}} to branch and {{r.errors}} to say what was wrong.",
+          "params": [
+            "data",
+            "schema"
+          ],
+          "returns": "{ valid, errors: Array<{property, message, name, argument}> }"
+        },
+        {
+          "name": "Validate Rows Against Schema",
+          "description": "Check every row of a parsed import against one row schema in a single call, so an upload is accepted or rejected whole instead of failing part-committed.",
+          "params": [
+            "rows",
+            "rowSchema"
+          ],
+          "returns": "{ valid, errors } \u2014 errors name instance[n].field"
+        }
+      ]
+    },
+    {
+      "slug": "print",
+      "name": "Print & Correspondence",
+      "tagline": "Decision letters, purchase orders, case files and label sheets that print correctly the first time.",
+      "kind": "ui",
+      "category": "Documents",
+      "why": "A back-office app's last step is almost always paper: a decision letter, a PO, a case file for the registry, a sheet of asset tags for the label printer. Today that means a code page per document, margins tuned by trial and error, and the discovery three weeks in that the app's sidebar prints on every page. Because a library compiles INTO the consumer, one PrintDocument wrapper turns the browser's own Print-to-PDF into the correspondence path \u2014 and the same components render on screen, so what a clerk previews is what the recipient gets.",
+      "risk": "One bent rule and two real problems. The bent rule: window.print() is a DOM global, which the code-component contract nominally forbids \u2014 it is confined to a click handler behind a typeof guard, but a reviewer should agree to that before this ships. The problems: page-break control across a long table is genuinely unreliable between engines (Chrome honours break-inside:avoid, older Safari does not), so a 200-row table will split badly somewhere and needs a tested row cap; and print margins and headers belong to the browser, so anything that must be dimensionally exact \u2014 a regulated label sheet, a form with printed boxes \u2014 belongs in the built-in PdfExport node, not here. Say plainly what this does NOT do: it produces nothing a workflow can attach to an email. Tailwind has no @page utility and a stylesheet import is not allowed, so the page rule is a literal <style> element in JSX \u2014 markup rather than an import, and legal, but worth knowing before someone tries to make it a class.",
+      "components": [
+        {
+          "name": "PrintDocument",
+          "description": "Wraps content as a physical page: fixes the width, sets the page rule, hides app chrome when printing.",
+          "props": [
+            "documentTitle",
+            "reference",
+            "issuedOn",
+            "pageSize ('a4'|'letter')",
+            "marginMm",
+            "children"
+          ],
+          "notes": "The @page rule is emitted as a literal <style> element in JSX; everything else is Tailwind print: variants. Screen preview and print output are the same component, which is the point."
+        },
+        {
+          "name": "LetterHead",
+          "description": "Organisation letterhead: mark, address block, contact rules, optionally repeated on every printed page.",
+          "props": [
+            "organisation",
+            "addressLines (string[])",
+            "logoUrl",
+            "contactLines (string[])",
+            "repeatOnEveryPage"
+          ],
+          "notes": "Repeat is emulated with a print:fixed header band and falls back to first-page-only where the engine ignores it."
+        },
+        {
+          "name": "RecipientBlock",
+          "description": "The addressee block, optionally positioned for a DL window envelope.",
+          "props": [
+            "name",
+            "addressLines (string[])",
+            "salutation",
+            "windowEnvelope"
+          ],
+          "notes": "windowEnvelope offsets the block with fixed mm padding so it lands in the window of a standard DL envelope."
+        },
+        {
+          "name": "SignatureBlock",
+          "description": "Signatory name, title, date and either a ruled line or a signature image.",
+          "props": [
+            "signatoryName",
+            "signatoryTitle",
+            "signedOn",
+            "signatureImageUrl",
+            "showRuledLine"
+          ],
+          "notes": "Held together with break-inside-avoid so a signature never lands alone on a trailing page."
+        },
+        {
+          "name": "BarcodeImage",
+          "description": "Displays a barcode or QR code produced by a server action, from SVG markup or a data URL.",
+          "props": [
+            "svg",
+            "dataUrl",
+            "alt",
+            "widthPx",
+            "caption",
+            "bordered"
+          ],
+          "notes": "Always on a white ground with a border ring whatever the theme, because a scanner needs the quiet zone and dark mode makes a code unreadable; the caption underneath does follow the theme. Consumes the barcode library's output rather than encoding anything itself."
+        },
+        {
+          "name": "LabelSheet",
+          "description": "A grid of labels \u2014 asset tags, case covers, visitor passes \u2014 that prints with the app's chrome removed.",
+          "props": [
+            "labels (Array<{id, title, subtitle?, svg?, dataUrl?}>)",
+            "columns (2|3|4)",
+            "rowsPerPage",
+            "showCropMarks",
+            "onPrint"
+          ],
+          "notes": "A CSS grid with print: variants, break-after-page at each page boundary, and dashed crop marks that render only under print. Each cell stacks the code over title and subtitle."
+        },
+        {
+          "name": "PageBreak",
+          "description": "Forces or avoids a page break at this point in the document.",
+          "props": [
+            "when ('before'|'after'|'avoid')",
+            "children"
+          ],
+          "notes": "A thin wrapper over the break-before / break-after / break-inside utilities."
+        },
+        {
+          "name": "PrintOnly",
+          "description": "Content that exists only on paper \u2014 statutory footnotes, appeal rights, the copy-to list.",
+          "props": [
+            "children"
+          ],
+          "notes": "hidden print:block."
+        },
+        {
+          "name": "ScreenOnly",
+          "description": "Content that must never print \u2014 navigation, action bars, internal notes.",
+          "props": [
+            "children"
+          ],
+          "notes": "print:hidden. The pair is what stops an internal note reaching an applicant."
+        },
+        {
+          "name": "PrintButton",
+          "description": "Opens the print dialog, with a hook to finalise the document first.",
+          "props": [
+            "label",
+            "onBeforePrint",
+            "variant ('primary'|'quiet')"
+          ],
+          "notes": "window.print() inside the click handler only, guarded by typeof window \u2014 the one global this library touches."
+        }
+      ]
+    },
+    {
+      "slug": "barcodes",
+      "name": "Barcodes & QR Codes",
+      "tagline": "QR codes and 1D/2D barcodes as SVG or a data URL, generated inside your own app.",
+      "kind": "logic",
+      "category": "Documents",
+      "why": "Inventory, asset registries, case management and visitor systems all print something that gets scanned: an asset tag, a case-file cover, a ticket, a document-verification link. There is no way to make one in Etyma today, so teams paste in a third-party image API \u2014 which means every asset number in the estate is sent to someone else's server. This keeps it inside the app: text in, SVG or a PNG data URL out, bound straight to an Image widget or handed to the print library.",
+      "risk": "Nothing here writes a file. A data-URL PNG for a 500-label run is megabytes of base64 held in memory and passed through an action result \u2014 fine for one label, wasteful for the batch that is the real use case, and the fix (an AppFile) needs a platform node; prefer the SVG forms, which are small enough to store in a Text column. Both qrcode entry points return promises, which the generator handles because it awaits every CallFunction, but it means these actions are server scope only and a page cannot make a code without a round trip. Decoding is out of scope entirely: reading a scanned barcode needs a camera and a browser decoder, which is neither this library nor an allowed import, so 'scan to look up' stays unserved. bwip-js embeds no fonts for non-Latin human-readable text under the bars, which matters for a bilingual public-sector label. Pin correction worth noting: the received wisdom that bwip-js v4 is ESM-only and must be pinned at 3.4.0 is wrong in both halves \u2014 3.4.0 has NO toSVG at all (only toBuffer), while 4.5.2 requires cleanly from the root under Node 20 CJS and returned real SVG for a code128 in testing. Pin 4.5.2.",
+      "packages": [
+        {
+          "name": "qrcode",
+          "exports": [
+            "toString",
+            "toDataURL"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "bwip-js",
+          "exports": [
+            "toSVG"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "QR Code SVG",
+          "description": "A QR code as SVG markup \u2014 crisp at any size, small enough to store in a Text column, and what a printed label should use.",
+          "params": [
+            "text"
+          ],
+          "returns": "string of SVG"
+        },
+        {
+          "name": "QR Code Image",
+          "description": "A QR code as a PNG data URL, which binds directly to an Image widget's src with no component and no file route.",
+          "params": [
+            "text"
+          ],
+          "returns": "string (data:image/png;base64,\u2026)"
+        },
+        {
+          "name": "QR Code Image Sized",
+          "description": "The same at a chosen pixel width and error-correction level \u2014 raise correction to Q or H for a code printed on something that gets handled.",
+          "params": [
+            "text",
+            "widthPx",
+            "level (\"L\"|\"M\"|\"Q\"|\"H\")"
+          ],
+          "returns": "string (data URL)"
+        },
+        {
+          "name": "Barcode SVG",
+          "description": "A 1D or 2D barcode as SVG for a named symbology \u2014 code128, ean13, datamatrix, pdf417, gs1-128, interleaved2of5 \u2014 with the value printed underneath.",
+          "params": [
+            "value",
+            "symbology"
+          ],
+          "returns": "string of SVG"
+        },
+        {
+          "name": "Asset Label Barcode",
+          "description": "A Code 128 barcode at a fixed size that fits a standard 70\u00d737mm label, so every label in the estate comes out identical.",
+          "params": [
+            "value"
+          ],
+          "returns": "string of SVG"
+        }
+      ]
+    },
+    {
+      "slug": "rules",
+      "name": "Business Rules as Data",
+      "tagline": "Approval thresholds and eligibility as JSON a policy owner can change without a release.",
+      "kind": "logic",
+      "category": "Compliance",
+      "why": "The things that actually change in a line-of-business app are the numbers and the branches: the approval threshold, who a claim routes to, whether an applicant qualifies. Encoded as flow If-nodes, every policy tweak becomes a code change, a release and a change-advisory board. json-logic evaluates a rule expressed as ordinary JSON with a fixed operator set \u2014 no eval, no code execution \u2014 so the rule can live in an application setting or a lookup-table row and be reviewed by the people who own the policy. In a regulated setting that distinction is the whole argument: a scripting node never passes security review, a declarative rule with a closed operator set does.",
+      "risk": "Judge this on one question: will a policy owner really edit that JSON? If the honest answer is no, it should not ship without a rule-builder component beside it \u2014 and then it is a UI library wearing a logic library's clothes. Beyond that, json-logic has no date arithmetic and only cat/in/substr for strings, so anything time-based must be precomputed into the data object by the caller (which is why it pairs with the working-days library and is weaker alone). Rules are unversioned text in a setting, so a bad edit takes effect on the next request with no dry-run and no diff unless the consumer builds one \u2014 for an approval threshold that is a genuine production hazard, and Rule Inputs plus a stored copy of the previous rule is the cheapest mitigation. apply returns any, so a rule yielding a string where the flow expects a boolean fails at runtime rather than at build. Verified under CJS: apply({'>':[{var:'amt'},100]},{amt:150})=true and uses_data on the same rule returned [\"amt\"].",
+      "packages": [
+        {
+          "name": "json-logic-js",
+          "exports": [
+            "apply",
+            "uses_data",
+            "is_logic",
+            "truthy"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Evaluate Rule",
+          "description": "Apply a JSON rule to a data object. The rule comes from an app setting or a lookup record, the data from the case being decided.",
+          "params": [
+            "rule",
+            "data"
+          ],
+          "returns": "whatever the rule yields \u2014 a boolean, a number, a string"
+        },
+        {
+          "name": "Decide",
+          "description": "The matched branch of an if/else rule \u2014 the routing target, the approval tier, the approver role \u2014 as one value the flow can switch on.",
+          "params": [
+            "rule",
+            "data"
+          ],
+          "returns": "the matched branch value"
+        },
+        {
+          "name": "Rule Inputs",
+          "description": "Every field name a rule reads. Check it against the entity before saving a rule, so a renamed attribute is caught at edit time instead of in production.",
+          "params": [
+            "rule"
+          ],
+          "returns": "array of field names"
+        },
+        {
+          "name": "Is Rule",
+          "description": "Whether a stored value is a well-formed json-logic rule, before it is accepted from a form or an import.",
+          "params": [
+            "value"
+          ],
+          "returns": "boolean"
+        },
+        {
+          "name": "Is Truthy",
+          "description": "json-logic's own truthiness, so a flow branching on a rule's result agrees with the engine that produced it \u2014 an empty array is falsy here and truthy in JavaScript.",
+          "params": [
+            "value"
+          ],
+          "returns": "boolean"
+        }
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "slug": "list-controls",
+      "name": "Lists, Filters & Selection",
+      "tagline": "The behaviour around a list page \u2014 search, filter chips, sortable headers, selection, paging and saved views \u2014 wrapped around the canvas's own table.",
+      "kind": "ui",
+      "category": "Data",
+      "why": "This is the largest hole in the catalogue, and two proposed libraries already presuppose it. approval-actions ships a BulkActionBar that \"appears when rows are selected\" and nothing in the catalogue produces a selection. page-states ships a NoResults whose primary action is Clear filters and nothing produces a filter. Every console in this audience \u2014 case queues, claim registers, requisition lists, asset registries \u2014 is a table with a search box, two or three filters, a sortable header, a checkbox column and a pager, and today every one of those is hand-wired per page: a page variable per filter, a client action per header cell, a select-all that forgets the ids on page two. These are the behavioural parts only, deliberately: the rows stay in the model's own Table > TableBody > Repeat structure so the designer keeps the page.",
+      "risk": "The strongest argument against this is the platform's own: a page is composed from the parts, and a monolithic DataTable would take the body away from the canvas \u2014 which is why there is no DataTable here, and why the pieces that remain are awkward in exactly one place. ColumnChooser emits a visible-key list but the canvas's columns are static structure, so honouring it means an If per column and a header the developer keeps in sync by hand; if that proves unbearable in a real build, column visibility is platform work (a Repeat over a column list) and this component should be dropped rather than shipped as a trap. The deeper friction is that filtering and sorting are model decisions: a Query's filters are authored in the flow, so a runtime FilterBar only produces an object the page must translate into inputs its own action already declares \u2014 the component cannot close that loop and a developer who expects it to will be disappointed. PaginationBar can rarely show a total, because the generated entity route returns a bare array and sends X-Total-Count only on ?count=1, so an honest total costs a second read and the default has to be Next/Previous on hasMore. There is no virtualisation library on the allow-list, so a selection over 5,000 rows is paged selection or nothing. And selection state living in a page variable means every row emits an event: if that wiring is the real cost, this moves work rather than removing it. If it ships, it should ship merged with approval-actions' BulkActionBar \u2014 splitting selection and bulk actions across two library modules guarantees they drift.",
+      "components": [
+        {
+          "name": "ListToolbar",
+          "description": "The band above a list: search, result count, refresh, density, and a slot for filters and page actions.",
+          "props": [
+            "searchValue",
+            "searchPlaceholder",
+            "resultCount",
+            "totalCount",
+            "busy",
+            "dense",
+            "onSearchChange",
+            "onRefresh",
+            "children"
+          ],
+          "notes": "acceptsChildren, so filters and the page's own primary action are dropped in from the canvas rather than passed as an array the component would have to style. Search debounce is a setTimeout in a useEffect with a cleanup \u2014 no lodash \u2014 and the component reports the query, never fetches. Result count reads \"412 cases\" or \"51 of 412 shown\" and is text-muted-foreground, so it never competes with the primary action."
+        },
+        {
+          "name": "FilterBar",
+          "description": "Applied filters as removable chips, with an add-filter popover typed per field.",
+          "props": [
+            "filters (Array<{key, label, type ('text'|'select'|'multi'|'date'|'range'|'boolean'), options?, value}>)",
+            "quickFilters (Array<{key, label}>)",
+            "appliedCount",
+            "collapsible",
+            "onChange",
+            "onClear"
+          ],
+          "notes": "Radix Popover per field with a control chosen by type; the component emits the whole filter object in one onChange so the page runs one action rather than one per field. Clear all appears only above zero applied filters. Chips wrap rather than scroll, because a horizontally scrolled filter row hides applied filters on a phone, which is how users end up staring at an empty list they filtered themselves into."
+        },
+        {
+          "name": "FilterChip",
+          "description": "One applied filter as a labelled, removable chip, usable outside the bar.",
+          "props": [
+            "label",
+            "value",
+            "tone",
+            "removable",
+            "onRemove"
+          ],
+          "notes": "label:value in one chip with a lucide X button carrying an aria-label of \"Remove filter <label>\" \u2014 the chip's own text is not enough for a screen reader when a dozen are applied."
+        },
+        {
+          "name": "SortableHeader",
+          "description": "A header cell that emits a sort request \u2014 placed inside the canvas's own TableHead.",
+          "props": [
+            "field",
+            "label",
+            "sort ({field, direction})",
+            "align ('left'|'right')",
+            "hint",
+            "onSort"
+          ],
+          "notes": "Renders a button inside the cell, sets aria-sort on the parent th through a wrapper element, and cycles asc \u2192 desc \u2192 none so a user can get back to the default order without reloading. The arrow is a lucide ChevronUp/ChevronDown/ChevronsUpDown triple, the inactive one at 40% opacity so a sortable column is discoverable before it is clicked."
+        },
+        {
+          "name": "SelectionCheckbox",
+          "description": "The row and header checkboxes that build a selection in a page variable.",
+          "props": [
+            "mode ('row'|'all')",
+            "id",
+            "ids (for mode all)",
+            "selectedIds (string[])",
+            "disabledReason",
+            "onToggle",
+            "onToggleAll"
+          ],
+          "notes": "@radix-ui/react-checkbox, with the header instance computing indeterminate from selectedIds against the ids on the current page only \u2014 and saying so in its title, since 'select all' silently meaning 'this page' is the classic bulk-action incident."
+        },
+        {
+          "name": "PaginationBar",
+          "description": "Page size, position and movement, honest about whether a total is known.",
+          "props": [
+            "page",
+            "pageSize",
+            "pageSizes (comma-separated)",
+            "totalCount",
+            "hasMore",
+            "busy",
+            "onPageChange",
+            "onPageSizeChange"
+          ],
+          "notes": "With totalCount it reads 'Showing 51\u2013100 of 412'; without it, 'Showing 51\u2013100' plus Next/Previous driven by hasMore \u2014 because the generated entity route returns an array and a count is a second request. Page size options are bounded by the app's MAX_PAGE_SIZE, which the page passes in rather than the component guessing."
+        },
+        {
+          "name": "ColumnChooser",
+          "description": "Which columns are shown, and in what order.",
+          "props": [
+            "columns (Array<{key, label, required?}>)",
+            "visibleKeys (string[])",
+            "reorderable",
+            "onChange"
+          ],
+          "notes": "Radix DropdownMenu with checkbox items; reordering is up/down buttons per row, not drag, because react-dnd is not an allowed import and a pointer-event reorder is a week of edge cases for a control used twice a year. Required columns render checked and disabled."
+        },
+        {
+          "name": "SavedViewsBar",
+          "description": "Named filter-and-sort presets \u2014 'My overdue', 'Awaiting my approval' \u2014 as one row of tabs.",
+          "props": [
+            "views (Array<{key, label, isDefault?}>)",
+            "activeKey",
+            "canSave",
+            "dirty",
+            "onSelect",
+            "onSave",
+            "onDelete"
+          ],
+          "notes": "The component holds no storage: views are rows in the app's own table, so they are shareable, auditable and survive a browser change. A dirty indicator (a dot) appears when the current filters differ from the saved view, which is the difference between a saved view people trust and one they abandon."
+        },
+        {
+          "name": "EditableCell",
+          "description": "In-place editing of one cell, for the back-office triage pass where opening each record is the whole cost.",
+          "props": [
+            "value",
+            "type ('text'|'number'|'select'|'date')",
+            "options",
+            "editable",
+            "busy",
+            "error",
+            "onCommit",
+            "onCancel"
+          ],
+          "notes": "Enter or blur commits, Escape reverts, and the cell shows a busy ring rather than an optimistic value \u2014 an optimistic edit that the server rejects on a list of 50 rows is unrecoverable confusion. Never edits more than one cell at a time."
+        }
+      ]
+    },
+    {
+      "slug": "scheduling",
+      "name": "Calendars, Agendas & Booking",
+      "tagline": "Month grids, day and week timelines, resource rows and bookable slots \u2014 hand-built, because every calendar package is off the allow-list.",
+      "kind": "ui",
+      "category": "Scheduling",
+      "why": "Scheduling is named in this product's own audience list and the catalogue has nothing for it: MonthPicker is a reporting period, TimePicker is a time input, DatePicker is deferred to the built-in calendar. An inspection roster, a court list, a clinic's appointment book, a licensing officer's site visits, an equipment booking register \u2014 each needs a month grid with events on days, an agenda for the next fortnight, a day timeline with overlapping appointments, and a picker of free slots. FullCalendar, react-big-calendar and every scheduler component are network-fetched or unlisted imports, so the only routes available today are an iframe to someone else's calendar or a table of ISO strings. This is the one part of a line-of-business app where the absence of a component means the feature is not built at all rather than built slowly.",
+      "risk": "The date arithmetic is the whole risk and there is no date library in the browser. A day timeline built as 24 fixed rows is wrong twice a year in every DST jurisdiction (a 23- and a 25-hour day), so hours must be enumerated from the zone rather than counted, and this is the bug that will reach production because nobody tests in late October. First-day-of-week is not universal and Intl.Locale weekInfo is not implemented everywhere, so it has to be an explicit prop with a documented default rather than a guess, and ISO week numbers \u2014 which European public bodies plan by \u2014 are a hand-written computation. Overlapping-event layout is a real algorithm (a sweep over start-sorted intervals into columns) and is what separates a calendar from a list with lines. Drag-to-move and drag-to-create are the two gestures users expect from a calendar and react-dnd is forbidden, so either they are hand-rolled on pointer events with the touch and cancel cases handled, or the library ships without them and says so plainly \u2014 a calendar you cannot drag on is a legitimate product, an undocumented one is a complaint. There is no virtualisation, so a resource timeline is capped at a page of resources. And the server half is missing: working-days has no holiday calendar and no working-hours clock, so 'the next available slot on a working day' is composed in the caller's flow from a lookup table, which this library cannot do for them.",
+      "components": [
+        {
+          "name": "CalendarToolbar",
+          "description": "Period label, previous/next/today, and the view switch shared by every surface here.",
+          "props": [
+            "label",
+            "view ('month'|'week'|'day'|'agenda'|'resources')",
+            "views (comma-separated, to restrict)",
+            "timeZone",
+            "busy",
+            "onNavigate",
+            "onViewChange"
+          ],
+          "notes": "Today is an outline button, not the primary \u2014 the primary action on a scheduling page is New booking, and a toolbar that competes with it is the one-primary-action rule broken by a control nobody presses twice."
+        },
+        {
+          "name": "MonthCalendar",
+          "description": "A month grid with events on days, out-of-month days dimmed and today marked.",
+          "props": [
+            "month (YYYY-MM)",
+            "events (Array<{id, start, end, title, tone, allDay?}>)",
+            "timeZone",
+            "weekStartsOn (0-6)",
+            "showWeekNumbers",
+            "maxEventsPerDay",
+            "selectedDate",
+            "onDayClick",
+            "onEventClick"
+          ],
+          "notes": "A 7-column grid walked as [year, month, day] integers \u2014 integers inside, ISO at the edges. Weekday and month names come from Intl.DateTimeFormat; weekStartsOn is a prop because Intl.Locale weekInfo is missing in some engines and defaulting to Sunday is wrong across most of Europe and Asia. Past maxEventsPerDay a '+3 more' button emits the day rather than growing the row, so the grid keeps its shape."
+        },
+        {
+          "name": "WeekGrid",
+          "description": "A day or week timeline with hour rows, positioned events and a working-hours band.",
+          "props": [
+            "startDate",
+            "days (1-7)",
+            "events",
+            "timeZone",
+            "dayStartHour",
+            "dayEndHour",
+            "slotMinutes",
+            "workingHours ({from, to})",
+            "nowIndicator",
+            "onSlotClick",
+            "onEventClick"
+          ],
+          "notes": "Hours are enumerated in the supplied zone rather than counted from 0, so a DST day renders 23 or 25 rows instead of silently shifting every event by an hour. Event geometry is inline top/height styles \u2014 values, never interpolated class names \u2014 and overlaps are laid out by a sweep over start-sorted intervals into columns. Outside working hours the ground is bg-muted, which is how a reader finds the bookable band without reading the labels."
+        },
+        {
+          "name": "AgendaList",
+          "description": "What is coming up, as a list grouped by day \u2014 the view that works on a phone.",
+          "props": [
+            "events",
+            "from",
+            "days",
+            "timeZone",
+            "groupByDay",
+            "emptyText",
+            "showEmptyDays",
+            "onEventClick"
+          ],
+          "notes": "Day headings are sticky and compare Intl.DateTimeFormat parts in the supplied zone, never local midnight, so a reader in another office does not see events split at the wrong boundary. This is the fallback the month grid collapses to below sm, so a scheduling page is not a horizontal scroll on a phone."
+        },
+        {
+          "name": "ResourceTimeline",
+          "description": "Rows of officers, rooms or vehicles against a run of days, with bars for bookings.",
+          "props": [
+            "resources (Array<{id, name, role?, capacity?}>)",
+            "items (Array<{id, resourceId, start, end, title, tone}>)",
+            "startDate",
+            "days",
+            "timeZone",
+            "showWeekends",
+            "onItemClick",
+            "onEmptyClick"
+          ],
+          "notes": "Days are grid columns and a bar is a grid-column start and span, so the layout needs no measurement and no ResizeObserver \u2014 the trap this repository has already paid for once with a canvas measured before it had width. Weekend columns take a muted ground; capacity over-subscription rings the row destructive rather than stacking bars off-screen."
+        },
+        {
+          "name": "SlotPicker",
+          "description": "Bookable slots grouped by day, with taken, held and unavailable states.",
+          "props": [
+            "slots (Array<{start, end, state ('free'|'held'|'taken'|'blocked'), label?}>)",
+            "timeZone",
+            "groupByDay",
+            "selectedStart",
+            "emptyText",
+            "onSelect"
+          ],
+          "notes": "Buttons in a wrapping grid; taken and blocked slots are disabled with an sr-only reason rather than removed, because a visibly full day tells a caller to try another one and a silently empty day reads as a broken page. Held slots (someone else is mid-booking) are outlined and re-enable when the page refreshes them."
+        },
+        {
+          "name": "DateRangePresets",
+          "description": "This week, last 30 days, this quarter, year to date \u2014 emitted as a from/to pair.",
+          "props": [
+            "value ({from, to})",
+            "presets (comma-separated)",
+            "today (ISO, supplied by the page)",
+            "allowCustom",
+            "timeZone",
+            "onChange"
+          ],
+          "notes": "Every boundary is computed by integer arithmetic from the supplied today prop, never Date.now(), so the designer canvas and a snapshot test render deterministically. Custom opens the built-in calendar rather than reimplementing a range picker."
+        }
+      ]
+    },
+    {
+      "slug": "record-shell",
+      "name": "Page & Record Shell",
+      "tagline": "The page chrome that is behaviour rather than structure \u2014 record headers, a responsive two-pane layout, section navigation, sticky footers and an idle-session warning.",
+      "kind": "ui",
+      "category": "Layout",
+      "why": "The design gate makes every page declare a layout template \u2014 list, detail, form, dashboard, master-detail, settings, inbox \u2014 and the catalogue supplies a component for none of them. Most of that is right: a header is Box + Text + Tailwind and belongs to the designer. What is not composable is the behaviour: a master-detail that shows one pane on a phone and both on a laptop with a working back affordance, a long application form whose section nav follows the scroll, a footer that sticks without covering the last field, and a header that gains a shadow only once content is under it. Every one of those is written per app, badly, and the phone case is usually skipped entirely \u2014 which for a public-sector caseworker on a tablet is the whole experience.",
+      "risk": "This is the proposal most at odds with the platform's own thesis, and half of it should probably be cut. PageHeader and CollapsibleSection are twenty minutes of Box and Text on the canvas, and shipping them as code takes the page away from the designer for no behaviour in return \u2014 if this library ships, it should ship as the four behavioural components and nothing else. MasterDetail is the sharpest case: it owns which pane is visible, which is routing state the model already owns through page parameters, so two sources of truth for 'which record is open' will disagree the first time someone deep-links. SectionNav needs an IntersectionObserver against children it does not own, in a designer that mounts components before layout settles \u2014 the exact condition this repository has already lost a session to. IdleTimeoutDialog is included because a signed-out-after-n-minutes warning is a security-policy requirement in most of this audience and has nowhere else to live, but it is honestly a stretch for a layout library and it can only warn: the session and its expiry belong to the platform's generated session module, and a component that counts down independently will drift from it. Every slot here depends on acceptsChildren, the least-exercised path in the page designer.",
+      "components": [
+        {
+          "name": "RecordHeader",
+          "description": "The top of a case, claim or requisition: reference, title, status, the four facts people scan for, and the actions.",
+          "props": [
+            "reference",
+            "title",
+            "subtitle",
+            "statusSlot",
+            "facts (Array<{label, value}>)",
+            "breadcrumbs (Array<{label, href}>)",
+            "backLabel",
+            "sticky",
+            "children",
+            "onBack"
+          ],
+          "notes": "Facts render as a wrapping row of label-over-value pairs that collapse to two columns on a phone; the reference is font-mono and selectable, because it is the string a user pastes into a ticket. statusSlot and children are slots, so the status badge comes from status-sla and the actions from the page \u2014 the header never styles a decision. Sticky adds a border only once the page has scrolled, through a scroll listener on the nearest scroll parent."
+        },
+        {
+          "name": "MasterDetail",
+          "description": "List beside detail on a laptop, one at a time on a phone, with a back affordance that actually works.",
+          "props": [
+            "listSlot",
+            "detailSlot",
+            "hasSelection",
+            "listWidth ('sm'|'md'|'lg')",
+            "backLabel",
+            "emptyDetailText",
+            "onBack"
+          ],
+          "notes": "A CSS grid with one breakpoint \u2014 no measurement, no ResizeObserver. Below the breakpoint it renders the list until hasSelection, then the detail with a back button that emits rather than calling history, so the page decides whether back means clearing a variable or navigating. With no selection on a wide screen it shows the empty-detail line instead of a blank half-page."
+        },
+        {
+          "name": "SectionNav",
+          "description": "Anchor navigation down the side of a long form or a long record, marking where the reader is.",
+          "props": [
+            "sections (Array<{id, label, badge?, invalid?}>)",
+            "activeId",
+            "orientation",
+            "stickyTopPx",
+            "onSelect"
+          ],
+          "notes": "An IntersectionObserver over the section ids with a rootMargin biased to the top, falling back to click-only when the observer finds nothing \u2014 a nav that highlights nothing is worse than a nav that only navigates. Sections with invalid set carry a destructive dot, which is how a 60-field application form tells someone where the errors are without scrolling."
+        },
+        {
+          "name": "StickyFooterBar",
+          "description": "Save, Submit and Cancel pinned to the bottom of a long form without covering the last field.",
+          "props": [
+            "children",
+            "align ('start'|'end'|'between')",
+            "elevated",
+            "reserveSpace",
+            "hideOnPrint"
+          ],
+          "notes": "reserveSpace adds matching bottom padding to the scroll container, which is the detail hand-rolled sticky footers always miss and which makes the last field unreachable on a phone keyboard. print:hidden by default, so it never lands on a printed case file."
+        },
+        {
+          "name": "PageHeader",
+          "description": "Breadcrumbs, title, description and the page's actions in one band.",
+          "props": [
+            "title",
+            "description",
+            "breadcrumbs",
+            "actionsSlot",
+            "sticky",
+            "dense"
+          ],
+          "notes": "Included for consistency with RecordHeader and honestly the weakest thing here \u2014 it is composable on the canvas, and it earns a code component only through the sticky shadow behaviour."
+        },
+        {
+          "name": "CollapsibleSection",
+          "description": "A titled section that folds, with a summary line while closed.",
+          "props": [
+            "title",
+            "summary",
+            "defaultOpen",
+            "badge",
+            "invalid",
+            "children",
+            "onOpenChange"
+          ],
+          "notes": "Native details/summary, so it is keyboard-operable and printable without a library. Setting invalid forces it open \u2014 a collapsed section hiding a validation error is how a form becomes unsubmittable with no visible reason."
+        },
+        {
+          "name": "IdleTimeoutDialog",
+          "description": "'You will be signed out in 2 minutes' \u2014 the warning a security policy asks for, with one button to stay.",
+          "props": [
+            "warnAtSecondsRemaining",
+            "secondsRemaining",
+            "open",
+            "stayLabel",
+            "signOutLabel",
+            "onStay",
+            "onSignOut"
+          ],
+          "notes": "@radix-ui/react-alert-dialog, focus-trapped and not dismissible by clicking away, counting down from a prop the page supplies \u2014 the component never owns the clock, because the real expiry is the session token's and two counters will disagree. Announces through role=alertdialog so it is not a silent visual event."
+        }
+      ]
+    },
+    {
+      "slug": "reporting",
+      "name": "Reporting Statistics",
+      "tagline": "Medians, percentiles, spread, trend and banding \u2014 the figures an SLA report is made of and lodash does not have.",
+      "kind": "logic",
+      "category": "Data",
+      "why": "Every service desk and case-management deployment reports the same numbers to a steering committee, and none of them are a sum or a count: 90th-percentile resolution time, median days to decision, the spread that shows one officer's queue is the problem, the trend line on a twelve-month backlog, and the bands that turn a column of ages into a red/amber/green summary. lists gives sumBy, countBy and maxBy and stops exactly where reporting starts, so today a percentile is a hand-written sort-and-index inside a {{= }} expression, which is where the off-by-one lives. It also closes a real hole in the catalogue as proposed: nothing anywhere turns rows into the number array every one of these functions takes, because lists publishes no map or pluck.",
+      "risk": "Judge this against the alternative, which is SQL: these are in-memory over whatever rows the flow already holds, so a percentile over a month of tickets means loading a month of tickets, and past a few thousand rows the honest answer is the ExecuteSQL node with percentile_cont, not this library. Percentile method matters and is not neutral: simple-statistics' quantile interpolates, while an SLA clause that says '90% of cases within 5 days' usually means nearest-rank, and the two disagree on small samples \u2014 which is exactly where a monthly report lives. A p90 over eleven cases is arithmetic, not information, and nothing in a one-call action can refuse to compute it. Natural Breaks returns clusters rather than boundaries and is O(n\u00b7k), so it is for banding a few hundred values and not a live page. The gap this cannot fill is the cross-tab: status by month, officer by outcome \u2014 the shape half of these reports actually want \u2014 because a pivot is groupBy then mapValues then sumBy and one CallFunction is one call, so it stays three nodes or an expression. And a catalogue-level hazard this library makes concrete: lodash is now declared by lists, pii and this module, js-sha256 by audit-change and pii \u2014 a consumer referencing two of them merges two manifests, and a version disagreement is a build failure a developer did not cause and cannot see the source of. One pin table across the catalogue, or one of them owns each package. Package interop is not verified in this session: check that simple-statistics resolves as named CommonJS exports under Node 20 before pinning.",
+      "packages": [
+        {
+          "name": "simple-statistics",
+          "exports": [
+            "mean",
+            "median",
+            "mode",
+            "quantile",
+            "standardDeviation",
+            "interquartileRange",
+            "min",
+            "max",
+            "sum",
+            "linearRegression",
+            "linearRegressionLine",
+            "equalIntervalBreaks",
+            "ckmeans"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "lodash",
+          "exports": [
+            "map"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Values Of Field",
+          "description": "The values of one field across rows, as a plain array. Call it first \u2014 every function below takes numbers, not records, and nothing else in the catalogue produces them.",
+          "params": [
+            "rows",
+            "field"
+          ],
+          "returns": "array"
+        },
+        {
+          "name": "Average",
+          "description": "The arithmetic mean, for a figure whose distribution is known to be sane.",
+          "params": [
+            "values"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Median",
+          "description": "The middle value \u2014 the resolution time to report when three abandoned cases would otherwise drag the average.",
+          "params": [
+            "values"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Percentile",
+          "description": "The value below which that proportion of cases fall. Pass 0.9 for the p90 an SLA report is written against, and check whether your clause means interpolated or nearest-rank.",
+          "params": [
+            "values",
+            "p (0-1)"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Standard Deviation",
+          "description": "How spread the values are \u2014 the number that shows a queue is inconsistent rather than slow.",
+          "params": [
+            "values"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Interquartile Range",
+          "description": "The middle half's spread, and the basis for an outlier rule that does not assume a normal distribution.",
+          "params": [
+            "values"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Trend Line",
+          "description": "Least-squares fit over paired values, as slope and intercept \u2014 is the backlog growing, and how fast.",
+          "params": [
+            "points (Array<[x, y]>)"
+          ],
+          "returns": "object { m, b }"
+        },
+        {
+          "name": "Trend Value At",
+          "description": "The fitted value at a given x, for projecting the line the chart draws or the month after next.",
+          "params": [
+            "fit ({m, b})",
+            "x"
+          ],
+          "returns": "number"
+        },
+        {
+          "name": "Equal Interval Bands",
+          "description": "Evenly spaced boundaries across the range, for banding ages or amounts into a fixed number of buckets.",
+          "params": [
+            "values",
+            "bandCount"
+          ],
+          "returns": "array of boundaries"
+        },
+        {
+          "name": "Natural Break Bands",
+          "description": "Boundaries that follow where the data actually clusters, so a banded summary reflects the caseload instead of an arbitrary grid.",
+          "params": [
+            "values",
+            "bandCount"
+          ],
+          "returns": "array of clusters"
+        }
+      ]
+    },
+    {
+      "slug": "reference-data",
+      "name": "Countries, Currencies & Addresses",
+      "tagline": "ISO country, subdivision and currency data as server calls \u2014 for seeding lookup tables and formatting an address the recipient's post office accepts.",
+      "kind": "logic",
+      "category": "Data",
+      "why": "Three concrete things a developer looks for on day one of a registry, a procurement portal or a claims system and does not find here. The country dropdown: identity-validation validates a postcode against a country code and nothing in the catalogue can produce the list of countries to pick from, so it becomes a hand-typed lookup table missing half of Africa. The subdivision list: state, province, emirate, prefecture \u2014 required on almost every address form and never available for more than one country. And the printed address: print's RecipientBlock takes addressLines and nothing composes them, so an app that posts a decision letter to Japan prints it in British order. This is also the honest place to put the currency list the money library implies but only exposes one record of.",
+      "risk": "The intended use is seeding, not calling. A code list reached through a function call cannot carry the customer's own rows \u2014 'Not stated', a disputed territory an agency does or does not recognise, an internal cost-centre code \u2014 cannot be versioned for an audit, and changes under the app when a package is bumped, which for a stored country code is a data-integrity event rather than a bug fix. So these should be called once into a lookup entity the customer then owns, and the docs must lead with that or a developer will call them per request and wonder why a form is slow. Names are English only, which fails the bilingual correspondence this audience produces daily; i18n-iso-countries would fix it and cannot be used, because since v7 its names need registerLocale called first and a one-call action has nowhere to call it \u2014 so translated names stay a lookup table the customer maintains. @fragaria/address-formatter is the entry most likely to be unbuildable: its export is an object with a format method and a generator that emits a named import may not reach it, so check the module shape before pinning and drop address formatting rather than shipping something that compiles to undefined. iso-3166-1 and iso-3166-2 are small, quiet packages with no maintenance guarantee and a real staleness cost, since ISO reassigns codes. And the pin hazard is concrete here: currency-codes is already declared by money and libphonenumber-js by identity-validation, so a consumer referencing both this and either of those merges two manifests for the same package. None of these were verified in this session.",
+      "packages": [
+        {
+          "name": "iso-3166-1",
+          "exports": [
+            "all",
+            "whereAlpha2",
+            "whereAlpha3",
+            "whereNumeric",
+            "whereCountry"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "iso-3166-2",
+          "exports": [
+            "country",
+            "subdivision"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "currency-codes",
+          "exports": [
+            "codes",
+            "code",
+            "country",
+            "countries"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "libphonenumber-js",
+          "exports": [
+            "getCountries",
+            "getCountryCallingCode"
+          ],
+          "cjsSafe": true
+        },
+        {
+          "name": "@fragaria/address-formatter",
+          "exports": [
+            "format"
+          ],
+          "cjsSafe": true
+        }
+      ],
+      "functions": [
+        {
+          "name": "Country List",
+          "description": "Every ISO 3166-1 country with its alpha-2, alpha-3, numeric code and English name. Call it once to seed a lookup table, not on every page load.",
+          "params": [],
+          "returns": "array of { country, alpha2, alpha3, numeric }"
+        },
+        {
+          "name": "Country By Code",
+          "description": "One country's record from its alpha-2 code, for rendering a stored code as a name.",
+          "params": [
+            "alpha2"
+          ],
+          "returns": "object"
+        },
+        {
+          "name": "Subdivisions Of Country",
+          "description": "The states, provinces or regions of one country as ISO 3166-2 codes and names \u2014 the second dropdown on every address form.",
+          "params": [
+            "alpha2"
+          ],
+          "returns": "object of code \u2192 { name, type }"
+        },
+        {
+          "name": "Subdivision By Code",
+          "description": "One subdivision from its full ISO 3166-2 code, so a stored value renders as a name and a type.",
+          "params": [
+            "code (\"SG-01\", \"US-CA\")"
+          ],
+          "returns": "object"
+        },
+        {
+          "name": "Currency List",
+          "description": "Every ISO 4217 currency code, for a currency picker that agrees with the money library's arithmetic.",
+          "params": [],
+          "returns": "array of codes"
+        },
+        {
+          "name": "Currencies Of Country",
+          "description": "The currencies in use in a country \u2014 the default to preselect on an invoice or a claim.",
+          "params": [
+            "countryName"
+          ],
+          "returns": "array"
+        },
+        {
+          "name": "Calling Code For Country",
+          "description": "The international dialling code for a country, for a phone field's prefix and for composing an E.164 number.",
+          "params": [
+            "alpha2"
+          ],
+          "returns": "string"
+        },
+        {
+          "name": "Dialable Countries",
+          "description": "Every country the phone metadata knows, so a country picker beside a phone field cannot offer one the validator will reject.",
+          "params": [],
+          "returns": "array of alpha-2 codes"
+        },
+        {
+          "name": "Format Postal Address",
+          "description": "An address object to the line order and casing that country's post office expects \u2014 the difference between a decision letter that arrives and one that comes back.",
+          "params": [
+            "address ({ road, city, postcode, state, countryCode, ... })"
+          ],
+          "returns": "string"
+        }
+      ]
+    }
+  ],
+  "verdicts": [
+    {
+      "slug": "dates",
+      "verdict": "fix",
+      "reason": "Packages are sound: date-fns 4.1.0 + date-fns-tz 3.2.0 both require() cleanly with ESM interop OFF, all 11 named exports present, formatInTimeZone(2026-09-10T00:00Z,'Asia/Singapore') = '2026-09-10 08:00'. Two real defects. (1) 'To ISO String' is billed as 'the canonical string form for storage' but formatISO is SERVER-TZ-DEPENDENT: I ran it under TZ=Asia/Singapore and got '2026-09-10T08:00:00+08:00' where toISOString() gives '2026-09-10T00:00:00.000Z'. The same instant stored from a UTC container and a SGT container yields two different strings \u2014 the exact disagreement this library exists to prevent. (2) startOfDay/endOfDay/endOfMonth are server-local, not zone-aware: on a UTC server startOfDay of that instant is 2026-09-09T16:00Z, so 'the left edge of a day filter' is 8 hours wrong for the agency. Also the risk note is wrong in direction: date-fns v4 does not silently misread 'YYYY', it THROWS RangeError('Use `yyyy` instead of `YYYY`') \u2014 loud, but an unhandled 500 in a flow with no exception handler.",
+      "fix": "Drop formatISO for a To ISO String built on Date.prototype.toISOString (or document that it emits a local-offset form, not Z). Rename Start Of Day / End Of Day to say they are server-local, or add a timeZone parameter and compose them with To Time Zone. Correct the YYYY note to 'throws' so the docs tell people to handle it."
+    },
+    {
+      "slug": "lists",
+      "verdict": "ok",
+      "reason": "lodash 4.x, CommonJS, all 10 named exports present and type-check against @types/lodash under the export's strict tsconfig. Every function is genuinely one call with positional args \u2014 orderBy(rows, fields, directions), groupBy(rows, field), toPairs(grouped) \u2014 so nothing needs a loop or a chained call. The stated risks are accurate and honestly weighted: Group By returning a keyed object really does force the two-node Group By \u2192 Group Entries dance, and mistyped iteratee fields really do fail silently. No hidden dependency, no ESM problem, no arity mismatch.",
+      "fix": ""
+    },
+    {
+      "slug": "record-fields",
+      "verdict": "fix",
+      "reason": "No forbidden dependency \u2014 DescriptionList, FieldDiffTable, JsonViewer, TreeView, MaskedValue and CopyableValue are all reachable with React + Tailwind + Radix + lucide, and the recursion-via-inner-function workaround for CODE-006 is correct. But every one of these takes a structured prop (items, before/after, nodes, value) and propTypeFor in core/src/codeComponents.ts types Object/Object[] as Record<string, unknown>[]. I compiled a representative DescriptionList against the generated tsconfig and got two hard errors: TS2322 'Type unknown is not assignable to type ReactNode' on {it.label} and on {it.value}. This is not theoretical \u2014 CLAUDE.md records the identical defect ('record fields typed unknown where a ReactNode was needed') reaching a real sample export. Every component here needs an explicit narrowing reader, and the entry does not say so. Secondary: the built-in pack already ships table.tsx, data-grid.tsx, item.tsx and field.tsx, so the overlap is larger than 'half of a case screen is not a form' implies.",
+      "fix": "State the narrowing tax in the entry and ship a shared typed reader (e.g. str(v)/node(v) helpers in one component imported as @/components/...) rather than leaving each component to cast. Check DescriptionList and FieldValue against the built-in field.tsx / item.tsx before building both."
+    },
+    {
+      "slug": "status-sla",
+      "verdict": "ok",
+      "reason": "Buildable exactly as described with no imports beyond lucide: Intl.RelativeTimeFormat carries SlaIndicator's phrasing, SlaMeter is three SVG rects with attribute geometry (correctly kept out of Tailwind), and StatusSummaryBar's flex-grow trick genuinely needs no measurement. color-mix(in oklab, currentColor 12%, transparent) works as a Tailwind arbitrary value provided the spaces are underscored. The self-identified risks are the right ones \u2014 the word-to-tone map being a guess about someone else's domain, and SlaIndicator's per-row interval being wasteful in a 200-row table \u2014 and none of them is a buildability blocker. Only caveat: counts on StatusSummaryBar arrives as Record<string, unknown> and needs the same narrowing as the other object-prop components.",
+      "fix": ""
+    },
+    {
+      "slug": "working-days",
+      "verdict": "ok",
+      "reason": "Verified end to end under CJS with ESM interop off. All 9 date-fns exports present; addBusinessDays('2026-09-11', 5) = 2026-09-18 and v4 does accept the ISO string directly, so the claimed no-parse-step shortcut is real; addMonths(31 Jan, 1) clamps to 28 Feb; addYears(29 Feb 2024, 7) clamps to 28 Feb 2031. Every function is a genuine single call with positional args. The risk note is the most honest in the catalogue \u2014 date-fns really has no holiday calendar, date-holidays really is a constructor this contract cannot call, and the fixed Sat/Sun weekend really does exclude Fri/Sat jurisdictions \u2014 and it leads with those limits rather than burying them.",
+      "fix": ""
+    },
+    {
+      "slug": "money",
+      "verdict": "fix",
+      "reason": "The arithmetic is solid and every claimed value reproduced exactly: add('10.00','2.50')='12.50', percent('119.99','9.00')='10.80', format('USD','1234.50')='1,234.50', and the mul('19.99','3')='0.60' trap is real. All 9 money-math exports plus currency-codes.code resolve and type-check. One packaging defect that will break the export install: @types/currency-codes DOES NOT EXIST on npm (npm view returns 404) \u2014 currency-codes ships its own index.d.ts instead. If the manifest declares typesSource '@types', npmDevDependencies in callFunctionGenerator.ts will emit '@types/currency-codes' into devDependencies and npm install fails outright. Also worth correcting the risk note in the library's favour: format('JPY','1234.50') returned '1,234', so money-math's formatter does consult the currency's digits; it is only the arithmetic that is fixed at 2dp.",
+      "fix": "Declare currency-codes with bundled types, not typesSource '@types', or the generated app's npm install 404s. Soften the JPY/KRW claim to scope it to arithmetic, since Format Amount already handles 0-digit currencies."
+    },
+    {
+      "slug": "page-states",
+      "verdict": "fix",
+      "reason": "Everything here is buildable with no forbidden import, and the design judgements are good (NoResults separated from EmptyState, delayMs to suppress the sub-200ms flash, deterministic skeleton widths instead of Math.random). But the overlap the entry flags as a risk is worse than it admits: I listed packages/core/shadcn/ui and the built-in pack already ships empty.tsx, skeleton.tsx AND spinner.tsx. So EmptyState, SkeletonTable's base and LoadingOverlay's indicator are all rebuilding components a developer already has one click away via Add shadcn/ui Components. The entry's own honest test \u2014 'if the built-in Empty grows props, half of this should be deleted rather than maintained beside it' \u2014 is already met today for three of six.",
+      "fix": "Cut EmptyState and LoadingOverlay's spinner down to thin compositions over the built-in empty.tsx and spinner.tsx, and ship only the four the built-ins have no answer for: NoResults, ErrorState, PermissionDenied and the table-shaped SkeletonTable."
+    },
+    {
+      "slug": "identity-validation",
+      "verdict": "fix",
+      "reason": "A flatly false capability claim that will ship a broken intake form. The entry advertises Check Tax Id as covering 'US SSN/ITIN (en-US)'. It does not. I read node_modules/validator/lib/isTaxID.js: the en-US pattern is /^\\d{2}[- ]{0,1}\\d{7}$/ and the check is enUsCheck = 'are the first two digits a valid IRS campus prefix'. That is an EIN (XX-XXXXXXX), not an SSN (XXX-XX-XXXX). Confirmed at runtime: isTaxID('123-45-6789','en-US') = false, isTaxID('078-05-1120','en-US') = false, isTaxID('457-55-5462','en-US') = false. The only thing that passes is the 9-digit unseparated form ('123456789' = true) \u2014 and it passes for the wrong reason, being validated as an EIN. So a US form collecting a dashed SSN rejects every valid one, and one collecting digits silently applies EIN rules. Everything else checked out: isPostalCode('018956','SG')=true, normalizeEmail('A.B+ref@Gmail.com')='ab@gmail.com', formatNumber E.164 works in both call shapes, isValidIBAN mod-97 works, and the throw-on-unsupported-locale trap is real for all three validator functions (isIdentityCard('..','SG'), isTaxID('..','en-SG'), isPostalCode('..','ZZ') all throw).",
+      "fix": "Rewrite Check Tax Id as 'US EIN plus 35 mostly-EU national schemes' and state plainly that SSN/ITIN is NOT covered. Add a Normalise Identifier (strip spaces and dashes) \u2014 every other identifier here has a normalise partner and the tax id needs one most, since validator only accepts the unseparated form."
+    },
+    {
+      "slug": "text-matching",
+      "verdict": "ok",
+      "reason": "Every claimed value reproduced byte for byte: slugify('Minist\u00e8re de Sant\u00e9')='ministere-de-sante', transliterate('\u5317\u4eac')='Bei Jing', distance('Acme Pte Ltd','Acme Pte. Ltd')=1. The ESM analysis is correct and I verified both halves: with require(esm) disabled, change-case 5.4.4 fails with ERR_REQUIRE_ESM while the pinned 4.1.2 requires cleanly, and 5.x also renames paramCase to kebabCase \u2014 so the pin is both necessary and permanent, exactly as stated. All five change-case exports, both transliteration exports and both fastest-levenshtein exports resolve and type-check. The Closest Match hazard is real and correctly called out: I fed it 'zzzzzzzz' against two ministries and it confidently returned 'Ministry of Health'.",
+      "fix": ""
+    },
+    {
+      "slug": "form-fields",
+      "verdict": "ok",
+      "reason": "Buildable as specified \u2014 every field is Intl.NumberFormat plus a controlled input, no date or money library reaches the browser, and the sibling import of @/components/FieldFrame is exactly the local specifier the contract permits. The coerceParam hazard is real (I read it: an empty string coerces to a number, so empty and zero are genuinely indistinguishable without a private draft string). One correction to the reasoning rather than the build: the entry omits DatePicker because 'reimplementing react-day-picker's keyboard and locale handling would be a regression' \u2014 but react-day-picker is on CODE_COMPONENT_ALLOWED_IMPORTS and calendar.tsx ships in the built-in shadcn pack, so it can simply be imported. Right outcome (don't build one), wrong reason, and the same misreading blocks nothing else here.",
+      "fix": ""
+    },
+    {
+      "slug": "audit-change",
+      "verdict": "fix",
+      "reason": "Mechanically sound: detailedDiff returns {added,deleted,updated} as claimed, updatedDiff correctly excludes added keys, canonicalize({b:2,a:1})='{\"a\":1,\"b\":2}', sha256 gives 64 hex chars, ulid() gives a 26-char id and decodeTime round-trips it. Audit Id taking zero parameters compiles fine \u2014 the generator emits ulid() with an empty arg list, exactly as the crypto library's uuid v4 already does. One factual error in a note presented as verified: the entry states 'ulid exports NO isValid, so an id-format check must be a length-and-charset rule in the flow'. On ulid 3.0.2 isValid IS a named export (typeof = function). Telling developers to hand-roll a charset regex for a check the package ships is how a subtly wrong validator gets written. The hash-chain caveats \u2014 no keyed HMAC, chaining done by the caller, and the diff needing a projected record rather than a raw Prisma row \u2014 are all correct and correctly weighted.",
+      "fix": "Add an Is Audit Id function over ulid's isValid and delete the 'hand-roll a length-and-charset rule' guidance. Pin ulid explicitly (>=2.4) since the claim is version-dependent."
+    },
+    {
+      "slug": "timelines",
+      "verdict": "ok",
+      "reason": "No forbidden dependency and the hard parts are correctly chosen: Intl.RelativeTimeFormat for the phrase with Intl.DateTimeFormat in the title attribute is the right answer given no date library may reach the browser, and comparing DateTimeFormat parts in the supplied zone rather than local midnight is the correct fix for day-grouping. The rail-breaks-at-the-dot detail and the ring-not-border on AvatarGroup are both achievable in Tailwind. Composing InitialsAvatar and RelativeTime into TimelineItem via @/components/<Name> is legal and acyclic. Two caveats already stated honestly: no virtualisation is available so paging is the only answer past a few thousand rows, and the chart-1..5 hash for identity collides with the dataviz ramp. Subject to the same Record<string, unknown> narrowing tax as the other object-prop libraries.",
+      "fix": ""
+    },
+    {
+      "slug": "approval-actions",
+      "verdict": "ok",
+      "reason": "Dependencies check out \u2014 @radix-ui/react-alert-dialog is on RADIX_PRIMITIVES in core/src/codeComponents.ts, so DecisionDialog's modal focus trap is legal, as are the Popover for AssigneePicker and the checkbox rows. The strictly-presentational discipline is the right call and is what keeps this from colliding with the workflow engine's Approval and HumanTask nodes. The canDecide hazard is correctly identified and correctly refused a fix: a component genuinely cannot enforce authorisation, and Entity.access plus routeGuard is where that lives. Tone mapping through a static table of full class strings rather than interpolation is the correct Tailwind discipline. Same object-prop narrowing tax on decisions/approvals/comments/candidates.",
+      "fix": ""
+    },
+    {
+      "slug": "csv",
+      "verdict": "fix",
+      "reason": "Three of seven functions are broken as declared, and I reproduced each. (1) Build Delimited Text declares [rows, delimiter, newline] \u2192 unparse(a,b,c) fails to COMPILE: TS2554 'Expected 1-2 arguments, but got 3', so the exported app does not build. (2) Parse Delimited Text declares [text, delimiter] \u2192 parse(text, ';') compiles but THROWS at runtime: \"Cannot create property 'dynamicTyping' on string ';'\". (3) Build CSV With Columns declares [rows, columns] \u2192 unparse(rows, ['c','a']) compiles, runs, and SILENTLY emits every column in the original order ('a,b,c\\r\\n1,2,3' instead of 'c,a\\r\\n3,1') \u2014 the worst of the three, because it quietly violates the interface agreement the description promises. papaparse takes ONE config object, not positional options. This is fixable \u2014 args are emitted as evaluate(expr, ctx) and action parameters are destructured from ctx (serverActionGenerator.ts:597), so one composed expression can carry a parameter into the object \u2014 but as written these three ship broken. parse/unparse themselves, and papaparse 5.4.1 under CJS, are fine, and the wrapper/no-BOM/no-file limits are honestly stated.",
+      "fix": "Rewrite those three so the second argument is a single composed expression, e.g. {{= ({ delimiter: delimiter, header: true }) }} and {{= ({ columns: columns }) }}, and redeclare the params to match. Add a compile check for arity \u2014 TS2554 is caught by the export gate but only after a developer has wired the node."
+    },
+    {
+      "slug": "pickers",
+      "verdict": "fix",
+      "reason": "Buildable, but built on a false premise and it costs the entry its main justification. The note says 'Radix Popover plus a filtered <ul> \u2014 no cmdk'. cmdk IS on CODE_COMPONENT_ALLOWED_IMPORTS (UI_LIBRARIES in core/src/codeComponents.ts), and command.tsx in the built-in shadcn pack already imports it. So the entry hand-rolls a listbox, then correctly identifies the resulting accessibility gap as its own top risk ('a hand-rolled listbox that omits aria-activedescendant and roving focus is a regression in exactly the public-sector settings this targets') \u2014 while the library that solves precisely that is available and already vendored. Combobox and MultiCombobox are largely command + popover with a different prop shape. The genuinely absent four \u2014 RecordLookup's two-line record rows, TagInput, HierarchySelect, TokenTextArea \u2014 are worth building and need no forbidden import.",
+      "fix": "Build Combobox and MultiCombobox over cmdk (or over the built-in command.tsx) instead of a hand-rolled ul, which removes the accessibility risk entirely. Keep RecordLookup, TagInput, HierarchySelect and TokenTextArea as written, and add a request-id guard to RecordLookup so a slow response cannot overwrite a fresh one."
+    },
+    {
+      "slug": "kpi-tiles",
+      "verdict": "fix",
+      "reason": "The components are all buildable \u2014 the Sparkline's fixed viewBox with preserveAspectRatio=none plus vector-effect=non-scaling-stroke is genuinely the right trick, ProgressRing's dasharray/dashoffset maths is correct, and Meter/ComparisonBar/StackedBarStrip need no SVG at all. But the entry's central design decision rests on a claim I disproved: it drops a chart set on the grounds that a charting package is 'not on the allow-list'. recharts IS on CODE_COMPONENT_ALLOWED_IMPORTS (pinned ^3.2.1 in CODE_COMPONENT_DEPENDENCIES) and chart.tsx in packages/core/shadcn/ui imports RechartsPrimitive directly. So the hard parts the entry says it is avoiding \u2014 nice ticks, label collision, negative values, irregular time axes \u2014 are already solved and shipping, and Sparkline is rebuilding a subset by hand. StatTile, DeltaBadge, ProgressRing, Meter and ComparisonBar remain genuinely novel and worth having.",
+      "fix": "Rewrite the risk note against the real constraint, drop Sparkline in favour of the built-in recharts-backed chart.tsx (or state why a 12-point polyline is still worth its own component), and keep the tile/gauge set, which recharts does not cover."
+    },
+    {
+      "slug": "markup",
+      "verdict": "ok",
+      "reason": "The package interop analysis is right and I verified both halves: marked 18.x fails with ERR_REQUIRE_ESM under CJS while the pinned 12.0.2 requires cleanly, and xss genuinely exposes filterXSS as a named export \u2014 it stripped onerror from an <img> and escaped a <script> while keeping surrounding markup, with its DEFAULT whitelist, so the entry actually understates its own safety. mustache.render works destructured (no this binding), escapes by default, and the unescaped variant works via the 4th config argument: render(t, d, {}, {escape: v => v}). he.encode/decode and toWords(1234)='one thousand, two hundred thirty-four' both match exactly. Two things to write down rather than fix: marked.parse does NOT turn single newlines into <br> by default (I got '<p>a\\nb</p>'), so Render Markdown's body must pass {breaks:true, gfm:true}; and Merge Fields Into Text is a 4-positional-argument call where only 2 params are declared. Both are expressible as constant literals, exactly like the crypto library's '{{= ({ expiresIn: \"1h\" }) }}'.",
+      "fix": ""
+    },
+    {
+      "slug": "wizard-import",
+      "verdict": "ok",
+      "reason": "The only entry in the catalogue that anticipates the platform's real tax, and it does so precisely: ReviewSummary's note that 'nested items arrive as unknown inside Object[], so the component narrows with a small typed reader rather than casting \u2014 strict tsc runs on the export' is exactly the TS2322 unknown-to-ReactNode failure I reproduced against propTypeFor. Everything else is buildable with no forbidden import \u2014 native drag events plus a visually hidden file input rather than react-dnd, FileReader per readAs, the static class map for step state rather than bg-${state}, and an inline style width for the progress track. The stated limits are honest and correct: the ~5MB base64 ceiling through a JSON action call is a real wall that only a direct-to-storage upload route fixes, no virtualisation exists for ValidationPreview, and aria-invalid rather than a colour ring is required to pass procurement.",
+      "fix": ""
+    },
+    {
+      "slug": "pii",
+      "verdict": "fix",
+      "reason": "All six maskdata exports resolve under CJS and mask correctly when configured \u2014 but two defects, one of them the most dangerous single behaviour in the catalogue. (1) maskJSON2 with no options, or with an options object whose field lists do not match, returns the record COMPLETELY UNCHANGED rather than throwing: I ran maskJSON2({nric:'S1234567D'}) and got {\"nric\":\"S1234567D\"} back. Mask Record is sold as 'the one to call before a record reaches a log, an outbound webhook or a support export' \u2014 an action that silently emits raw PII on a misconfiguration is far worse than one that fails, and the risk note does not mention it. (2) maskCard('4111111111111111') returns '4111***********1' by default \u2014 first four plus last one \u2014 while the description promises 'mask a payment card to the last four, the form every receipt and refund screen is expected to show'. A developer trusting the description ships a receipt showing the wrong digits. The Pseudonym For salt caveat, the no-free-text-detection gap and the deprecated maskString are all correctly flagged.",
+      "fix": "Give Mask Record a required options parameter and a documented default shape, and state that an unmatched field list is a silent no-op. Correct Mask Card's description to the actual default, or pin the options so it really does keep the last four."
+    },
+    {
+      "slug": "evidence",
+      "verdict": "ok",
+      "reason": "No forbidden dependency: SignaturePad is pointer events on a canvas, PhotoGrid and DocumentPreviewDialog are Radix Dialog, AttestationBox is Radix checkbox, RatingScale is lucide Star with fill-current toggled. The SignaturePad risk is the best-calibrated one in the catalogue and the repository's own history backs it \u2014 CLAUDE.md records both 'a canvas measured before it had width' as a lost session and the page editor's mount-tick baseline bug, so the ResizeObserver plus redraw-from-value requirement is exactly right rather than defensive boilerplate. The data-URL ceiling, the CSP/X-Frame-Options iframe caveat with download as the assumed path, and the point that ConsentList records a decision without being a lawful-basis engine are all correct. Same object-prop narrowing tax on files/images/purposes/statements.",
+      "fix": ""
+    },
+    {
+      "slug": "interchange",
+      "verdict": "ok",
+      "reason": "All three packages verified under CJS and every stated limitation reproduced, including the subtle one: jsonschema silently ignores 2020-12 keywords \u2014 validate({b:1}, {...unevaluatedProperties:false, prefixItems:[]}) returned valid:true \u2014 so the under-validation warning is real and correctly identified as the worst failure mode a validator has. xml2js compact/verbose, js2xml, js-yaml load/loadAll/dump and the YAMLException on malformed input all behave as described. One trap missing from an otherwise thorough risk note: in compact mode a SINGLE child element becomes an object and repeated children become an array \u2014 I got {\"_text\":\"a\"} for one <Line> and [{...},{...}] for two \u2014 so any binding like doc.Invoice.Line[0] breaks on the one-line invoice, which is exactly the shape a statement or line-item document takes. Also nativeType turned '10.50' into the number 10.5, which collides with the money library's two-decimal-string requirement.",
+      "fix": ""
+    },
+    {
+      "slug": "print",
+      "verdict": "ok",
+      "reason": "The bent rule is safe on this platform: I read checkCodeComponents in core/src/validation.ts and CODE-001..006 check the default export, allowed imports, unresolved local imports, generated-name collisions, event naming and import cycles \u2014 nothing restricts DOM globals, so window.print() behind a typeof guard passes validation and compiles. The @page rule as a literal <style> element in JSX is legal React and the correct workaround given no stylesheet import is allowed; Tailwind v4 ships the print: variant, and w-[210mm]-style arbitrary values compile because the class strings are static and scanned in src/. The entry is unusually honest about scope \u2014 it says plainly that it produces nothing a workflow can attach to an email and sends dimensionally-exact work to the built-in PdfExport node. Worth adding: these components also render inside the designer webview, where PrintButton would print the IDE iframe.",
+      "fix": ""
+    },
+    {
+      "slug": "barcodes",
+      "verdict": "fix",
+      "reason": "Both barcode functions are broken as declared; the QR ones are fine. Barcode SVG declares [value, symbology] \u2192 toSVG(a, b) does not COMPILE: TS2554 'Expected 1 arguments, but got 2'. Asset Label Barcode declares [value] \u2192 toSVG('ASSET-1') compiles but THROWS at runtime: 'bwipp.undefinedEncoder: bcid is not defined'. bwip-js takes exactly one options object {bcid, text, ...}, so neither can be expressed as positional args. Credit where due: the version correction is right \u2014 I confirmed bwip-js 4.5.2 requires cleanly under CJS and toSVG returns a real SVG string synchronously \u2014 and the promise claim is right too: serverActionGenerator.ts:207 emits await Promise.resolve(fn(...)), so qrcode's promises are handled. One more to write down: QR Code SVG declares only [text], but qr.toString(text) with no options returns terminal ASCII art, not SVG; the body must pass {{= ({ type: 'svg' }) }}.",
+      "fix": "Pass one composed object to bwip-js: {{= ({ bcid: 'code128', text: value, includetext: true, scale: 3 }) }} for Asset Label Barcode, and {{= ({ bcid: symbology, text: value, includetext: true }) }} for Barcode SVG \u2014 legal, since parameters are destructured from ctx. Redeclare the params accordingly and note the {type:'svg'} constant on QR Code SVG."
+    },
+    {
+      "slug": "rules",
+      "verdict": "ok",
+      "reason": "Interop and semantics both verified: all four json-logic-js exports destructure and apply() works standalone without a this binding, which is the thing most likely to have broken here. Values match the claims exactly \u2014 apply({'>':[{var:'amt'},100]},{amt:150})=true, uses_data returns ['amt'], is_logic discriminates a rule from a plain object, and truthy([])=false against JavaScript's true, which is precisely why Is Truthy earns its place as a separate function. apply({'if':[...]}) returns the matched branch, so Decide is a genuine single call. The stated risks are the right ones and the entry leads with the one that actually decides the matter \u2014 whether a policy owner will really edit that JSON \u2014 rather than with the technical caveats. The unversioned-rule production hazard and the any return type are both real and honestly weighted.",
+      "fix": ""
+    }
+  ]
+}

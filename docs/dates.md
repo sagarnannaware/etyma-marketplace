@@ -2,7 +2,7 @@
 
 Date arithmetic over [date-fns](https://date-fns.org) — format for people or for storage, add days and working days, measure the gap between two dates, and ask whether a deadline has passed.
 
-**Kind** logic · **Category** Data · **Wraps** `date-fns@2.30.0` (MIT)
+**Kind** logic · **Category** Data · **Wraps** `date-fns@4.1.0` and `date-fns-tz@3.2.0` (both MIT)
 
 ## Why it exists
 
@@ -21,6 +21,8 @@ That is why they chain rather than being one call each, and it is the shape you 
 | Function | Takes | Gives back |
 |---|---|---|
 | **Format Date** | `date`, `pattern` | The date written for a person — `d MMM yyyy`, `EEEE`, `HH:mm`. [Pattern reference](https://date-fns.org/docs/format). |
+| **Format In Time Zone** | `date`, `timeZone`, `pattern` | The same, rendered in a named IANA zone. What you want when the server is UTC and the reader is not. |
+| **From Local Time** | `localDateTime`, `timeZone` | Wall-clock text somebody typed in their zone → a real instant, as UTC. The conversion an appointment form always gets wrong. |
 | **Add Days** | `date`, `days` | ISO, shifted. Negative subtracts. |
 | **Add Business Days** | `date`, `days` | ISO, shifted by *working* days. "Due in 5 working days". |
 | **Days Between** | `from`, `to` | Whole calendar days. Negative when `to` is earlier. |
@@ -35,12 +37,12 @@ That is why they chain rather than being one call each, and it is the shape you 
 
 **Public holidays.** `Add Business Days` and `Business Days Between` skip **weekends only**. Holidays vary by country, by state, and by year, and several move — Good Friday, Chinese New Year, Hari Raya, Diwali. A library that shipped a holiday table would be wrong somewhere on the day it was published and everywhere within two years. If your SLA has to respect holidays, the calendar is data your app owns.
 
-**Time zones.** Everything here operates on the instant the ISO string names. If you need "9am in the user's zone" you want a zoned library and a stored preference, not this.
-
 **Recurrence.** Cron-like rules, "every second Tuesday", RRULE — none of that is here, and expressing it as a chained call would be a lie.
 
-## Why date-fns 2.30.0 and not 3 or 4
+## Everything that returns a date returns UTC
 
-A generated Etyma app is CommonJS. date-fns 3.x and 4.x are ESM-first and resolve badly under Node's dual-package rules from a `require()`. 2.30.0 is plain CJS, ships its own type declarations, and is still what most of the ecosystem is on.
+`formatISO` renders in the **server's** zone. The same instant is `2026-09-10T00:00:00Z` on a UTC container and `2026-09-10T08:00:00+08:00` on a Singapore laptop — both correct, neither canonical. Two replicas in different zones would write two different strings for one moment, and string comparison would stop working.
 
-If you need a v3+ feature, wrap it in your own module where you control the module system — do not "upgrade" this library and expect the export to keep building.
+So every function that hands back a date pins the output to UTC. If you want it in someone's local zone, that is `Format In Time Zone`, and it is a rendering decision made at the point of display rather than a property of what you stored.
+
+The first version of this library got that wrong, and the pin was wrong with it: it used date-fns 2.30.0 on the belief that 3.x+ was ESM-only and would not `require()` from a CommonJS app. That is simply false — 4.1.0 requires cleanly under Node 20 — and the cost of the belief was doing without time zones altogether.

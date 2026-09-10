@@ -59,9 +59,9 @@
         "y": 330
       },
       "data": {
-        "packageName": "date-fns",
-        "exportName": "formatISO",
-        "args": "[\"{{last}}\"]",
+        "packageName": "date-fns-tz",
+        "exportName": "formatInTimeZone",
+        "args": "[\"{{last}}\",\"{{= \\\"UTC\\\" }}\",\"{{= \\\"yyyy-MM-dd'T'HH:mm:ss'Z'\\\" }}\"]",
         "outputVariable": "result"
       }
     },

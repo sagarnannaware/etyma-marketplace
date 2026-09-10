@@ -1,18 +1,18 @@
 {
-  "id": "Ji4e69Tov37W",
-  "name": "Add Days",
-  "description": "Shift an ISO date by a number of days and return ISO. Negative subtracts.",
+  "id": "C3ulAQT9mgkA",
+  "name": "From Local Time",
+  "description": "Wall-clock text a person typed in their own zone, back to a real instant as canonical UTC. The conversion an appointment form always gets wrong.",
   "scope": "server",
   "isPublic": true,
   "parameters": [
     {
-      "id": "KeLaeYRkkR2b",
-      "name": "date",
+      "id": "NelvcaNn9QgM",
+      "name": "localDateTime",
       "type": "Text"
     },
     {
-      "id": "LLmE4WESyjw5",
-      "name": "days",
+      "id": "uQznUxEgUJUD",
+      "name": "timeZone",
       "type": "Text"
     }
   ],
@@ -20,7 +20,7 @@
   "returnType": "Text",
   "nodes": [
     {
-      "id": "FAwufYG2nuTE",
+      "id": "QsU3O8AdoNuI",
       "type": "Start",
       "position": {
         "x": 0,
@@ -29,7 +29,7 @@
       "data": {}
     },
     {
-      "id": "BEDelUn4aCFk",
+      "id": "0T83dPfAQfTy",
       "type": "CallFunction",
       "position": {
         "x": 0,
@@ -38,26 +38,26 @@
       "data": {
         "packageName": "date-fns",
         "exportName": "parseISO",
-        "args": "[\"{{date}}\"]",
-        "outputVariable": "parsed"
+        "args": "[\"{{localDateTime}}\"]",
+        "outputVariable": "parsedlocalDateTime"
       }
     },
     {
-      "id": "CdDjnaKhHsMv",
+      "id": "6yIN08o0f8tC",
       "type": "CallFunction",
       "position": {
         "x": 0,
         "y": 220
       },
       "data": {
-        "packageName": "date-fns",
-        "exportName": "addDays",
-        "args": "[\"{{parsed}}\",\"{{= Number(days) }}\"]",
-        "outputVariable": "shifted"
+        "packageName": "date-fns-tz",
+        "exportName": "fromZonedTime",
+        "args": "[\"{{parsedlocalDateTime}}\",\"{{timeZone}}\"]",
+        "outputVariable": "instant"
       }
     },
     {
-      "id": "G01skNXDWPC1",
+      "id": "LclC5FD6ebgP",
       "type": "CallFunction",
       "position": {
         "x": 0,
@@ -66,12 +66,12 @@
       "data": {
         "packageName": "date-fns-tz",
         "exportName": "formatInTimeZone",
-        "args": "[\"{{shifted}}\",\"{{= \\\"UTC\\\" }}\",\"{{= \\\"yyyy-MM-dd'T'HH:mm:ss'Z'\\\" }}\"]",
+        "args": "[\"{{instant}}\",\"{{= \\\"UTC\\\" }}\",\"{{= \\\"yyyy-MM-dd'T'HH:mm:ss'Z'\\\" }}\"]",
         "outputVariable": "result"
       }
     },
     {
-      "id": "UaCMpaUbj3qj",
+      "id": "i0kOT7ZW3yTL",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -82,7 +82,7 @@
       }
     },
     {
-      "id": "LRmoUHBeyF0j",
+      "id": "yvxqnRZJlGJC",
       "type": "End",
       "position": {
         "x": 0,
@@ -93,29 +93,29 @@
   ],
   "edges": [
     {
-      "id": "xExVzz1p2qjk",
-      "source": "FAwufYG2nuTE",
-      "target": "BEDelUn4aCFk"
+      "id": "5uliscaGePQ6",
+      "source": "QsU3O8AdoNuI",
+      "target": "0T83dPfAQfTy"
     },
     {
-      "id": "cmOnIXKlfVsU",
-      "source": "BEDelUn4aCFk",
-      "target": "CdDjnaKhHsMv"
+      "id": "ssgoRkALGW5P",
+      "source": "0T83dPfAQfTy",
+      "target": "6yIN08o0f8tC"
     },
     {
-      "id": "Il4E14BT4eG8",
-      "source": "CdDjnaKhHsMv",
-      "target": "G01skNXDWPC1"
+      "id": "ViPPyEX9h53z",
+      "source": "6yIN08o0f8tC",
+      "target": "LclC5FD6ebgP"
     },
     {
-      "id": "seAL0GaafIt8",
-      "source": "G01skNXDWPC1",
-      "target": "UaCMpaUbj3qj"
+      "id": "psZaKIKrOCJY",
+      "source": "LclC5FD6ebgP",
+      "target": "i0kOT7ZW3yTL"
     },
     {
-      "id": "Y7zbp5nFyU9M",
-      "source": "UaCMpaUbj3qj",
-      "target": "LRmoUHBeyF0j"
+      "id": "OGXpEgyrmsM9",
+      "source": "i0kOT7ZW3yTL",
+      "target": "yvxqnRZJlGJC"
     }
   ],
   "createdAt": "2026-09-10T00:00:00.000Z",

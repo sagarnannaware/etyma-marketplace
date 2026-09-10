@@ -1,0 +1,109 @@
+{
+  "id": "3BHGZfq9eaSI",
+  "name": "Format In Time Zone",
+  "description": "Render an instant in a named IANA zone — 'Asia/Singapore', 'Europe/London'. The one that matters when the server runs in UTC and the people using it do not.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "tFjHihJ1HFse",
+      "name": "date",
+      "type": "Text"
+    },
+    {
+      "id": "xKg1mmynBKlf",
+      "name": "timeZone",
+      "type": "Text"
+    },
+    {
+      "id": "zrOQL9sKskN6",
+      "name": "pattern",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Text",
+  "nodes": [
+    {
+      "id": "EVA2mYBqrk0x",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "u04C69UlhmmW",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{date}}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "ke8u7ixaim8e",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns-tz",
+        "exportName": "formatInTimeZone",
+        "args": "[\"{{parsed}}\",\"{{timeZone}}\",\"{{pattern}}\"]",
+        "outputVariable": "formatted"
+      }
+    },
+    {
+      "id": "aB2PKuNIVwth",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{formatted}}\"}]"
+      }
+    },
+    {
+      "id": "hdemiFS7FUhH",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "GZPy98wtUAzL",
+      "source": "EVA2mYBqrk0x",
+      "target": "u04C69UlhmmW"
+    },
+    {
+      "id": "mvQMnfmogHML",
+      "source": "u04C69UlhmmW",
+      "target": "ke8u7ixaim8e"
+    },
+    {
+      "id": "ibizwsUfkcxB",
+      "source": "ke8u7ixaim8e",
+      "target": "aB2PKuNIVwth"
+    },
+    {
+      "id": "psODVCp5isOX",
+      "source": "aB2PKuNIVwth",
+      "target": "hdemiFS7FUhH"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

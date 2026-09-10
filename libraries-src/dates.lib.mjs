@@ -10,18 +10,25 @@
 //      not a single node. Pretending otherwise would give a signature that does
 //      not match the package and fails in the consumer's own tsc.
 //
-//   2. The package is pinned to 2.30.0 on purpose. date-fns 3.x and 4.x are
-//      ESM-first, and a generated Etyma app is CommonJS: `require("date-fns")`
-//      on v3+ resolves badly under Node's dual-package rules. 2.30.0 is plain
-//      CJS, ships its own types, and is the version most of the ecosystem is
-//      still on. A marketplace library that floats or chases the newest version
-//      is a library that breaks on somebody else's Tuesday.
+//   2. Nothing here returns `formatISO`. That was the first version and it was
+//      wrong: `formatISO` renders in the SERVER's zone, so the same instant is
+//      "2026-09-10T00:00:00Z" on a UTC container and "2026-09-10T08:00:00+08:00"
+//      on a Singapore laptop. Both denote the same moment and neither is
+//      invalid — but a value billed as canonical must not depend on where the
+//      process happens to run, or two rows written by two replicas stop
+//      comparing equal as strings. Every function that returns a date pins the
+//      output to UTC through `formatInTimeZone`.
+//
+//      (date-fns 4.1.0 and date-fns-tz 3.2.0 both `require()` cleanly under
+//      Node 20 CommonJS — verified, not assumed. An earlier note here claimed
+//      v3+ was ESM-only and pinned 2.30.0 for it; that was simply false, and
+//      the cost of believing it was losing time zones entirely.)
 
 import { library, pkg, p, fn } from "../lib/kit.mjs";
 
 const SLUG = "dates";
 
-const dateFns = pkg("date-fns", "2.30.0", {
+const dateFns = pkg("date-fns", "4.1.0", {
   // date-fns ships its own .d.ts — no @types/date-fns (that package is a stub
   // that exists only to tell you so).
   types: "bundled",
@@ -33,12 +40,7 @@ const dateFns = pkg("date-fns", "2.30.0", {
       returns: "Date",
       jsdoc: "Parse an ISO-8601 string into a Date. The entry point for every other function here.",
     },
-    {
-      export: "formatISO",
-      params: [p("date", "Date"), p("options", "object", true)],
-      returns: "string",
-      jsdoc: "Format a Date back to ISO-8601, which is how a date should be stored and passed.",
-    },
+
     {
       export: "format",
       params: [p("date", "Date"), p("format", "string"), p("options", "object", true)],
@@ -102,6 +104,38 @@ const dateFns = pkg("date-fns", "2.30.0", {
   ],
 });
 
+const dateFnsTz = pkg("date-fns-tz", "3.2.0", {
+  // Ships its own .d.ts. The reason it is here at all: a generated Etyma app
+  // runs in a container set to UTC while the people using it do not, and every
+  // "which day is this?" question is answered wrongly by default.
+  types: "bundled",
+  environments: ["node", "browser"],
+  functions: [
+    {
+      export: "formatInTimeZone",
+      params: [p("date", "Date"), p("timeZone", "string"), p("formatStr", "string")],
+      returns: "string",
+      jsdoc: "Render an instant in a named IANA zone — 'Asia/Singapore', 'Europe/London'. Also how a canonical UTC string is produced.",
+    },
+    {
+      export: "toZonedTime",
+      params: [p("date", "Date"), p("timeZone", "string")],
+      returns: "Date",
+      jsdoc: "An instant re-expressed as wall-clock time in a zone, for arithmetic that must land on the local day.",
+    },
+    {
+      export: "fromZonedTime",
+      params: [p("date", "Date"), p("timeZone", "string")],
+      returns: "Date",
+      jsdoc: "Wall-clock text somebody typed in their zone, back to a real instant. The conversion an appointment form always gets wrong.",
+    },
+  ],
+});
+
+/** The canonical UTC form. Pinned to UTC so the answer never depends on the server. */
+const UTC_ISO = { pkg: "date-fns-tz", export: "formatInTimeZone", args: [null, '{{= "UTC" }}', `{{= "yyyy-MM-dd'T'HH:mm:ss'Z'" }}`] };
+const toUtcIso = (from) => ({ ...UTC_ISO, args: [`{{${from}}}`, UTC_ISO.args[1], UTC_ISO.args[2]] });
+
 /** parseISO, then one call that takes the Date. The shape of nearly every function here. */
 const parsed = (arg = "date") => ({ pkg: "date-fns", export: "parseISO", args: [`{{${arg}}}`], out: arg === "date" ? "parsed" : `parsed${arg}` });
 
@@ -113,7 +147,7 @@ export default library({
     "Date arithmetic over date-fns: format for humans or for storage, add days and business days, measure the gap between two dates, and ask whether a deadline has passed. Every function takes and returns ISO-8601 text, which is what an Etyma parameter carries.",
   category: "Data",
   tags: ["dates", "time", "sla", "business-days", "formatting"],
-  packages: [dateFns],
+  packages: [dateFns, dateFnsTz],
   notes:
     "Business-day functions skip weekends only. Public holidays vary by country and change every year, so they need a calendar the app supplies — see the Business Calendar library if you need them.",
   actions: [
@@ -128,13 +162,35 @@ export default library({
     ),
     fn(
       SLUG,
+      "Format In Time Zone",
+      "Render an instant in a named IANA zone — 'Asia/Singapore', 'Europe/London'. The one that matters when the server runs in UTC and the people using it do not.",
+      ["date", "timeZone", "pattern"],
+      [parsed(), { pkg: "date-fns-tz", export: "formatInTimeZone", args: ["{{parsed}}", "{{timeZone}}", "{{pattern}}"] }],
+      "formatted",
+      { returnType: "Text" },
+    ),
+    fn(
+      SLUG,
+      "From Local Time",
+      "Wall-clock text a person typed in their own zone, back to a real instant as canonical UTC. The conversion an appointment form always gets wrong.",
+      ["localDateTime", "timeZone"],
+      [
+        parsed("localDateTime"),
+        { pkg: "date-fns-tz", export: "fromZonedTime", args: ["{{parsedlocalDateTime}}", "{{timeZone}}"], out: "instant" },
+        toUtcIso("instant"),
+      ],
+      "result",
+      { returnType: "Text" },
+    ),
+    fn(
+      SLUG,
       "Add Days",
       "Shift an ISO date by a number of days and return ISO. Negative subtracts.",
       ["date", "days"],
       [
         parsed(),
         { pkg: "date-fns", export: "addDays", args: ["{{parsed}}", "{{= Number(days) }}"], out: "shifted" },
-        { pkg: "date-fns", export: "formatISO", args: ["{{shifted}}"] },
+        toUtcIso("shifted"),
       ],
       "result",
       { returnType: "Text" },
@@ -147,7 +203,7 @@ export default library({
       [
         parsed(),
         { pkg: "date-fns", export: "addBusinessDays", args: ["{{parsed}}", "{{= Number(days) }}"], out: "shifted" },
-        { pkg: "date-fns", export: "formatISO", args: ["{{shifted}}"] },
+        toUtcIso("shifted"),
       ],
       "result",
       { returnType: "Text" },
@@ -217,7 +273,7 @@ export default library({
       [
         parsed(),
         { pkg: "date-fns", export: "startOfDay", args: ["{{parsed}}"], out: "floored" },
-        { pkg: "date-fns", export: "formatISO", args: ["{{floored}}"] },
+        toUtcIso("floored"),
       ],
       "result",
       { returnType: "Text" },
@@ -230,7 +286,7 @@ export default library({
       [
         parsed(),
         { pkg: "date-fns", export: "endOfMonth", args: ["{{parsed}}"], out: "last" },
-        { pkg: "date-fns", export: "formatISO", args: ["{{last}}"] },
+        toUtcIso("last"),
       ],
       "result",
       { returnType: "Text" },
