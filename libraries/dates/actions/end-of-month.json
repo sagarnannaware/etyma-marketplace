@@ -1,0 +1,118 @@
+{
+  "id": "BAkHs18thDCN",
+  "name": "End Of Month",
+  "description": "The last moment of the date's month, as ISO. Billing periods, reporting windows, retention cut-offs.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "CoCKa0fIO1Go",
+      "name": "date",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Text",
+  "nodes": [
+    {
+      "id": "qU9WLtSJzz3N",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "q68zVA4y5mIN",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{date}}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "4fSY63dhewG5",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "endOfMonth",
+        "args": "[\"{{parsed}}\"]",
+        "outputVariable": "last"
+      }
+    },
+    {
+      "id": "vm4pPtTa13Wr",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "formatISO",
+        "args": "[\"{{last}}\"]",
+        "outputVariable": "result"
+      }
+    },
+    {
+      "id": "4ElJFlE4gAhF",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{result}}\"}]"
+      }
+    },
+    {
+      "id": "9oWqUIDom3wc",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 550
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "l8cuHmTZndxK",
+      "source": "qU9WLtSJzz3N",
+      "target": "q68zVA4y5mIN"
+    },
+    {
+      "id": "vSsDbTuQtUpv",
+      "source": "q68zVA4y5mIN",
+      "target": "4fSY63dhewG5"
+    },
+    {
+      "id": "gdQUfhD1XNLr",
+      "source": "4fSY63dhewG5",
+      "target": "vm4pPtTa13Wr"
+    },
+    {
+      "id": "tXKmYh4H1Amb",
+      "source": "vm4pPtTa13Wr",
+      "target": "4ElJFlE4gAhF"
+    },
+    {
+      "id": "XCk0t5N9IUjm",
+      "source": "4ElJFlE4gAhF",
+      "target": "9oWqUIDom3wc"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

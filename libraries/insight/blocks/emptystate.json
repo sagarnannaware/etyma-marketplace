@@ -1,0 +1,53 @@
+{
+  "id": "1bGFc4P5e9lS",
+  "name": "EmptyState",
+  "description": "What a list says when it is empty, with a way out. Accepts children for anything extra.",
+  "kind": "code",
+  "isPublic": true,
+  "widgetTree": {
+    "id": "Q7IZO0H13v8l",
+    "type": "Box",
+    "properties": {},
+    "children": []
+  },
+  "inputParameters": [
+    {
+      "id": "V2zGu7qWXdDz",
+      "name": "title",
+      "type": "Text"
+    },
+    {
+      "id": "qsmdZYmUwAOa",
+      "name": "description",
+      "type": "Text"
+    },
+    {
+      "id": "IA6bDsEDuF2u",
+      "name": "actionLabel",
+      "type": "Text"
+    },
+    {
+      "id": "n8KmUvTi0wFt",
+      "name": "compact",
+      "type": "Boolean"
+    },
+    {
+      "id": "hsCJ4mXvRayG",
+      "name": "className",
+      "type": "Text"
+    }
+  ],
+  "outputActions": [],
+  "variables": [],
+  "events": [
+    {
+      "id": "UjTuSJX0xf2J",
+      "name": "onAction",
+      "description": "The person pressed the button. Bind it to what should happen next.",
+      "parameters": []
+    }
+  ],
+  "acceptsChildren": true,
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

@@ -1,0 +1,66 @@
+name: CI
+
+# Three questions, in the order they matter:
+#   1. does the committed output match a fresh build?  (--check)
+#   2. would every library actually work?              (validate)
+#   3. does Etyma itself agree?                        (verify-against-core)
+#
+# The third needs a checkout of the Etyma repository with packages/core built.
+# It is a separate job rather than a step so that a failure says WHICH question
+# was answered no — and so a contributor without access to that repository still
+# gets a green tick on the two that are self-contained.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: The committed libraries match their definitions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: A fresh build produces exactly what is committed
+        run: node scripts/build.mjs --check
+      - name: Every library would actually work
+        run: node scripts/validate.mjs
+
+  against-core:
+    name: Etyma itself loads and validates every library
+    runs-on: ubuntu-latest
+    # The main repository is private; a fork's pull request has no token for it,
+    # and failing those for a permission they cannot have would train everyone
+    # to ignore this job. It runs where it can.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: marketplace
+      - uses: actions/checkout@v4
+        with:
+          repository: sagarnannaware/GridStudio
+          path: etyma
+          token: ${{ secrets.ETYMA_REPO_TOKEN }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: etyma/pnpm-lock.yaml
+      - name: Build core
+        working-directory: etyma
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @platform/api db:generate
+          pnpm --filter @platform/core build
+      - name: Load every library through the real WorkspaceStorage
+        working-directory: marketplace
+        run: ETYMA_REPO="$GITHUB_WORKSPACE/etyma" node scripts/verify-against-core.mjs

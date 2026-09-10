@@ -1,0 +1,123 @@
+{
+  "id": "kOPNFotAeeY2",
+  "name": "Days Between",
+  "description": "Whole calendar days from the first date to the second. Negative when the second is earlier.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "0wMRYJj1ktNY",
+      "name": "from",
+      "type": "Text"
+    },
+    {
+      "id": "HeGpHDmYE4UZ",
+      "name": "to",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Integer",
+  "nodes": [
+    {
+      "id": "kdaYADkIsndd",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "xWl5bqj9xa1J",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{to}}\"]",
+        "outputVariable": "left"
+      }
+    },
+    {
+      "id": "kknggOlE7fKK",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{from}}\"]",
+        "outputVariable": "right"
+      }
+    },
+    {
+      "id": "zuXRNMV3A9Pq",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "differenceInCalendarDays",
+        "args": "[\"{{left}}\",\"{{right}}\"]",
+        "outputVariable": "days"
+      }
+    },
+    {
+      "id": "QoCWydLbEaOr",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{days}}\"}]"
+      }
+    },
+    {
+      "id": "3I2d8xewXXI7",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 550
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "WZtetvmn6Wn9",
+      "source": "kdaYADkIsndd",
+      "target": "xWl5bqj9xa1J"
+    },
+    {
+      "id": "cwZFBOmPoSPn",
+      "source": "xWl5bqj9xa1J",
+      "target": "kknggOlE7fKK"
+    },
+    {
+      "id": "Vnt9Bg9VdFB5",
+      "source": "kknggOlE7fKK",
+      "target": "zuXRNMV3A9Pq"
+    },
+    {
+      "id": "SaYBnnaBArUB",
+      "source": "zuXRNMV3A9Pq",
+      "target": "QoCWydLbEaOr"
+    },
+    {
+      "id": "AfRLS9xVEx4O",
+      "source": "QoCWydLbEaOr",
+      "target": "3I2d8xewXXI7"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

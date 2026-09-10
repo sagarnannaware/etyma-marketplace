@@ -1,0 +1,99 @@
+{
+  "id": "EP1Y11QjVNIb",
+  "name": "Age",
+  "description": "How long ago, in plain words: '3 days', '2 months'. For a Last updated column.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "41kFM7Xpquzk",
+      "name": "date",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Text",
+  "nodes": [
+    {
+      "id": "xP8I9SwHNGs7",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "4LbN7mvCB1tG",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{date}}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "YfdROUbKJNHY",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "formatDistanceToNowStrict",
+        "args": "[\"{{parsed}}\"]",
+        "outputVariable": "age"
+      }
+    },
+    {
+      "id": "E7BqDPFCrFbA",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{age}}\"}]"
+      }
+    },
+    {
+      "id": "opSHTaugb9ng",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "WwcdNGUka3Ga",
+      "source": "xP8I9SwHNGs7",
+      "target": "4LbN7mvCB1tG"
+    },
+    {
+      "id": "MmwYw1aORU0J",
+      "source": "4LbN7mvCB1tG",
+      "target": "YfdROUbKJNHY"
+    },
+    {
+      "id": "sohDjbfnahOv",
+      "source": "YfdROUbKJNHY",
+      "target": "E7BqDPFCrFbA"
+    },
+    {
+      "id": "UANs3EZ9b7qB",
+      "source": "E7BqDPFCrFbA",
+      "target": "opSHTaugb9ng"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "p2H9NzoaFp8C",
+  "name": "Insight",
+  "description": "KPI tiles, sparklines, status pills, progress rings and empty states — built on the theme's own tokens, so they take on the colours of whatever app they are dropped into and read correctly in both light and dark.",
+  "type": "library",
+  "variables": [],
+  "clientVariables": [],
+  "datasources": [],
+  "stylesheets": [],
+  "scripts": [],
+  "images": [],
+  "roles": [],
+  "exceptions": [],
+  "npmPackages": [],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z",
+  "_order": {
+    "blocks": [
+      "stattile",
+      "sparkline",
+      "statusbadge",
+      "progressring",
+      "emptystate"
+    ]
+  }
+}

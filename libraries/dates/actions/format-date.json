@@ -1,0 +1,104 @@
+{
+  "id": "T0xOrUgeWKBz",
+  "name": "Format Date",
+  "description": "Format an ISO date for a person, e.g. '9 Sep 2026'. Patterns are date-fns patterns: d MMM yyyy, EEEE, HH:mm.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "qsfZ91o1f7gG",
+      "name": "date",
+      "type": "Text"
+    },
+    {
+      "id": "3H3X45ZVtPD4",
+      "name": "pattern",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Text",
+  "nodes": [
+    {
+      "id": "WYdNqmFJ6wJa",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "HNcf7VU14Oap",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{date}}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "Rn8xJvFKlXvC",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "format",
+        "args": "[\"{{parsed}}\",\"{{pattern}}\"]",
+        "outputVariable": "formatted"
+      }
+    },
+    {
+      "id": "9SUvme892imb",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{formatted}}\"}]"
+      }
+    },
+    {
+      "id": "VSvtvOM66vEu",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "tDIaTBdZGQwm",
+      "source": "WYdNqmFJ6wJa",
+      "target": "HNcf7VU14Oap"
+    },
+    {
+      "id": "Kkb9qyHmofX1",
+      "source": "HNcf7VU14Oap",
+      "target": "Rn8xJvFKlXvC"
+    },
+    {
+      "id": "h6IyEawE95iD",
+      "source": "Rn8xJvFKlXvC",
+      "target": "9SUvme892imb"
+    },
+    {
+      "id": "f54zC0KI9eh2",
+      "source": "9SUvme892imb",
+      "target": "VSvtvOM66vEu"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

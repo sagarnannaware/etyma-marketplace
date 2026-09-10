@@ -1,0 +1,39 @@
+{
+  "id": "eqjcl28yJg33",
+  "name": "StatusBadge",
+  "description": "A status pill in one of five tones: neutral, info, success, warning, danger. A closed set on purpose.",
+  "kind": "code",
+  "isPublic": true,
+  "widgetTree": {
+    "id": "fqiKv0WnmRZq",
+    "type": "Box",
+    "properties": {},
+    "children": []
+  },
+  "inputParameters": [
+    {
+      "id": "EJuzjNrpWsgC",
+      "name": "label",
+      "type": "Text"
+    },
+    {
+      "id": "oy5XMjSfAE1C",
+      "name": "tone",
+      "type": "Text"
+    },
+    {
+      "id": "b1i4FCbyOkrM",
+      "name": "dot",
+      "type": "Boolean"
+    },
+    {
+      "id": "RsVxWMeYl6Er",
+      "name": "className",
+      "type": "Text"
+    }
+  ],
+  "outputActions": [],
+  "variables": [],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

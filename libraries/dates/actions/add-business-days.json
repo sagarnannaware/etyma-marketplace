@@ -1,0 +1,123 @@
+{
+  "id": "oHdF8oQmKnxQ",
+  "name": "Add Business Days",
+  "description": "Shift an ISO date by working days, skipping weekends. Use for 'due in 5 working days'.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "znktMWumwYJ0",
+      "name": "date",
+      "type": "Text"
+    },
+    {
+      "id": "PPmCsLIF7nLh",
+      "name": "days",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Text",
+  "nodes": [
+    {
+      "id": "SKhUZ510BZKt",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "D063xbcibedp",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{date}}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "Uv8Nj787nCND",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "addBusinessDays",
+        "args": "[\"{{parsed}}\",\"{{= Number(days) }}\"]",
+        "outputVariable": "shifted"
+      }
+    },
+    {
+      "id": "Hk7T8qmvUt57",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "formatISO",
+        "args": "[\"{{shifted}}\"]",
+        "outputVariable": "result"
+      }
+    },
+    {
+      "id": "NiOcwooO2j9q",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{result}}\"}]"
+      }
+    },
+    {
+      "id": "c6RFW0b6KzOt",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 550
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "PkINYwv4ibuR",
+      "source": "SKhUZ510BZKt",
+      "target": "D063xbcibedp"
+    },
+    {
+      "id": "2hN7KroFcaD3",
+      "source": "D063xbcibedp",
+      "target": "Uv8Nj787nCND"
+    },
+    {
+      "id": "aS3n43q38rWb",
+      "source": "Uv8Nj787nCND",
+      "target": "Hk7T8qmvUt57"
+    },
+    {
+      "id": "edZgeJNYJgMP",
+      "source": "Hk7T8qmvUt57",
+      "target": "NiOcwooO2j9q"
+    },
+    {
+      "id": "VvzXbHZCqysi",
+      "source": "NiOcwooO2j9q",
+      "target": "c6RFW0b6KzOt"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

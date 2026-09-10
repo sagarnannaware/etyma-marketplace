@@ -1,0 +1,17 @@
+{
+  "name": "etyma-marketplace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ready-made library modules for Etyma — install one into a solution and call it from a flow or place it on a page.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/validate.mjs",
+    "check": "node scripts/build.mjs --check",
+    "verify": "node scripts/verify-against-core.mjs",
+    "test": "npm run check && npm run validate && npm run verify"
+  },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/sagarnannaware/etyma-marketplace.git" }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "j0aa4UmDMQsR",
+  "name": "StatTile",
+  "description": "A headline number with an optional delta that colours itself by direction. Set invertDelta for metrics where down is good.",
+  "kind": "code",
+  "isPublic": true,
+  "widgetTree": {
+    "id": "quS9i8F11lLy",
+    "type": "Box",
+    "properties": {},
+    "children": []
+  },
+  "inputParameters": [
+    {
+      "id": "uLwgz5ZUm4y8",
+      "name": "label",
+      "type": "Text"
+    },
+    {
+      "id": "tF5nvgPR9gaN",
+      "name": "value",
+      "type": "Text"
+    },
+    {
+      "id": "0INLQLIRvmNX",
+      "name": "delta",
+      "type": "Text"
+    },
+    {
+      "id": "FQAl48POSqEm",
+      "name": "deltaLabel",
+      "type": "Text"
+    },
+    {
+      "id": "fp1YVnRj5aGx",
+      "name": "hint",
+      "type": "Text"
+    },
+    {
+      "id": "XBsuTOp6uHym",
+      "name": "invertDelta",
+      "type": "Boolean"
+    },
+    {
+      "id": "6ONXXb1bdKet",
+      "name": "className",
+      "type": "Text"
+    }
+  ],
+  "outputActions": [],
+  "variables": [],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

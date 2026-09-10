@@ -1,0 +1,118 @@
+{
+  "id": "noJRLf0caQh9",
+  "name": "Start Of Day",
+  "description": "Midnight at the start of the date, as ISO. Use as the lower bound of a whole-day range.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "vFa8vftM9geE",
+      "name": "date",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Text",
+  "nodes": [
+    {
+      "id": "U2xdsP8StS3t",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "kmsRwr23sWDF",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{date}}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "ZeOtxDZL0imU",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "startOfDay",
+        "args": "[\"{{parsed}}\"]",
+        "outputVariable": "floored"
+      }
+    },
+    {
+      "id": "b0TCdxeWsCTs",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "formatISO",
+        "args": "[\"{{floored}}\"]",
+        "outputVariable": "result"
+      }
+    },
+    {
+      "id": "5Vu2G6nKq5JS",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{result}}\"}]"
+      }
+    },
+    {
+      "id": "YCv8oy0kTn4w",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 550
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "ZxOpYc8oJnuf",
+      "source": "U2xdsP8StS3t",
+      "target": "kmsRwr23sWDF"
+    },
+    {
+      "id": "1kaZ96rXthj6",
+      "source": "kmsRwr23sWDF",
+      "target": "ZeOtxDZL0imU"
+    },
+    {
+      "id": "DnWhEIS0MdLw",
+      "source": "ZeOtxDZL0imU",
+      "target": "b0TCdxeWsCTs"
+    },
+    {
+      "id": "1ZoN7lZtc8aS",
+      "source": "b0TCdxeWsCTs",
+      "target": "5Vu2G6nKq5JS"
+    },
+    {
+      "id": "T9uL90E7tUj3",
+      "source": "5Vu2G6nKq5JS",
+      "target": "YCv8oy0kTn4w"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

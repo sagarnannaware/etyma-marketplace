@@ -1,0 +1,123 @@
+{
+  "id": "WfG9B1uQtMiK",
+  "name": "Is Overdue",
+  "description": "True when the deadline is in the past. Pass the deadline and the moment to judge it against.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "QYBJVgYF7Q6n",
+      "name": "now",
+      "type": "Text"
+    },
+    {
+      "id": "Yw4yIcF5VYHV",
+      "name": "deadline",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Boolean",
+  "nodes": [
+    {
+      "id": "lJyIKneRqC0d",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "6KaDfdsmuzPm",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{now}}\"]",
+        "outputVariable": "left"
+      }
+    },
+    {
+      "id": "fca6ADh67oj4",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{deadline}}\"]",
+        "outputVariable": "right"
+      }
+    },
+    {
+      "id": "pgctduJ1nnFn",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "isAfter",
+        "args": "[\"{{left}}\",\"{{right}}\"]",
+        "outputVariable": "overdue"
+      }
+    },
+    {
+      "id": "NoUeFoH2LQ4h",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{overdue}}\"}]"
+      }
+    },
+    {
+      "id": "1vSWkGa9lPyZ",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 550
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "VLvPRonu8wyr",
+      "source": "lJyIKneRqC0d",
+      "target": "6KaDfdsmuzPm"
+    },
+    {
+      "id": "1rVcUO69PKDU",
+      "source": "6KaDfdsmuzPm",
+      "target": "fca6ADh67oj4"
+    },
+    {
+      "id": "bDdxJyQg4HRy",
+      "source": "fca6ADh67oj4",
+      "target": "pgctduJ1nnFn"
+    },
+    {
+      "id": "QhQdoabq8u5J",
+      "source": "pgctduJ1nnFn",
+      "target": "NoUeFoH2LQ4h"
+    },
+    {
+      "id": "73Q6Qqs0qVeK",
+      "source": "NoUeFoH2LQ4h",
+      "target": "1vSWkGa9lPyZ"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

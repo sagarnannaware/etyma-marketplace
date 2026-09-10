@@ -1,0 +1,123 @@
+{
+  "id": "MXDJK8qUZy2D",
+  "name": "Business Days Between",
+  "description": "Working days from the first date to the second, weekends excluded. The usual measure of an SLA.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "Ox2ttA0xTpEY",
+      "name": "from",
+      "type": "Text"
+    },
+    {
+      "id": "oZjmUMvDwSoa",
+      "name": "to",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Integer",
+  "nodes": [
+    {
+      "id": "wsumg1VbWvlL",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "yxqHzQaSq1AN",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{to}}\"]",
+        "outputVariable": "left"
+      }
+    },
+    {
+      "id": "cuuHAgQmpBS4",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{from}}\"]",
+        "outputVariable": "right"
+      }
+    },
+    {
+      "id": "nXG4xawGvXE5",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "differenceInBusinessDays",
+        "args": "[\"{{left}}\",\"{{right}}\"]",
+        "outputVariable": "days"
+      }
+    },
+    {
+      "id": "9bvAYwgpk7jT",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{days}}\"}]"
+      }
+    },
+    {
+      "id": "4GSMfe2vkfWo",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 550
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "vxdkphOIZXU6",
+      "source": "wsumg1VbWvlL",
+      "target": "yxqHzQaSq1AN"
+    },
+    {
+      "id": "1XTIphl7fb2y",
+      "source": "yxqHzQaSq1AN",
+      "target": "cuuHAgQmpBS4"
+    },
+    {
+      "id": "Z8HheuKfmND8",
+      "source": "cuuHAgQmpBS4",
+      "target": "nXG4xawGvXE5"
+    },
+    {
+      "id": "7n9bTcmX1nH6",
+      "source": "nXG4xawGvXE5",
+      "target": "9bvAYwgpk7jT"
+    },
+    {
+      "id": "unfcE1Ydk0yP",
+      "source": "9bvAYwgpk7jT",
+      "target": "4GSMfe2vkfWo"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

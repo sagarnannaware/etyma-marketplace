@@ -1,0 +1,99 @@
+{
+  "id": "1ceV7sxUSsu5",
+  "name": "Is Weekend",
+  "description": "True on a Saturday or Sunday. The cheap half of a working-day check.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "6BanmtdZZW1I",
+      "name": "date",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Boolean",
+  "nodes": [
+    {
+      "id": "s99pgLf7CRW1",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "Ynd8Bz8gxWFa",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{date}}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "cA9xrXgAh0HN",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "isWeekend",
+        "args": "[\"{{parsed}}\"]",
+        "outputVariable": "weekend"
+      }
+    },
+    {
+      "id": "wJn9Yily1TN8",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{weekend}}\"}]"
+      }
+    },
+    {
+      "id": "F7iphtCHynDb",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "liov43SMbWs9",
+      "source": "s99pgLf7CRW1",
+      "target": "Ynd8Bz8gxWFa"
+    },
+    {
+      "id": "8YkiyUu8FS8Z",
+      "source": "Ynd8Bz8gxWFa",
+      "target": "cA9xrXgAh0HN"
+    },
+    {
+      "id": "SGpeTDkVyzZa",
+      "source": "cA9xrXgAh0HN",
+      "target": "wJn9Yily1TN8"
+    },
+    {
+      "id": "MTt3di8fRRey",
+      "source": "wJn9Yily1TN8",
+      "target": "F7iphtCHynDb"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

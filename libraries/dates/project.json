@@ -1,0 +1,217 @@
+{
+  "id": "BD0vIECdvMQ6",
+  "name": "Dates & Time",
+  "description": "Date arithmetic over date-fns: format for humans or for storage, add days and business days, measure the gap between two dates, and ask whether a deadline has passed. Every function takes and returns ISO-8601 text, which is what an Etyma parameter carries.",
+  "type": "library",
+  "variables": [],
+  "clientVariables": [],
+  "datasources": [],
+  "stylesheets": [],
+  "scripts": [],
+  "images": [],
+  "roles": [],
+  "exceptions": [],
+  "npmPackages": [
+    {
+      "name": "date-fns",
+      "version": "2.30.0",
+      "typesSource": "bundled",
+      "environments": [
+        "node",
+        "browser"
+      ],
+      "functions": [
+        {
+          "export": "parseISO",
+          "params": [
+            {
+              "name": "argument",
+              "type": "string"
+            }
+          ],
+          "returns": "Date",
+          "jsdoc": "Parse an ISO-8601 string into a Date. The entry point for every other function here."
+        },
+        {
+          "export": "formatISO",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "options",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "string",
+          "jsdoc": "Format a Date back to ISO-8601, which is how a date should be stored and passed."
+        },
+        {
+          "export": "format",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "format",
+              "type": "string"
+            },
+            {
+              "name": "options",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "string",
+          "jsdoc": "Format a Date for a human, e.g. 'd MMM yyyy' or 'EEEE, d MMMM'."
+        },
+        {
+          "export": "addDays",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "amount",
+              "type": "number"
+            }
+          ],
+          "returns": "Date",
+          "jsdoc": "Add days. A negative amount subtracts."
+        },
+        {
+          "export": "addBusinessDays",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "amount",
+              "type": "number"
+            }
+          ],
+          "returns": "Date",
+          "jsdoc": "Add working days, skipping Saturdays and Sundays. Public holidays are NOT considered."
+        },
+        {
+          "export": "differenceInCalendarDays",
+          "params": [
+            {
+              "name": "dateLeft",
+              "type": "Date"
+            },
+            {
+              "name": "dateRight",
+              "type": "Date"
+            }
+          ],
+          "returns": "number",
+          "jsdoc": "Whole days between two dates, counting calendar days rather than 24-hour spans."
+        },
+        {
+          "export": "differenceInBusinessDays",
+          "params": [
+            {
+              "name": "dateLeft",
+              "type": "Date"
+            },
+            {
+              "name": "dateRight",
+              "type": "Date"
+            }
+          ],
+          "returns": "number",
+          "jsdoc": "Working days between two dates, weekends excluded."
+        },
+        {
+          "export": "isWeekend",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            }
+          ],
+          "returns": "boolean",
+          "jsdoc": "Saturday or Sunday."
+        },
+        {
+          "export": "isAfter",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "dateToCompare",
+              "type": "Date"
+            }
+          ],
+          "returns": "boolean",
+          "jsdoc": "Is the first date later than the second?"
+        },
+        {
+          "export": "formatDistanceToNowStrict",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "options",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "string",
+          "jsdoc": "'3 days', '2 months' — no 'about', no 'almost'. Strict is the one you want in a table."
+        },
+        {
+          "export": "startOfDay",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            }
+          ],
+          "returns": "Date",
+          "jsdoc": "Midnight at the start of the date, for a range that should include the whole day."
+        },
+        {
+          "export": "endOfMonth",
+          "params": [
+            {
+              "name": "date",
+              "type": "Date"
+            }
+          ],
+          "returns": "Date",
+          "jsdoc": "The last moment of the month — billing periods, reporting windows, retention."
+        }
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-10T00:00:00.000Z"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z",
+  "_order": {
+    "actions": [
+      "format-date",
+      "add-days",
+      "add-business-days",
+      "days-between",
+      "business-days-between",
+      "is-overdue",
+      "is-weekend",
+      "age",
+      "start-of-day",
+      "end-of-month"
+    ]
+  }
+}

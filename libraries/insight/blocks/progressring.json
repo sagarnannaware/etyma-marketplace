@@ -1,0 +1,49 @@
+{
+  "id": "rQ3cxGcxT6Tu",
+  "name": "ProgressRing",
+  "description": "A circular proportion for places a bar will not fit — a row, a card corner, beside a label.",
+  "kind": "code",
+  "isPublic": true,
+  "widgetTree": {
+    "id": "LAzPplJ4VDVj",
+    "type": "Box",
+    "properties": {},
+    "children": []
+  },
+  "inputParameters": [
+    {
+      "id": "8PZBoRHLcrEE",
+      "name": "value",
+      "type": "Text"
+    },
+    {
+      "id": "IOVmBysK5MPi",
+      "name": "max",
+      "type": "Text"
+    },
+    {
+      "id": "MdyAHmnz3Sdl",
+      "name": "size",
+      "type": "Number"
+    },
+    {
+      "id": "vaOlOHLDaPfd",
+      "name": "label",
+      "type": "Text"
+    },
+    {
+      "id": "Z0nXsuwJK0tr",
+      "name": "showValue",
+      "type": "Boolean"
+    },
+    {
+      "id": "ooIz4MI6TAgC",
+      "name": "className",
+      "type": "Text"
+    }
+  ],
+  "outputActions": [],
+  "variables": [],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

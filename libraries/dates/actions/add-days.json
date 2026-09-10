@@ -1,0 +1,123 @@
+{
+  "id": "Ji4e69Tov37W",
+  "name": "Add Days",
+  "description": "Shift an ISO date by a number of days and return ISO. Negative subtracts.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "KeLaeYRkkR2b",
+      "name": "date",
+      "type": "Text"
+    },
+    {
+      "id": "LLmE4WESyjw5",
+      "name": "days",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "returnType": "Text",
+  "nodes": [
+    {
+      "id": "FAwufYG2nuTE",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "BEDelUn4aCFk",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "parseISO",
+        "args": "[\"{{date}}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "CdDjnaKhHsMv",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "addDays",
+        "args": "[\"{{parsed}}\",\"{{= Number(days) }}\"]",
+        "outputVariable": "shifted"
+      }
+    },
+    {
+      "id": "G01skNXDWPC1",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {
+        "packageName": "date-fns",
+        "exportName": "formatISO",
+        "args": "[\"{{shifted}}\"]",
+        "outputVariable": "result"
+      }
+    },
+    {
+      "id": "UaCMpaUbj3qj",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 440
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{result}}\"}]"
+      }
+    },
+    {
+      "id": "LRmoUHBeyF0j",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 550
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "xExVzz1p2qjk",
+      "source": "FAwufYG2nuTE",
+      "target": "BEDelUn4aCFk"
+    },
+    {
+      "id": "cmOnIXKlfVsU",
+      "source": "BEDelUn4aCFk",
+      "target": "CdDjnaKhHsMv"
+    },
+    {
+      "id": "Il4E14BT4eG8",
+      "source": "CdDjnaKhHsMv",
+      "target": "G01skNXDWPC1"
+    },
+    {
+      "id": "seAL0GaafIt8",
+      "source": "G01skNXDWPC1",
+      "target": "UaCMpaUbj3qj"
+    },
+    {
+      "id": "Y7zbp5nFyU9M",
+      "source": "UaCMpaUbj3qj",
+      "target": "LRmoUHBeyF0j"
+    }
+  ],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}

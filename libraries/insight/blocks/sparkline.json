@@ -1,0 +1,44 @@
+{
+  "id": "OeWIq4pVjePw",
+  "name": "Sparkline",
+  "description": "A trend line the size of a word, from a comma-separated series. Green when it ends above where it started.",
+  "kind": "code",
+  "isPublic": true,
+  "widgetTree": {
+    "id": "qijwyoiq48i6",
+    "type": "Box",
+    "properties": {},
+    "children": []
+  },
+  "inputParameters": [
+    {
+      "id": "oK8h5G5qmuao",
+      "name": "series",
+      "type": "Text"
+    },
+    {
+      "id": "d6V2s8yMLadQ",
+      "name": "height",
+      "type": "Number"
+    },
+    {
+      "id": "3uoUJJ5qX80Q",
+      "name": "showLast",
+      "type": "Boolean"
+    },
+    {
+      "id": "NV3TZV145csQ",
+      "name": "label",
+      "type": "Text"
+    },
+    {
+      "id": "AcbOnUDsC1Nt",
+      "name": "className",
+      "type": "Text"
+    }
+  ],
+  "outputActions": [],
+  "variables": [],
+  "createdAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-10T00:00:00.000Z"
+}
