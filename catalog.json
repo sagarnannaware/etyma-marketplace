@@ -138,7 +138,7 @@
           "version": "3.2.0"
         }
       ],
-      "download": "libraries/dates",
+      "download": "bundles/dates.json",
       "source": "curated"
     },
     {
@@ -220,7 +220,7 @@
         }
       ],
       "packages": [],
-      "download": "libraries/insight",
+      "download": "bundles/insight.json",
       "source": "curated"
     }
   ]

@@ -5,7 +5,8 @@ Ready-made **library modules** for [Etyma](https://github.com/sagarnannaware/Gri
 A library module never deploys as a service. It **compiles into** every module that references it, so a library costs you no container, no port, and no failure mode when "the library is down". That is the whole mechanism, and it is the same one you get for a library of your own.
 
 ```
-catalog.json          every library, for the website and for tooling
+catalog.json          every library, for the website, the Assistant's search and tooling
+bundles/<slug>.json   each library folder as ONE download — what an install fetches
 libraries/<slug>/     the installable folder — a byte-for-byte .etyma/projects/<slug>/
 libraries-src/*.mjs   the definitions. THIS is the source of truth
 docs/<slug>.md        what each library does, in prose
