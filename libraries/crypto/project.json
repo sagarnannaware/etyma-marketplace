@@ -1,0 +1,135 @@
+{
+  "id": "9Xx_zH5OLPDG",
+  "name": "Crypto",
+  "type": "library",
+  "references": [],
+  "variables": [],
+  "createdAt": "2026-09-11T09:23:43.412Z",
+  "updatedAt": "2026-09-11T09:23:43.412Z",
+  "npmPackages": [
+    {
+      "name": "bcryptjs",
+      "version": "2.4.3",
+      "typesSource": "@types",
+      "typesVersion": "2.4.6",
+      "environments": [
+        "node"
+      ],
+      "functions": [
+        {
+          "export": "hashSync",
+          "params": [
+            {
+              "name": "data",
+              "type": "string"
+            },
+            {
+              "name": "salt",
+              "type": "number"
+            }
+          ],
+          "returns": "string",
+          "jsdoc": "Hash a password with the given cost factor. 10 is the usual choice."
+        },
+        {
+          "export": "compareSync",
+          "params": [
+            {
+              "name": "data",
+              "type": "string"
+            },
+            {
+              "name": "encrypted",
+              "type": "string"
+            }
+          ],
+          "returns": "boolean",
+          "jsdoc": "Check a password against a stored hash, in constant time."
+        }
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-02T00:00:00.000Z"
+    },
+    {
+      "name": "jsonwebtoken",
+      "version": "9.0.2",
+      "typesSource": "@types",
+      "typesVersion": "9.0.10",
+      "environments": [
+        "node"
+      ],
+      "functions": [
+        {
+          "export": "sign",
+          "params": [
+            {
+              "name": "payload",
+              "type": "object"
+            },
+            {
+              "name": "secretOrPrivateKey",
+              "type": "string"
+            },
+            {
+              "name": "options",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "string",
+          "jsdoc": "Sign a payload into a JWT."
+        },
+        {
+          "export": "verify",
+          "params": [
+            {
+              "name": "token",
+              "type": "string"
+            },
+            {
+              "name": "secretOrPublicKey",
+              "type": "string"
+            }
+          ],
+          "returns": "object",
+          "jsdoc": "Verify a JWT and return its payload. Throws when the signature or expiry fails."
+        }
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-02T00:00:00.000Z"
+    },
+    {
+      "name": "uuid",
+      "version": "9.0.1",
+      "typesSource": "@types",
+      "typesVersion": "9.0.8",
+      "environments": [
+        "node",
+        "browser"
+      ],
+      "functions": [
+        {
+          "export": "v4",
+          "params": [],
+          "returns": "string",
+          "jsdoc": "A random (v4) UUID."
+        }
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-02T00:00:00.000Z"
+    }
+  ],
+  "_order": {
+    "actions": [
+      "IQPVRx5DGUd3",
+      "vHInlb4GCGqe",
+      "UeCMFjLbKXmg",
+      "KB4besP3FOma",
+      "T2_QR-ZrS45f"
+    ]
+  },
+  "schemaVersion": 21
+}

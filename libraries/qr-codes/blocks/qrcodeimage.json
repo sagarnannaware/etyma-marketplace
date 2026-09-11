@@ -1,0 +1,37 @@
+{
+  "id": "OCpJKMN2a0ws",
+  "name": "QRCodeImage",
+  "widgetTree": {
+    "id": "8MlJgdCKP11u",
+    "type": "Box",
+    "properties": {
+      "className": "flex min-h-full w-full flex-col gap-4 p-6"
+    },
+    "events": {},
+    "layout": {},
+    "children": []
+  },
+  "inputParameters": [
+    {
+      "id": "PhRVPA7wT4LW",
+      "name": "src",
+      "type": "Text"
+    },
+    {
+      "id": "q_05OaKnROIo",
+      "name": "label",
+      "type": "Text"
+    },
+    {
+      "id": "ZxhmgNVnFSQ5",
+      "name": "size",
+      "type": "Integer"
+    }
+  ],
+  "outputActions": [],
+  "variables": [],
+  "isPublic": true,
+  "styles": "",
+  "kind": "code",
+  "description": "Shows a QR code image made by Make QR Code, with a caption — on a badge, a ticket, a check-in card or a receipt."
+}

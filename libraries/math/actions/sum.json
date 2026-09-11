@@ -1,0 +1,79 @@
+{
+  "name": "Sum",
+  "description": "Add up a list of numbers — line totals into an invoice total, hours into a timesheet, quantities into a stock count.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "L17xn1ElcAKo",
+      "name": "values",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Decimal",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "N-g59wtCj1PE",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "vHsmOoB0not2",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "mathjs",
+        "exportName": "sum",
+        "args": "[\"{{values}}\"]",
+        "outputVariable": "total"
+      }
+    },
+    {
+      "id": "a6IAL_KPBGRx",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{total}}\"}]"
+      }
+    },
+    {
+      "id": "XMnee2Xc1phi",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "7LYF-ITtntNF",
+      "source": "N-g59wtCj1PE",
+      "target": "vHsmOoB0not2"
+    },
+    {
+      "id": "aF90SK1CFPe9",
+      "source": "vHsmOoB0not2",
+      "target": "a6IAL_KPBGRx"
+    },
+    {
+      "id": "Lo6WL123j8DB",
+      "source": "a6IAL_KPBGRx",
+      "target": "XMnee2Xc1phi"
+    }
+  ],
+  "id": "4rrA9KFV0kQo",
+  "localVariables": [],
+  "outputParameters": []
+}

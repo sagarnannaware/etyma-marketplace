@@ -1,0 +1,22 @@
+{
+  "slug": "crypto",
+  "name": "Crypto",
+  "tagline": "Password hashing, signed tokens and unguessable ids — over bcryptjs, jsonwebtoken and uuid.",
+  "description": "Hash and verify passwords with bcrypt, sign and verify JWTs, mint UUIDs for invite codes, reset links and idempotency keys — the platform's own library, over bcryptjs, jsonwebtoken and uuid.",
+  "category": "Security",
+  "version": "1.0.0",
+  "tags": [
+    "password",
+    "hash",
+    "bcrypt",
+    "jwt",
+    "token",
+    "sign",
+    "verify",
+    "uuid",
+    "id"
+  ],
+  "license": "MIT",
+  "author": "Etyma",
+  "source": "platform"
+}

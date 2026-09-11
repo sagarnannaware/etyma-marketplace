@@ -1,0 +1,79 @@
+{
+  "name": "Make QR Code",
+  "description": "Turn text or a URL into a QR code image as a PNG data URL — put it straight into an Image on a badge, an event ticket, a check-in poster, a payment slip, a boarding pass or an email. Scanning it opens the text.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "qn-dmo8zn9SK",
+      "name": "text",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "4Gmr-JrLAFnj",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "cTUA_EsKjRlj",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "qrcode",
+        "exportName": "toDataURL",
+        "args": "[\"{{text}}\"]",
+        "outputVariable": "image"
+      }
+    },
+    {
+      "id": "A6UuLGmApdQr",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{image}}\"}]"
+      }
+    },
+    {
+      "id": "0Vsmt2M--UaZ",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "IMEClPz8JXYM",
+      "source": "4Gmr-JrLAFnj",
+      "target": "cTUA_EsKjRlj"
+    },
+    {
+      "id": "hzJBUUjl1bCc",
+      "source": "cTUA_EsKjRlj",
+      "target": "A6UuLGmApdQr"
+    },
+    {
+      "id": "RUR9vS7clqwe",
+      "source": "A6UuLGmApdQr",
+      "target": "0Vsmt2M--UaZ"
+    }
+  ],
+  "id": "hZPeZcAmySQ4",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -1,0 +1,84 @@
+{
+  "name": "Format Number",
+  "description": "Format a number as text with fixed decimals — for a price on a page, a total in a PDF, an amount in an email.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "Tajyc2rNtOyH",
+      "name": "value",
+      "type": "Decimal"
+    },
+    {
+      "id": "X1nXQm1ItQ1k",
+      "name": "decimals",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "4PJVGfWVf_Ip",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "zGSeWVmRnuZ8",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "mathjs",
+        "exportName": "format",
+        "args": "[\"{{= +value }}\",\"{{= ({ notation: 'fixed', precision: +decimals }) }}\"]",
+        "outputVariable": "text"
+      }
+    },
+    {
+      "id": "l_YdYLFsQ7GV",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{text}}\"}]"
+      }
+    },
+    {
+      "id": "15WSyvrR_1Du",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "qykDI11QbqwL",
+      "source": "4PJVGfWVf_Ip",
+      "target": "zGSeWVmRnuZ8"
+    },
+    {
+      "id": "uNMABhB7jrHq",
+      "source": "zGSeWVmRnuZ8",
+      "target": "l_YdYLFsQ7GV"
+    },
+    {
+      "id": "6mbwdkUzS5yQ",
+      "source": "l_YdYLFsQ7GV",
+      "target": "15WSyvrR_1Du"
+    }
+  ],
+  "id": "xBthUk8062m2",
+  "localVariables": [],
+  "outputParameters": []
+}

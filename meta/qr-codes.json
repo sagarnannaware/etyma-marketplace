@@ -1,0 +1,20 @@
+{
+  "slug": "qr-codes",
+  "name": "QR Codes",
+  "tagline": "QR codes for badges, tickets, check-in links and payment references.",
+  "description": "QR codes for badges, tickets, check-in links and payment references — a PNG data URL or SVG from any text.",
+  "category": "Documents",
+  "version": "1.0.0",
+  "tags": [
+    "qr",
+    "qr code",
+    "badge",
+    "ticket",
+    "check-in",
+    "scan",
+    "image"
+  ],
+  "license": "MIT",
+  "author": "Etyma",
+  "source": "curated"
+}

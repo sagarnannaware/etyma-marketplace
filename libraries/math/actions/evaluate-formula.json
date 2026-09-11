@@ -1,0 +1,84 @@
+{
+  "name": "Evaluate Formula",
+  "description": "Evaluate a formula written as text — '(price * qty) * (1 - discount / 100)' — with named values; for a pricing rule, a quote, a commission, a tax, a calculator or any formula a business user edits without a release.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "OOTIv0gsjfoK",
+      "name": "expression",
+      "type": "Text"
+    },
+    {
+      "id": "9HYPZhSQWYno",
+      "name": "values",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Decimal",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "QJXVV102T-ow",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "TGQNVsVZf-yc",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "mathjs",
+        "exportName": "evaluate",
+        "args": "[\"{{expression}}\",\"{{values}}\"]",
+        "outputVariable": "value"
+      }
+    },
+    {
+      "id": "sW4k0YJmJJ9A",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{value}}\"}]"
+      }
+    },
+    {
+      "id": "yoddw4hZ99l-",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "G0Czw51mOzsO",
+      "source": "QJXVV102T-ow",
+      "target": "TGQNVsVZf-yc"
+    },
+    {
+      "id": "xd6FhJIVQDGg",
+      "source": "TGQNVsVZf-yc",
+      "target": "sW4k0YJmJJ9A"
+    },
+    {
+      "id": "Yv7JCdQ20uKQ",
+      "source": "sW4k0YJmJJ9A",
+      "target": "yoddw4hZ99l-"
+    }
+  ],
+  "id": "fr0wugGBLU1l",
+  "localVariables": [],
+  "outputParameters": []
+}

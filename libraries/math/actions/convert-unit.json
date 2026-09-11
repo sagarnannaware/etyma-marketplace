@@ -1,0 +1,108 @@
+{
+  "name": "Convert Unit",
+  "description": "Convert a quantity between units — inches to cm, kg to lb, km/h to m/s, litres to gallons, degC to degF — for shipping weights, product dimensions and metric/imperial forms.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "LPKzT7ug3qwx",
+      "name": "value",
+      "type": "Decimal"
+    },
+    {
+      "id": "R18ifCFwfFKQ",
+      "name": "from",
+      "type": "Text"
+    },
+    {
+      "id": "pvLUA35Q2lhy",
+      "name": "to",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Decimal",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "lwQNbXlTJ7TU",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "4hyzcn3MZdku",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "mathjs",
+        "exportName": "evaluate",
+        "args": "[\"{{= value + ' ' + from + ' to ' + to }}\"]",
+        "outputVariable": "quantity"
+      }
+    },
+    {
+      "id": "yvNYgnln_3dq",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "packageName": "mathjs",
+        "exportName": "round",
+        "args": "[\"{{= quantity.toNumber(to) }}\",\"{{= 6 }}\"]",
+        "outputVariable": "converted"
+      }
+    },
+    {
+      "id": "G14lzSV8V9Wa",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{converted}}\"}]"
+      }
+    },
+    {
+      "id": "w_ByWPMAcbHj",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 480
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "Ok7fr8gV-BRd",
+      "source": "lwQNbXlTJ7TU",
+      "target": "4hyzcn3MZdku"
+    },
+    {
+      "id": "snxO0ibo6ZqT",
+      "source": "4hyzcn3MZdku",
+      "target": "yvNYgnln_3dq"
+    },
+    {
+      "id": "pEGbV3NDLwVA",
+      "source": "yvNYgnln_3dq",
+      "target": "G14lzSV8V9Wa"
+    },
+    {
+      "id": "-xTS1YvhQBRJ",
+      "source": "G14lzSV8V9Wa",
+      "target": "w_ByWPMAcbHj"
+    }
+  ],
+  "id": "saiScx0nF__a",
+  "localVariables": [],
+  "outputParameters": []
+}

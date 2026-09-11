@@ -1,0 +1,79 @@
+{
+  "name": "Make QR Code SVG",
+  "description": "Turn text or a URL into a QR code as SVG markup — for print, a PDF report, a label or a page that must scale without blur.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "VQjaJB53PXpF",
+      "name": "text",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "OSPC-2ozMQLg",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "OEMyB9PqRaCX",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "qrcode",
+        "exportName": "toString",
+        "args": "[\"{{text}}\",\"{{= ({ type: 'svg' }) }}\"]",
+        "outputVariable": "svg"
+      }
+    },
+    {
+      "id": "BE86yoCOxz85",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{svg}}\"}]"
+      }
+    },
+    {
+      "id": "UAuD9jxELRLl",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "Sr95FihJ5yS2",
+      "source": "OSPC-2ozMQLg",
+      "target": "OEMyB9PqRaCX"
+    },
+    {
+      "id": "aZvPU61f9L6s",
+      "source": "OEMyB9PqRaCX",
+      "target": "BE86yoCOxz85"
+    },
+    {
+      "id": "EnaDxycIJE-S",
+      "source": "BE86yoCOxz85",
+      "target": "UAuD9jxELRLl"
+    }
+  ],
+  "id": "BphuztGJEkff",
+  "localVariables": [],
+  "outputParameters": []
+}

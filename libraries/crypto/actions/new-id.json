@@ -1,0 +1,73 @@
+{
+  "id": "T2_QR-ZrS45f",
+  "name": "New Id",
+  "description": "A random UUID — for invite codes, reset links and idempotency keys.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [],
+  "variables": [],
+  "nodes": [
+    {
+      "id": "C_xST99I3-eQ",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "Zo3I_jpiOGsG",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "uuid",
+        "exportName": "v4",
+        "args": "[]",
+        "outputVariable": "id"
+      }
+    },
+    {
+      "id": "tthMOtsUdYBL",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{id}}\"}]"
+      }
+    },
+    {
+      "id": "d1QaP57DC1gh",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "XPHDz6o3sACd",
+      "source": "C_xST99I3-eQ",
+      "target": "Zo3I_jpiOGsG"
+    },
+    {
+      "id": "sKHU1VhxrHW6",
+      "source": "Zo3I_jpiOGsG",
+      "target": "tthMOtsUdYBL"
+    },
+    {
+      "id": "wvapY95_39YJ",
+      "source": "tthMOtsUdYBL",
+      "target": "d1QaP57DC1gh"
+    }
+  ],
+  "createdAt": "2026-09-11T09:23:43.413Z",
+  "updatedAt": "2026-09-11T09:23:43.413Z"
+}

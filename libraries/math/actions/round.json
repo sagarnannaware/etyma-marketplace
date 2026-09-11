@@ -1,0 +1,84 @@
+{
+  "name": "Round",
+  "description": "Round a number to a number of decimal places — 2 for money and prices, 0 for a count or a quantity.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "PIw6GneX3zYF",
+      "name": "value",
+      "type": "Decimal"
+    },
+    {
+      "id": "U1uUqsuNF1pk",
+      "name": "decimals",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Decimal",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "8NepONtOF1mw",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "WdH2IJckcVmj",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "mathjs",
+        "exportName": "round",
+        "args": "[\"{{= +value }}\",\"{{= +decimals }}\"]",
+        "outputVariable": "rounded"
+      }
+    },
+    {
+      "id": "mwv4GmWQXy8-",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{rounded}}\"}]"
+      }
+    },
+    {
+      "id": "HvB7WYs3qCaZ",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "FwkFj2t27ahm",
+      "source": "8NepONtOF1mw",
+      "target": "WdH2IJckcVmj"
+    },
+    {
+      "id": "ixlMNNp4bE89",
+      "source": "WdH2IJckcVmj",
+      "target": "mwv4GmWQXy8-"
+    },
+    {
+      "id": "KZYeYQRGGiO1",
+      "source": "mwv4GmWQXy8-",
+      "target": "HvB7WYs3qCaZ"
+    }
+  ],
+  "id": "0075dshnzkIq",
+  "localVariables": [],
+  "outputParameters": []
+}

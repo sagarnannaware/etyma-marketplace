@@ -1,0 +1,23 @@
+{
+  "slug": "barcodes",
+  "name": "Barcodes",
+  "tagline": "Barcodes for product labels, shipping labels, asset tags and inventory.",
+  "description": "Barcodes for product labels, shipping labels, asset tags and inventory — Code 128, EAN-13, Code 39, Data Matrix, PDF417 — as PNG or SVG.",
+  "category": "Documents",
+  "version": "1.0.0",
+  "tags": [
+    "barcode",
+    "code128",
+    "ean13",
+    "ean",
+    "sku",
+    "label",
+    "inventory",
+    "shipping",
+    "asset tag",
+    "scan"
+  ],
+  "license": "MIT",
+  "author": "Etyma",
+  "source": "curated"
+}

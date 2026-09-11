@@ -1,0 +1,79 @@
+{
+  "name": "Make EAN-13 Barcode",
+  "description": "Render a retail EAN-13 barcode (the 13-digit GS1 code on product packaging and price labels) as a PNG data URL.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "uA-8b0Xlpfg6",
+      "name": "digits",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "tzB5ugBqBGcB",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "4NpIpiF_PuKO",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "bwip-js",
+        "exportName": "toBuffer",
+        "args": "[\"{{= ({ bcid: 'ean13', text: digits, scale: 3, height: 12, includetext: true }) }}\"]",
+        "outputVariable": "png"
+      }
+    },
+    {
+      "id": "CuTZwk3HmrTd",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= 'data:image/png;base64,' + png.toString('base64') }}\"}]"
+      }
+    },
+    {
+      "id": "QehZr5KwrMMz",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "t8geWksj_9J9",
+      "source": "tzB5ugBqBGcB",
+      "target": "4NpIpiF_PuKO"
+    },
+    {
+      "id": "Zxn0ma3qr6MQ",
+      "source": "4NpIpiF_PuKO",
+      "target": "CuTZwk3HmrTd"
+    },
+    {
+      "id": "j0839XOPIww_",
+      "source": "CuTZwk3HmrTd",
+      "target": "QehZr5KwrMMz"
+    }
+  ],
+  "id": "G5-UaPPYyap5",
+  "localVariables": [],
+  "outputParameters": []
+}

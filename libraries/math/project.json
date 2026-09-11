@@ -1,0 +1,105 @@
+{
+  "id": "YeOGUAaaS-bL",
+  "name": "Math",
+  "type": "library",
+  "references": [],
+  "variables": [],
+  "createdAt": "2026-09-11T09:23:38.404Z",
+  "updatedAt": "2026-09-11T09:23:38.404Z",
+  "requirementsDoc": "Formulas a business user can edit, rounding for money, sums and averages, unit conversion — over mathjs.",
+  "npmPackages": [
+    {
+      "name": "mathjs",
+      "version": "15.2.0",
+      "typesSource": "bundled",
+      "environments": [
+        "node"
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-11T09:23:39.248Z",
+      "functions": [
+        {
+          "export": "evaluate",
+          "params": [
+            {
+              "name": "expression",
+              "type": "string"
+            },
+            {
+              "name": "scope",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "any",
+          "jsdoc": "Evaluate a formula written as text, with named values in scope: evaluate('price * qty', { price: 10, qty: 3 })."
+        },
+        {
+          "export": "round",
+          "params": [
+            {
+              "name": "value",
+              "type": "number"
+            },
+            {
+              "name": "decimals",
+              "type": "number"
+            }
+          ],
+          "returns": "number",
+          "jsdoc": "Round to a number of decimal places."
+        },
+        {
+          "export": "sum",
+          "params": [
+            {
+              "name": "values",
+              "type": "array"
+            }
+          ],
+          "returns": "number",
+          "jsdoc": "The sum of a list of numbers."
+        },
+        {
+          "export": "mean",
+          "params": [
+            {
+              "name": "values",
+              "type": "array"
+            }
+          ],
+          "returns": "number",
+          "jsdoc": "The average of a list of numbers."
+        },
+        {
+          "export": "format",
+          "params": [
+            {
+              "name": "value",
+              "type": "any"
+            },
+            {
+              "name": "options",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "string",
+          "jsdoc": "Format a number as text; { notation: 'fixed', precision: 2 } for two decimals."
+        }
+      ]
+    }
+  ],
+  "_order": {
+    "actions": [
+      "fr0wugGBLU1l",
+      "0075dshnzkIq",
+      "4rrA9KFV0kQo",
+      "vxeBF__KukxC",
+      "saiScx0nF__a",
+      "xBthUk8062m2"
+    ]
+  },
+  "schemaVersion": 21
+}

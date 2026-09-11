@@ -1,0 +1,68 @@
+{
+  "id": "cEozvRPAru4V",
+  "name": "QR Codes",
+  "type": "library",
+  "references": [],
+  "variables": [],
+  "createdAt": "2026-09-11T09:23:36.540Z",
+  "updatedAt": "2026-09-11T09:23:36.540Z",
+  "requirementsDoc": "QR codes for badges, tickets, check-in links and payment references — a PNG data URL or SVG from any text.",
+  "npmPackages": [
+    {
+      "name": "qrcode",
+      "version": "1.5.4",
+      "typesSource": "@types",
+      "typesVersion": "1.5.6",
+      "environments": [
+        "node"
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-11T09:23:36.912Z",
+      "functions": [
+        {
+          "export": "toDataURL",
+          "params": [
+            {
+              "name": "text",
+              "type": "string"
+            },
+            {
+              "name": "options",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "Promise<string>",
+          "jsdoc": "Render text as a QR code PNG, returned as a data URL."
+        },
+        {
+          "export": "toString",
+          "params": [
+            {
+              "name": "text",
+              "type": "string"
+            },
+            {
+              "name": "options",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "Promise<string>",
+          "jsdoc": "Render text as a QR code in a text format; { type: 'svg' } gives SVG markup."
+        }
+      ]
+    }
+  ],
+  "_order": {
+    "blocks": [
+      "OCpJKMN2a0ws"
+    ],
+    "actions": [
+      "hZPeZcAmySQ4",
+      "BphuztGJEkff"
+    ]
+  },
+  "schemaVersion": 21
+}

@@ -1,0 +1,84 @@
+{
+  "name": "Make Barcode",
+  "description": "Render a barcode as a PNG data URL for a product label, a shipping label, an asset tag, a pick list or an inventory sheet. The symbology is Code 128 unless given: code128, ean13, upca, code39, datamatrix, pdf417.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "j-oA_E3aXkgB",
+      "name": "text",
+      "type": "Text"
+    },
+    {
+      "id": "wt7Vni35U76m",
+      "name": "symbology",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "OHzKTrFb-Gyb",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "zmf34NEJkky6",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "bwip-js",
+        "exportName": "toBuffer",
+        "args": "[\"{{= ({ bcid: symbology || 'code128', text: text, scale: 3, height: 10, includetext: true }) }}\"]",
+        "outputVariable": "png"
+      }
+    },
+    {
+      "id": "vwDw7TBLcALQ",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= 'data:image/png;base64,' + png.toString('base64') }}\"}]"
+      }
+    },
+    {
+      "id": "XCXRDa4Es5jX",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "SqCjKTdJ_EUo",
+      "source": "OHzKTrFb-Gyb",
+      "target": "zmf34NEJkky6"
+    },
+    {
+      "id": "UWDaCozz802L",
+      "source": "zmf34NEJkky6",
+      "target": "vwDw7TBLcALQ"
+    },
+    {
+      "id": "7VJfW2a00h35",
+      "source": "vwDw7TBLcALQ",
+      "target": "XCXRDa4Es5jX"
+    }
+  ],
+  "id": "QSYU8VKh3F1M",
+  "localVariables": [],
+  "outputParameters": []
+}

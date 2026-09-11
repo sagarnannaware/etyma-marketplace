@@ -1,0 +1,84 @@
+{
+  "id": "UeCMFjLbKXmg",
+  "name": "Sign Token",
+  "description": "Sign a payload into a JWT that expires in 1 hour. The secret comes from the caller.",
+  "scope": "server",
+  "isPublic": true,
+  "parameters": [
+    {
+      "id": "YtUuzgU6UKQF",
+      "name": "payload",
+      "type": "Text"
+    },
+    {
+      "id": "4UbJs0HU4OqR",
+      "name": "secret",
+      "type": "Text"
+    }
+  ],
+  "variables": [],
+  "nodes": [
+    {
+      "id": "XC05ltBEJZVG",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "uFSNA0jNvwIR",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 110
+      },
+      "data": {
+        "packageName": "jsonwebtoken",
+        "exportName": "sign",
+        "args": "[\"{{payload}}\",\"{{secret}}\",\"{{= ({ expiresIn: \\\"1h\\\" }) }}\"]",
+        "outputVariable": "token"
+      }
+    },
+    {
+      "id": "2DDIp54uyWXl",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"__returnValue\",\"value\":\"{{token}}\"}]"
+      }
+    },
+    {
+      "id": "PboiYOwyGPbk",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 330
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "FQWdzIRbiRaA",
+      "source": "XC05ltBEJZVG",
+      "target": "uFSNA0jNvwIR"
+    },
+    {
+      "id": "JrY9hV2t6kwe",
+      "source": "uFSNA0jNvwIR",
+      "target": "2DDIp54uyWXl"
+    },
+    {
+      "id": "f-MGZI2OESL7",
+      "source": "2DDIp54uyWXl",
+      "target": "PboiYOwyGPbk"
+    }
+  ],
+  "createdAt": "2026-09-11T09:23:43.413Z",
+  "updatedAt": "2026-09-11T09:23:43.413Z"
+}

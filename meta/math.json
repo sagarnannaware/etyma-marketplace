@@ -1,0 +1,22 @@
+{
+  "slug": "math",
+  "name": "Math",
+  "tagline": "Evaluate a formula written as text, round for money, sum, average, convert units.",
+  "description": "Formulas a business user can edit, rounding for money, sums and averages, unit conversion — over mathjs.",
+  "category": "Utilities",
+  "version": "1.0.0",
+  "tags": [
+    "math",
+    "formula",
+    "calculator",
+    "pricing",
+    "rounding",
+    "units",
+    "convert",
+    "sum",
+    "average"
+  ],
+  "license": "MIT",
+  "author": "Etyma",
+  "source": "curated"
+}

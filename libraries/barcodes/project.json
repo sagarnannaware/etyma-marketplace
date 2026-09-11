@@ -1,0 +1,55 @@
+{
+  "id": "20EI8_WNECgF",
+  "name": "Barcodes",
+  "type": "library",
+  "references": [],
+  "variables": [],
+  "createdAt": "2026-09-11T09:23:37.539Z",
+  "updatedAt": "2026-09-11T09:23:37.539Z",
+  "requirementsDoc": "Barcodes for product labels, shipping labels, asset tags and inventory — Code 128, EAN-13, Code 39, Data Matrix, PDF417 — as PNG or SVG.",
+  "npmPackages": [
+    {
+      "name": "bwip-js",
+      "version": "4.11.4",
+      "typesSource": "bundled",
+      "environments": [
+        "node"
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-11T09:23:38.335Z",
+      "functions": [
+        {
+          "export": "toBuffer",
+          "params": [
+            {
+              "name": "options",
+              "type": "object"
+            }
+          ],
+          "returns": "Promise<Buffer>",
+          "jsdoc": "Render a barcode as a PNG buffer. options: { bcid, text, scale, height, includetext }; bcid is the symbology — code128, ean13, upca, code39, datamatrix, pdf417, qrcode."
+        },
+        {
+          "export": "toSVG",
+          "params": [
+            {
+              "name": "options",
+              "type": "object"
+            }
+          ],
+          "returns": "string",
+          "jsdoc": "Render a barcode as SVG markup; the same options as toBuffer."
+        }
+      ]
+    }
+  ],
+  "_order": {
+    "actions": [
+      "QSYU8VKh3F1M",
+      "G5-UaPPYyap5",
+      "_qKIvqfPvKeB"
+    ]
+  },
+  "schemaVersion": 21
+}

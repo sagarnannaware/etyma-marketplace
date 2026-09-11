@@ -1,0 +1,79 @@
+{
+  "name": "Average",
+  "description": "The average (mean) of a list of numbers — ratings, response times, scores, monthly sales.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "kXxdLio3z_oL",
+      "name": "values",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Decimal",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "LPCjxlxzT6C1",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "2DXRuN_BvD02",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "mathjs",
+        "exportName": "mean",
+        "args": "[\"{{values}}\"]",
+        "outputVariable": "average"
+      }
+    },
+    {
+      "id": "LnzyuYZTiHPB",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{average}}\"}]"
+      }
+    },
+    {
+      "id": "F3gmFc4KPJrf",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "v62TOFUnAUZO",
+      "source": "LPCjxlxzT6C1",
+      "target": "2DXRuN_BvD02"
+    },
+    {
+      "id": "fYYj3Vbxej0T",
+      "source": "2DXRuN_BvD02",
+      "target": "LnzyuYZTiHPB"
+    },
+    {
+      "id": "qo8x7OA7ljpO",
+      "source": "LnzyuYZTiHPB",
+      "target": "F3gmFc4KPJrf"
+    }
+  ],
+  "id": "vxeBF__KukxC",
+  "localVariables": [],
+  "outputParameters": []
+}

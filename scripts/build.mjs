@@ -227,8 +227,10 @@ function contributedMeta({ slug, meta, projectPath }) {
     version: meta.version || "1.0.0",
     tags: meta.tags || [],
     // Says where it came from, because a reader deserves to know whether this
-    // was curated here or contributed from someone's app.
-    source: "contributed",
+    // was curated here or contributed from someone's app — and a run with nobody
+    // at the gate installs only what the platform vouches for, so a platform
+    // library's metadata says `platform`.
+    source: meta.source === "platform" || meta.source === "curated" ? meta.source : "contributed",
     ...(meta.author ? { author: meta.author } : {}),
     ...(meta.license ? { license: meta.license } : {}),
     ...(meta.notes ? { notes: meta.notes } : {}),
