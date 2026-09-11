@@ -4,7 +4,7 @@
   "scope": "server",
   "parameters": [
     {
-      "id": "PRhEIwpljjCr",
+      "id": "59xAvIEJ51Tr",
       "name": "text",
       "type": "Text"
     }
@@ -13,7 +13,7 @@
   "isPublic": true,
   "nodes": [
     {
-      "id": "VoOscb7OZzAT",
+      "id": "sDgabcA3zr8I",
       "type": "Start",
       "position": {
         "x": 0,
@@ -22,7 +22,7 @@
       "data": {}
     },
     {
-      "id": "iczevnqLi0tC",
+      "id": "gnTZNLkWrOxW",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -33,7 +33,7 @@
       }
     },
     {
-      "id": "kHqKlUinSrfF",
+      "id": "5PFpb0rrMjjc",
       "type": "End",
       "position": {
         "x": 0,
@@ -44,17 +44,17 @@
   ],
   "edges": [
     {
-      "id": "E2eQUQT17Ui-",
-      "source": "VoOscb7OZzAT",
-      "target": "iczevnqLi0tC"
+      "id": "oRdVoyslvrHz",
+      "source": "sDgabcA3zr8I",
+      "target": "gnTZNLkWrOxW"
     },
     {
-      "id": "IdsCpuWRjrU1",
-      "source": "iczevnqLi0tC",
-      "target": "kHqKlUinSrfF"
+      "id": "ogjOuH_HEqKx",
+      "source": "gnTZNLkWrOxW",
+      "target": "5PFpb0rrMjjc"
     }
   ],
-  "id": "e-6MkZPVKs0Z",
+  "id": "sfpQdWKJsJRQ",
   "localVariables": [],
   "outputParameters": []
 }

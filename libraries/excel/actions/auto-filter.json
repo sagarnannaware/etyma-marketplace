@@ -1,0 +1,70 @@
+{
+  "name": "Auto Filter",
+  "description": "Filter buttons on a header row — 'A1:F1' — so the reader can sort and filter the rows below in Excel.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "xTp_oqvQ0I8c",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "KmLLIzIsHPj3",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "m5pEUQJTExaz",
+      "name": "range",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "8T0H8Q7skxrX",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "nWmjRnaJivMZ",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet); if (!ws) throw new Error('No sheet named ' + sheet); ws.autoFilter = String(range); return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "tVuDd7gQgSYV",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "Jmluz16MAn8x",
+      "source": "8T0H8Q7skxrX",
+      "target": "nWmjRnaJivMZ"
+    },
+    {
+      "id": "iB0EOs4yvfSD",
+      "source": "nWmjRnaJivMZ",
+      "target": "tVuDd7gQgSYV"
+    }
+  ],
+  "id": "osoX3NEsUKds",
+  "localVariables": [],
+  "outputParameters": []
+}

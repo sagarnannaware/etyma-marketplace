@@ -1,0 +1,70 @@
+{
+  "name": "Add Rows",
+  "description": "Append records or rows of values below what a sheet already has — order lines, the rows of a report, a list of employees. Records are matched to the columns Set Columns defined; without columns their values are written in order.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "ZGb5mkyD36l5",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "NlSLVsAaDSsN",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "dKJxGF6jBmzu",
+      "name": "rows",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "-RzUbCzFHEP3",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "RYWnEGUVc-_r",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet) || workbook.addWorksheet(sheet || 'Sheet1'); const keyed = (ws.columns || []).some((c) => c && c.key); (Array.isArray(rows) ? rows : []).forEach((r) => ws.addRow(Array.isArray(r) || keyed || r == null || typeof r !== 'object' ? r : Object.values(r))); return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "-dhqryZduEMp",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "8AV4sH2AMG0H",
+      "source": "-RzUbCzFHEP3",
+      "target": "RYWnEGUVc-_r"
+    },
+    {
+      "id": "caBrNgoKh4VS",
+      "source": "RYWnEGUVc-_r",
+      "target": "-dhqryZduEMp"
+    }
+  ],
+  "id": "Wfl4ZVGj9r3M",
+  "localVariables": [],
+  "outputParameters": []
+}

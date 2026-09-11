@@ -1,0 +1,75 @@
+{
+  "name": "Set Column Width",
+  "description": "The width of a column, by letter or number — 'A' or 1 — in characters.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "grNzM28nZUOv",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "dRPVVf-aTFbB",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "EuH70BfKLwrE",
+      "name": "column",
+      "type": "Text"
+    },
+    {
+      "id": "LoFamkcCecTO",
+      "name": "width",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "PV7sZeDbst-y",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "MDVGgmlaJJMX",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet) || workbook.addWorksheet(sheet || 'Sheet1'); ws.getColumn(/^\\\\\\\\d+$/.test(String(column)) ? +column : String(column).toUpperCase()).width = +width; return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "_KC2-LObplet",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "nifwqz2IAEE1",
+      "source": "PV7sZeDbst-y",
+      "target": "MDVGgmlaJJMX"
+    },
+    {
+      "id": "skizTYwfO11S",
+      "source": "MDVGgmlaJJMX",
+      "target": "_KC2-LObplet"
+    }
+  ],
+  "id": "DmXCtEbSeCLg",
+  "localVariables": [],
+  "outputParameters": []
+}

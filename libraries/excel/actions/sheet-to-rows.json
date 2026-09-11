@@ -1,0 +1,70 @@
+{
+  "name": "Sheet To Rows",
+  "description": "Read a sheet as records keyed by its header row — an uploaded price list, a stock count, a list of employees — one object per row below the header. headerRow is 1 unless given.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "ah47l363Mkr2",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "Gnq7q__fgDmI",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "8-jwqYAFXZuC",
+      "name": "headerRow",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "QWiuoH6VCSuF",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "_ZFJZbh3E2_d",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet); if (!ws) return []; const plain = (v) => v && typeof v === 'object' ? ('result' in v ? v.result : Array.isArray(v.richText) ? v.richText.map((t) => t.text).join('') : 'text' in v ? v.text : v) : v; const hr = +headerRow || 1; const headers = []; ws.getRow(hr).eachCell({ includeEmpty: true }, (c, i) => { headers[i] = String(plain(c.value) ?? ('column' + i)).trim(); }); const out = []; ws.eachRow({ includeEmpty: false }, (row, n) => { if (n <= hr) return; const o = {}; let any = false; row.eachCell({ includeEmpty: false }, (c, i) => { if (headers[i]) { o[headers[i]] = plain(c.value); any = true; } }); if (any) out.push(o); }); return out; })() }}\"}]"
+      }
+    },
+    {
+      "id": "yRSGKFXRjYry",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "fZKP9zkESN6y",
+      "source": "QWiuoH6VCSuF",
+      "target": "_ZFJZbh3E2_d"
+    },
+    {
+      "id": "jk7fuM_MWVbQ",
+      "source": "_ZFJZbh3E2_d",
+      "target": "yRSGKFXRjYry"
+    }
+  ],
+  "id": "BKW2oj7i0M58",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -1,11 +1,11 @@
 {
-  "id": "BwSHBwXOQBH4",
+  "id": "GI8JfwynLwqO",
   "name": "Barcodes",
   "type": "library",
   "references": [],
   "variables": [],
-  "createdAt": "2026-09-11T10:03:17.986Z",
-  "updatedAt": "2026-09-11T10:03:17.986Z",
+  "createdAt": "2026-09-11T11:33:40.871Z",
+  "updatedAt": "2026-09-11T11:33:40.871Z",
   "requirementsDoc": "Barcodes for product labels, shipping labels, asset tags and inventory — Code 128, EAN-13, Code 39, Data Matrix, PDF417 — as PNG or SVG.",
   "npmPackages": [
     {
@@ -17,7 +17,7 @@
       ],
       "components": [],
       "unsupported": [],
-      "introspectedAt": "2026-09-11T10:03:18.799Z",
+      "introspectedAt": "2026-09-11T11:33:41.429Z",
       "functions": [
         {
           "export": "toBuffer",
@@ -46,9 +46,9 @@
   ],
   "_order": {
     "actions": [
-      "0YomhqlXIp3L",
-      "BZ9ONEO77Nhd",
-      "0RdvD__IbQkF"
+      "qlLJmlnKXt3r",
+      "-Xfb-HJiC42C",
+      "g40LJZOwZY4T"
     ]
   },
   "schemaVersion": 21

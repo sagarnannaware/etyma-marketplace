@@ -1,0 +1,75 @@
+{
+  "name": "Set Cells",
+  "description": "Write a block of values from a start cell — a two-dimensional list, one inner list per row — a header line, a small table, a key-value panel. A text starting with '=' is a formula.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "EvUjYSd-wCBV",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "U0WImO_hNROx",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "g1PpImGmqhRt",
+      "name": "start",
+      "type": "Text"
+    },
+    {
+      "id": "JzepO4aB7fpM",
+      "name": "values",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "QfKWg-iDjFKO",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "Qe6LTr6Bbwfn",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet) || workbook.addWorksheet(sheet || 'Sheet1'); const from = ws.getCell(String(start || 'A1')); (Array.isArray(values) ? values : []).forEach((row, i) => (Array.isArray(row) ? row : [row]).forEach((v, j) => { const c = ws.getCell(from.row + i, from.col + j); c.value = typeof v === 'string' && v.startsWith('=') ? { formula: v.slice(1) } : v; })); return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "vlPNg3HEDW8d",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "zOTU9MGbfg5z",
+      "source": "QfKWg-iDjFKO",
+      "target": "Qe6LTr6Bbwfn"
+    },
+    {
+      "id": "n4ZKNXD9LovE",
+      "source": "Qe6LTr6Bbwfn",
+      "target": "vlPNg3HEDW8d"
+    }
+  ],
+  "id": "toidP24331E-",
+  "localVariables": [],
+  "outputParameters": []
+}

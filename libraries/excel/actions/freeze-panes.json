@@ -1,0 +1,75 @@
+{
+  "name": "Freeze Panes",
+  "description": "Keep the top rows and left columns in view while the reader scrolls — 1 row for a header, 1 column for the names.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "tIds2QGNKRj2",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "J4yC4C1AnqRX",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "0t0YhG6NWCrA",
+      "name": "rows_",
+      "type": "Integer"
+    },
+    {
+      "id": "knifBXg08c3t",
+      "name": "columns_",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "sp-1JyKwKlAn",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "qZh58LWewJJs",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet) || workbook.addWorksheet(sheet || 'Sheet1'); ws.views = [{ state: 'frozen', xSplit: +columns_ || 0, ySplit: +rows_ || 0 }]; return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "Ckn8Xc_JT6Uu",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "JvzBGOBd0g34",
+      "source": "sp-1JyKwKlAn",
+      "target": "qZh58LWewJJs"
+    },
+    {
+      "id": "AgrSHbTMAfJ8",
+      "source": "qZh58LWewJJs",
+      "target": "Ckn8Xc_JT6Uu"
+    }
+  ],
+  "id": "1-fDddaXnKBw",
+  "localVariables": [],
+  "outputParameters": []
+}

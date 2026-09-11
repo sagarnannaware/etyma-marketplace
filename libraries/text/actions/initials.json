@@ -4,7 +4,7 @@
   "scope": "server",
   "parameters": [
     {
-      "id": "-cYDDhicQFAi",
+      "id": "oA6IBprEue7n",
       "name": "name",
       "type": "Text"
     }
@@ -13,7 +13,7 @@
   "isPublic": true,
   "nodes": [
     {
-      "id": "5eM3OgFnLAR6",
+      "id": "toaLcgLxPcLH",
       "type": "Start",
       "position": {
         "x": 0,
@@ -22,7 +22,7 @@
       "data": {}
     },
     {
-      "id": "X_LYd0gWGWI7",
+      "id": "ulVv9FrvpVXX",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -33,7 +33,7 @@
       }
     },
     {
-      "id": "K2lrt6heYglm",
+      "id": "tgyTwbN6Bs5E",
       "type": "End",
       "position": {
         "x": 0,
@@ -44,17 +44,17 @@
   ],
   "edges": [
     {
-      "id": "wjw1w74nfG8B",
-      "source": "5eM3OgFnLAR6",
-      "target": "X_LYd0gWGWI7"
+      "id": "Qln2wNXyqwCr",
+      "source": "toaLcgLxPcLH",
+      "target": "ulVv9FrvpVXX"
     },
     {
-      "id": "MzoyD4ZL-hKJ",
-      "source": "X_LYd0gWGWI7",
-      "target": "K2lrt6heYglm"
+      "id": "zcW2BRAqtdkL",
+      "source": "ulVv9FrvpVXX",
+      "target": "tgyTwbN6Bs5E"
     }
   ],
-  "id": "R6WCotjwMHaY",
+  "id": "ud0s73Fsy30d",
   "localVariables": [],
   "outputParameters": []
 }

@@ -1,0 +1,65 @@
+{
+  "name": "Fill Placeholders",
+  "description": "Fill a template opened with Open Workbook from an object: every cell holding {{customer.name}}, {{invoice.number}} or {{date}} takes the value, on every sheet, keeping the cell's style and number format — so the layout is edited in Excel and the flow never names an address. A placeholder whose first name the object does not have is left as it is (the {{item.…}} row stays for Fill Table); a known name with a missing part becomes empty.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "FNiuO4YgjKrt",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "bcDinPlKFw-s",
+      "name": "values",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "Nzrcb7ynpv5S",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "FaHhl9FFCr3f",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const whole = new RegExp('^\\\\\\\\s*\\\\\\\\{\\\\\\\\{\\\\\\\\s*([\\\\\\\\w.]+)\\\\\\\\s*\\\\\\\\}\\\\\\\\}\\\\\\\\s*$'); const any = new RegExp('\\\\\\\\{\\\\\\\\{\\\\\\\\s*([\\\\\\\\w.]+)\\\\\\\\s*\\\\\\\\}\\\\\\\\}', 'g'); const has = (k) => Object.prototype.hasOwnProperty.call(values || {}, k.split('.')[0]); const get = (k) => k.split('.').reduce((o, p) => (o == null ? undefined : o[p]), values); const open = '{' + '{'; workbook.eachSheet((ws) => ws.eachRow({ includeEmpty: false }, (row) => row.eachCell({ includeEmpty: false }, (cell) => { const v = cell.value; const text = typeof v === 'string' ? v : v && typeof v === 'object' && Array.isArray(v.richText) ? v.richText.map((t) => t.text).join('') : null; if (text == null || text.indexOf(open) < 0) return; const m = text.match(whole); if (m) { if (!has(m[1])) return; const val = get(m[1]); cell.value = val == null ? '' : val; return; } cell.value = text.replace(any, (s, k) => { if (!has(k)) return s; const val = get(k); return val == null ? '' : String(val); }); }))); return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "iS_dstF7POf9",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "294CgneMCwb4",
+      "source": "Nzrcb7ynpv5S",
+      "target": "FaHhl9FFCr3f"
+    },
+    {
+      "id": "WqaVAXKxMnyc",
+      "source": "FaHhl9FFCr3f",
+      "target": "iS_dstF7POf9"
+    }
+  ],
+  "id": "40Maus-nusVI",
+  "localVariables": [],
+  "outputParameters": []
+}

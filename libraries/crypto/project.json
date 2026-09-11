@@ -1,11 +1,11 @@
 {
-  "id": "_nsiJckrQSmq",
+  "id": "-FZPTMmOLNGE",
   "name": "Crypto",
   "type": "library",
   "references": [],
   "variables": [],
-  "createdAt": "2026-09-11T10:03:32.806Z",
-  "updatedAt": "2026-09-11T10:03:32.806Z",
+  "createdAt": "2026-09-11T11:34:01.101Z",
+  "updatedAt": "2026-09-11T11:34:01.101Z",
   "npmPackages": [
     {
       "name": "bcryptjs",
@@ -124,11 +124,11 @@
   ],
   "_order": {
     "actions": [
-      "xn_RSlLSD9UJ",
-      "8oXF9d3bPlgB",
-      "OiMeq8cIIItC",
-      "xZV9U83jrZ-H",
-      "W7txRd-QvGuQ"
+      "vVTYcC8x3dUK",
+      "d_RX1mKmavy9",
+      "EOKzbBuwxCow",
+      "ze0OHXMmWxhr",
+      "HClKUi0b1NcT"
     ]
   },
   "schemaVersion": 21

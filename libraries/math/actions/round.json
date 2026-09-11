@@ -4,12 +4,12 @@
   "scope": "server",
   "parameters": [
     {
-      "id": "inGjrqJ0c9F6",
+      "id": "6zVOy02LIhr-",
       "name": "value",
       "type": "Decimal"
     },
     {
-      "id": "4oKcl-ctmUtA",
+      "id": "1sJcHSZmP3bV",
       "name": "decimals",
       "type": "Integer"
     }
@@ -18,7 +18,7 @@
   "isPublic": true,
   "nodes": [
     {
-      "id": "GBE483RuAQg9",
+      "id": "TTCxEYvNc7ct",
       "type": "Start",
       "position": {
         "x": 0,
@@ -27,7 +27,7 @@
       "data": {}
     },
     {
-      "id": "DYRkkl3Su9rO",
+      "id": "ZGWs3F9Fz7Mg",
       "type": "CallFunction",
       "position": {
         "x": 0,
@@ -41,7 +41,7 @@
       }
     },
     {
-      "id": "76xfy3SVyZtz",
+      "id": "rv-ypV-NS_dA",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -52,7 +52,7 @@
       }
     },
     {
-      "id": "keI_WwWflWrt",
+      "id": "y83QKkgsd32o",
       "type": "End",
       "position": {
         "x": 0,
@@ -63,22 +63,22 @@
   ],
   "edges": [
     {
-      "id": "LlWmUWK38_Ln",
-      "source": "GBE483RuAQg9",
-      "target": "DYRkkl3Su9rO"
+      "id": "hXkEx4GOsErt",
+      "source": "TTCxEYvNc7ct",
+      "target": "ZGWs3F9Fz7Mg"
     },
     {
-      "id": "raJndCH5FFtc",
-      "source": "DYRkkl3Su9rO",
-      "target": "76xfy3SVyZtz"
+      "id": "0swDBWP0yb9W",
+      "source": "ZGWs3F9Fz7Mg",
+      "target": "rv-ypV-NS_dA"
     },
     {
-      "id": "oKvjtAwuBTsB",
-      "source": "76xfy3SVyZtz",
-      "target": "keI_WwWflWrt"
+      "id": "DOqBghxPoaLS",
+      "source": "rv-ypV-NS_dA",
+      "target": "y83QKkgsd32o"
     }
   ],
-  "id": "4B1YHOZUOT1n",
+  "id": "3BmNmAlSwzbW",
   "localVariables": [],
   "outputParameters": []
 }

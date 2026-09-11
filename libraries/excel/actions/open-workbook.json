@@ -1,0 +1,80 @@
+{
+  "name": "Open Workbook",
+  "description": "Open an existing .xlsx — a template the finance team styled in Excel and shipped as a resource, an upload, a stored file — from base64 or from what a Read File step answered. Every style, merge, width and formula in it is kept; fill it with Fill Placeholders, Fill Table or Set Cell.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "Ttn1vBkKQfDe",
+      "name": "source",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "zrRqPMUvqSVO",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "nfyqPMaKjwiP",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "exceljs",
+        "exportName": "Workbook",
+        "args": "[]",
+        "outputVariable": "workbook",
+        "construct": true
+      }
+    },
+    {
+      "id": "1-YyHrBWl_wN",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= workbook.xlsx.load(Uint8Array.from(atob(typeof source === 'object' && source && source.base64 ? source.base64 : String(source ?? '').replace(/^data:[^,]*,/, '').replace(/\\\\s+/g, '')), (c) => c.charCodeAt(0))).then(() => workbook) }}\"}]"
+      }
+    },
+    {
+      "id": "3o6UjVKLNt8F",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "63BnGud6sSOj",
+      "source": "zrRqPMUvqSVO",
+      "target": "nfyqPMaKjwiP"
+    },
+    {
+      "id": "awgAVWDZAJKe",
+      "source": "nfyqPMaKjwiP",
+      "target": "1-YyHrBWl_wN"
+    },
+    {
+      "id": "Lq2hrIbKq4CS",
+      "source": "1-YyHrBWl_wN",
+      "target": "3o6UjVKLNt8F"
+    }
+  ],
+  "id": "SlP2tY7gnyf2",
+  "localVariables": [],
+  "outputParameters": []
+}

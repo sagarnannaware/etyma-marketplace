@@ -1,0 +1,75 @@
+{
+  "name": "Set Cell",
+  "description": "Write one cell by address — a title in A1, a date in F2, a total in D20 — a value, or a formula when the text starts with '=' ('=SUM(D5:D19)'). Answers the workbook.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "gjXUsjkD2EJF",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "-igz1LmI96x7",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "k-sclE9zvhsn",
+      "name": "address",
+      "type": "Text"
+    },
+    {
+      "id": "FKGlPscdwu8-",
+      "name": "value",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "NZVIld2bLwXl",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "-pRMqI_ldIPD",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet) || workbook.addWorksheet(sheet || 'Sheet1'); const c = ws.getCell(String(address)); c.value = typeof value === 'string' && value.startsWith('=') ? { formula: value.slice(1) } : value; return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "DZGWO7vzVijU",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "qCoPLnA9LwMd",
+      "source": "NZVIld2bLwXl",
+      "target": "-pRMqI_ldIPD"
+    },
+    {
+      "id": "NmTxIMZd5VQL",
+      "source": "-pRMqI_ldIPD",
+      "target": "DZGWO7vzVijU"
+    }
+  ],
+  "id": "QLki7mtG1Dg4",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -4,7 +4,7 @@
   "scope": "server",
   "parameters": [
     {
-      "id": "WrVh7gyzsuVI",
+      "id": "N_iPHab4tLY_",
       "name": "iban",
       "type": "Text"
     }
@@ -13,7 +13,7 @@
   "isPublic": true,
   "nodes": [
     {
-      "id": "H20cVqJ0Ohz6",
+      "id": "3sLLweb9pPmU",
       "type": "Start",
       "position": {
         "x": 0,
@@ -22,7 +22,7 @@
       "data": {}
     },
     {
-      "id": "MKmwgPS5R9Qr",
+      "id": "Z1iGa_ix4lX8",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -33,7 +33,7 @@
       }
     },
     {
-      "id": "nJjJO5WA2Fwr",
+      "id": "ICOYhXjFZGor",
       "type": "End",
       "position": {
         "x": 0,
@@ -44,17 +44,17 @@
   ],
   "edges": [
     {
-      "id": "iydcbCPINIuG",
-      "source": "H20cVqJ0Ohz6",
-      "target": "MKmwgPS5R9Qr"
+      "id": "Kxaz2ES6-4fO",
+      "source": "3sLLweb9pPmU",
+      "target": "Z1iGa_ix4lX8"
     },
     {
-      "id": "sj5sExy0RJDI",
-      "source": "MKmwgPS5R9Qr",
-      "target": "nJjJO5WA2Fwr"
+      "id": "YoCRf0TgPDDB",
+      "source": "Z1iGa_ix4lX8",
+      "target": "ICOYhXjFZGor"
     }
   ],
-  "id": "MyNbTusUr1I7",
+  "id": "GRZBL9stVIM2",
   "localVariables": [],
   "outputParameters": []
 }

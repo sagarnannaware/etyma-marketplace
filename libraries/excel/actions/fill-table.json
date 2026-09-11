@@ -1,0 +1,70 @@
+{
+  "name": "Fill Table",
+  "description": "Fill a template's table from a list: the row whose cells hold {{item.sku}}, {{item.qty}}, {{item.total}} is repeated once per record with its styles, and the formulas below it — a SUM over the lines, a grand total — are shifted and their ranges extended to cover every row. The template is designed in Excel; the flow only supplies the list.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "UDThMP-SoclA",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "bXQZv8Zh3H2X",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "S7i5_aHps797",
+      "name": "items",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "NkIfKlnxtOz2",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "7LNITmr-Fm6h",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet); if (!ws) throw new Error('No sheet named ' + sheet); const list = Array.isArray(items) ? items : []; const marker = new RegExp('\\\\\\\\{\\\\\\\\{\\\\\\\\s*item\\\\\\\\.([\\\\\\\\w.]+)\\\\\\\\s*\\\\\\\\}\\\\\\\\}', 'g'); const whole = new RegExp('^\\\\\\\\s*\\\\\\\\{\\\\\\\\{\\\\\\\\s*item\\\\\\\\.([\\\\\\\\w.]+)\\\\\\\\s*\\\\\\\\}\\\\\\\\}\\\\\\\\s*$'); const ref = new RegExp('(\\\\\\\\$?)([A-Z]{1,3})(\\\\\\\\$?)(\\\\\\\\d+)', 'g'); let tRow = 0; ws.eachRow({ includeEmpty: false }, (row, n) => { if (tRow) return; row.eachCell({ includeEmpty: false }, (cell) => { if (!tRow && typeof cell.value === 'string' && marker.test(cell.value)) tRow = n; marker.lastIndex = 0; }); }); if (!tRow) throw new Error('No row with item placeholders in ' + ws.name); const n = list.length; const shift = n - 1; if (n > 1) ws.duplicateRow(tRow, shift, true); const get = (o, k) => k.split('.').reduce((x, p) => (x == null ? undefined : x[p]), o); for (let i = 0; i < Math.max(n, 1); i++) { const row = ws.getRow(tRow + i); const item = list[i]; row.eachCell({ includeEmpty: false }, (cell) => { const v = cell.value; if (v && typeof v === 'object' && v.formula && i > 0) { cell.value = { formula: v.formula.replace(ref, (s, d1, col, d2, r) => (+r === tRow ? d1 + col + d2 + (tRow + i) : s)) }; return; } if (typeof v !== 'string') return; if (n === 0) { cell.value = null; return; } const m = v.match(whole); if (m) { const val = get(item, m[1]); cell.value = val == null ? '' : val; return; } cell.value = v.replace(marker, (s, k) => { const val = get(item, k); return val == null ? '' : String(val); }); }); } if (n === 0) ws.spliceRows(tRow, 1); const delta = n === 0 ? -1 : shift; const last = tRow + Math.max(n, 1) - 1; if (delta !== 0) ws.eachRow({ includeEmpty: false }, (row, rn) => { if (rn <= last) return; row.eachCell({ includeEmpty: false }, (cell) => { const v = cell.value; if (!v || typeof v !== 'object' || !v.formula) return; let f = v.formula.replace(ref, (s, d1, col, d2, r) => (+r > tRow ? d1 + col + d2 + (+r + delta) : s)); if (n > 0) f = f.replace(new RegExp(':(\\\\\\\\$?)([A-Z]{1,3})(\\\\\\\\$?)' + tRow + '(?!\\\\\\\\d)', 'g'), (s, d1, col, d2) => ':' + d1 + col + d2 + last); cell.value = { formula: f }; }); }); return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "9CbQQnadEJBp",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "zyvozoXtNrbu",
+      "source": "NkIfKlnxtOz2",
+      "target": "7LNITmr-Fm6h"
+    },
+    {
+      "id": "8NnKMKu_697D",
+      "source": "7LNITmr-Fm6h",
+      "target": "9CbQQnadEJBp"
+    }
+  ],
+  "id": "8Ri-oAkMrzO5",
+  "localVariables": [],
+  "outputParameters": []
+}

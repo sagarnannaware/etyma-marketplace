@@ -1,0 +1,85 @@
+{
+  "name": "Write Table",
+  "description": "Fill a table from a list of records at a start cell: the header row, one row per record, registered as a real Excel table with a banded style so people get filtering and sorting for free. columns is optional — { header, field, width, numFmt } each; without it every field of the first record is a column. options: { name, style: 'TableStyleMedium2', stripes }.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "C2xqh1SDSAu7",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "4tk3FeJpzpKX",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "juleD1TqRqwc",
+      "name": "start",
+      "type": "Text"
+    },
+    {
+      "id": "c38ViaIt0xOp",
+      "name": "rows",
+      "type": "Object"
+    },
+    {
+      "id": "OcJkU3NAUaVV",
+      "name": "columns",
+      "type": "Object"
+    },
+    {
+      "id": "sS1YqKnNhKTM",
+      "name": "options",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "ZPVYLzZs8Ytx",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "_ZER3v1MFLY4",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet) || workbook.addWorksheet(sheet || 'Sheet1'); const list = Array.isArray(rows) ? rows : []; const cols = Array.isArray(columns) && columns.length ? columns : Object.keys(list[0] || {}).map((k) => ({ field: k, header: k })); const opts = options || {}; const startCell = ws.getCell(String(start || 'A1')); const name = String(opts.name || ('Table' + (Object.keys(ws.tables || {}).length + 1))).replace(/[^A-Za-z0-9_]/g, '_'); ws.addTable({ name, ref: startCell.address, headerRow: true, totalsRow: false, style: { theme: opts.style || 'TableStyleMedium2', showRowStripes: opts.stripes !== false }, columns: cols.map((c) => ({ name: String(c.header ?? c.field) })), rows: list.map((r) => cols.map((c) => { const v = r == null ? null : r[c.field ?? c.header]; return v === undefined ? null : v; })) }); cols.forEach((c, j) => { const col = ws.getColumn(startCell.col + j); if (c.width) col.width = +c.width; if (c.numFmt) for (let i = 1; i <= list.length; i++) ws.getCell(startCell.row + i, startCell.col + j).numFmt = String(c.numFmt); }); return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "c7V-HaWZTD4p",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "gwwL_SvfIfnL",
+      "source": "ZPVYLzZs8Ytx",
+      "target": "_ZER3v1MFLY4"
+    },
+    {
+      "id": "5UspB_fL7how",
+      "source": "_ZER3v1MFLY4",
+      "target": "c7V-HaWZTD4p"
+    }
+  ],
+  "id": "VBgIggPCHH9_",
+  "localVariables": [],
+  "outputParameters": []
+}

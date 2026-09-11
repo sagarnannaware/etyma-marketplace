@@ -1,11 +1,11 @@
 {
-  "id": "9zweHSJX45ly",
+  "id": "sil8tTWmkws0",
   "name": "Data Formats",
   "type": "library",
   "references": [],
   "variables": [],
-  "createdAt": "2026-09-11T10:03:25.422Z",
-  "updatedAt": "2026-09-11T10:03:25.422Z",
+  "createdAt": "2026-09-11T11:33:47.934Z",
+  "updatedAt": "2026-09-11T11:33:47.934Z",
   "requirementsDoc": "The files and feeds other systems send and expect — parse a CSV a supplier emails into records, write records back as CSV, parse and write JSON, read a value at a path inside JSON, parse an XML feed or invoice into an object — over papaparse and xml2js.",
   "npmPackages": [
     {
@@ -18,7 +18,7 @@
       ],
       "components": [],
       "unsupported": [],
-      "introspectedAt": "2026-09-11T10:03:27.752Z",
+      "introspectedAt": "2026-09-11T11:33:50.067Z",
       "functions": [
         {
           "export": "parse",
@@ -64,7 +64,7 @@
       ],
       "components": [],
       "unsupported": [],
-      "introspectedAt": "2026-09-11T10:03:27.764Z",
+      "introspectedAt": "2026-09-11T11:33:50.081Z",
       "functions": [
         {
           "export": "parseStringPromise",
@@ -80,19 +80,20 @@
             }
           ],
           "returns": "Promise<object>",
-          "jsdoc": "Parse XML text into an object; { explicitArray: false, mergeAttrs: true } gives plain nested objects with attributes as fields."
+          "jsdoc": "Parse XML text into an object; { explicitArray: false, mergeAttrs: true } gives plain nested objects with attributes as fields.",
+          "isAsync": true
         }
       ]
     }
   ],
   "_order": {
     "actions": [
-      "fSv0WR2KvfHm",
-      "VZNjZYdVfmHp",
-      "vzI46F8oWsJn",
-      "RfQo-kC9bIza",
-      "XOkNkoWj5osF",
-      "lxI8xDW9Als3"
+      "hJTJTPSXvqIH",
+      "3wrdKr6jgzfR",
+      "mQdmJaFJUrxg",
+      "BOlZ8HbOSHRS",
+      "ntZFAGbUodpd",
+      "HuO_WrueHEz3"
     ]
   },
   "schemaVersion": 21

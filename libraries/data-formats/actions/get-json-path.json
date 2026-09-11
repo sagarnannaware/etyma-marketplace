@@ -4,12 +4,12 @@
   "scope": "server",
   "parameters": [
     {
-      "id": "M69fzzOhy5Qz",
+      "id": "LXTFe59dWTf8",
       "name": "value",
       "type": "Object"
     },
     {
-      "id": "9LiD5zZObcTj",
+      "id": "w7CAxS4TJ3Yn",
       "name": "path",
       "type": "Text"
     }
@@ -18,7 +18,7 @@
   "isPublic": true,
   "nodes": [
     {
-      "id": "_a0qySsdtPPD",
+      "id": "kIfCFo2NRLDh",
       "type": "Start",
       "position": {
         "x": 0,
@@ -27,7 +27,7 @@
       "data": {}
     },
     {
-      "id": "pTfesNEqicQb",
+      "id": "p5oCWsPvj9t3",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -38,7 +38,7 @@
       }
     },
     {
-      "id": "swMwwmWCJuOd",
+      "id": "ymLOXnYgLf8d",
       "type": "End",
       "position": {
         "x": 0,
@@ -49,17 +49,17 @@
   ],
   "edges": [
     {
-      "id": "0Zu3-kh3rDSK",
-      "source": "_a0qySsdtPPD",
-      "target": "pTfesNEqicQb"
+      "id": "Qe5f8IXyVKN8",
+      "source": "kIfCFo2NRLDh",
+      "target": "p5oCWsPvj9t3"
     },
     {
-      "id": "20w-odjqP0Fr",
-      "source": "pTfesNEqicQb",
-      "target": "swMwwmWCJuOd"
+      "id": "2WVru0CXPU5u",
+      "source": "p5oCWsPvj9t3",
+      "target": "ymLOXnYgLf8d"
     }
   ],
-  "id": "XOkNkoWj5osF",
+  "id": "ntZFAGbUodpd",
   "localVariables": [],
   "outputParameters": []
 }

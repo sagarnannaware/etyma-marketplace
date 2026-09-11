@@ -1,0 +1,75 @@
+{
+  "name": "Set Row Height",
+  "description": "The height of a row, in points — a taller title row, a header row with wrapped text.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "Vf3ShUzo6CX9",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "LDoPZN-DHwVs",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "RwQ-A8D6jFsF",
+      "name": "row",
+      "type": "Integer"
+    },
+    {
+      "id": "3etleOmIJueK",
+      "name": "height",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "IxzMktgGGPZc",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "_7IEwqfu0X9a",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet) || workbook.addWorksheet(sheet || 'Sheet1'); ws.getRow(+row).height = +height; return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "UWQssL32oxGe",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "9ZTog_X4JUiN",
+      "source": "IxzMktgGGPZc",
+      "target": "_7IEwqfu0X9a"
+    },
+    {
+      "id": "qIDauetqHC69",
+      "source": "_7IEwqfu0X9a",
+      "target": "UWQssL32oxGe"
+    }
+  ],
+  "id": "RNgw3BQ8G-dm",
+  "localVariables": [],
+  "outputParameters": []
+}

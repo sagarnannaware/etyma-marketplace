@@ -1,0 +1,75 @@
+{
+  "name": "Number Format",
+  "description": "The number format of a cell or range — '#,##0.00' for money, '0%' for a rate, 'dd/mm/yyyy' for a date, '0' for a count — so Excel shows the value the way the reader expects.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "FLd9MpfUk24u",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "n0gQxO7Nj4f6",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "cOTXm3Rs5Yto",
+      "name": "range",
+      "type": "Text"
+    },
+    {
+      "id": "Fd5elLeSQDhz",
+      "name": "format",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "V6D2rQbbWK7w",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "T6wKvwPDyfF-",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet); if (!ws) throw new Error('No sheet named ' + sheet); const [a, b] = String(range).split(':'); const from = ws.getCell(a), to = ws.getCell(b || a); for (let r = from.row; r <= to.row; r++) for (let c = from.col; c <= to.col; c++) ws.getCell(r, c).numFmt = String(format); return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "cqezGwKx0_28",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "jabzi8U7rV4f",
+      "source": "V6D2rQbbWK7w",
+      "target": "T6wKvwPDyfF-"
+    },
+    {
+      "id": "eVKKcLKehgcs",
+      "source": "T6wKvwPDyfF-",
+      "target": "cqezGwKx0_28"
+    }
+  ],
+  "id": "3ePYGHT8mmp3",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -4,12 +4,12 @@
   "scope": "server",
   "parameters": [
     {
-      "id": "vEPo7Js9X-C_",
+      "id": "r09auoMDX3y0",
       "name": "record",
       "type": "Object"
     },
     {
-      "id": "2mUEr-bBOSa8",
+      "id": "aEFWhPbllSak",
       "name": "fields",
       "type": "Text"
     }
@@ -18,7 +18,7 @@
   "isPublic": true,
   "nodes": [
     {
-      "id": "ZuIc2lc_gnPG",
+      "id": "EcuNyaiTGyza",
       "type": "Start",
       "position": {
         "x": 0,
@@ -27,7 +27,7 @@
       "data": {}
     },
     {
-      "id": "uOU7gZ5XwaMW",
+      "id": "4lkZZY6hs6u4",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -38,7 +38,7 @@
       }
     },
     {
-      "id": "hSx26AD_QHpx",
+      "id": "7nE2WvLYuQN0",
       "type": "End",
       "position": {
         "x": 0,
@@ -49,17 +49,17 @@
   ],
   "edges": [
     {
-      "id": "GIn8Bthq5-RV",
-      "source": "ZuIc2lc_gnPG",
-      "target": "uOU7gZ5XwaMW"
+      "id": "5eMqiy5L_S2Z",
+      "source": "EcuNyaiTGyza",
+      "target": "4lkZZY6hs6u4"
     },
     {
-      "id": "KLL_XA-qEA0h",
-      "source": "uOU7gZ5XwaMW",
-      "target": "hSx26AD_QHpx"
+      "id": "F-quF-bBVVrG",
+      "source": "4lkZZY6hs6u4",
+      "target": "7nE2WvLYuQN0"
     }
   ],
-  "id": "bfyQVwO0cdE1",
+  "id": "cR2obqOVqMBb",
   "localVariables": [],
   "outputParameters": []
 }

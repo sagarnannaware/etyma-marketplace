@@ -1,0 +1,75 @@
+{
+  "name": "Style Range",
+  "description": "Style a cell or a range — 'A1', 'A1:F1', 'D5:D20': { bold, italic, size, color, fill, align: 'left' | 'center' | 'right', valign, wrap, border: true | 'thin' | 'medium', numFmt }. Colours are '#RRGGBB'. For a title, a header row, a highlighted total, a currency column.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "ux7QMp4sSPdf",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "ZYOnyHo2iANj",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "-ae6Rl4WqKek",
+      "name": "range",
+      "type": "Text"
+    },
+    {
+      "id": "pos-wL8B25Ah",
+      "name": "style",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "yKQFOVvV8E1u",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "LRBUqnUael0X",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet); if (!ws) throw new Error('No sheet named ' + sheet); const argb = (c) => { const h = String(c || '').replace('#', '').toUpperCase(); return h.length === 6 ? 'FF' + h : h; }; const [a, b] = String(range).split(':'); const from = ws.getCell(a), to = ws.getCell(b || a); const st = style || {}; for (let r = from.row; r <= to.row; r++) for (let c = from.col; c <= to.col; c++) { const cell = ws.getCell(r, c); if (st.bold != null || st.italic != null || st.size != null || st.color) cell.font = { ...(cell.font || {}), ...(st.bold != null ? { bold: !!st.bold } : {}), ...(st.italic != null ? { italic: !!st.italic } : {}), ...(st.size ? { size: +st.size } : {}), ...(st.color ? { color: { argb: argb(st.color) } } : {}) }; if (st.fill) cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: argb(st.fill) } }; if (st.align || st.valign || st.wrap != null) cell.alignment = { ...(cell.alignment || {}), ...(st.align ? { horizontal: st.align } : {}), ...(st.valign ? { vertical: st.valign } : {}), ...(st.wrap != null ? { wrapText: !!st.wrap } : {}) }; if (st.border) { const side = { style: st.border === true ? 'thin' : String(st.border) }; cell.border = { top: side, left: side, bottom: side, right: side }; } if (st.numFmt) cell.numFmt = String(st.numFmt); } return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "6WSByFHL9dfK",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "MLgfizIQi4sD",
+      "source": "yKQFOVvV8E1u",
+      "target": "LRBUqnUael0X"
+    },
+    {
+      "id": "TTIxq-jVNf5U",
+      "source": "LRBUqnUael0X",
+      "target": "6WSByFHL9dfK"
+    }
+  ],
+  "id": "uriAZQlJ0E6a",
+  "localVariables": [],
+  "outputParameters": []
+}

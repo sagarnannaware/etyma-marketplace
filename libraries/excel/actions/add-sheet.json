@@ -1,0 +1,65 @@
+{
+  "name": "Add Sheet",
+  "description": "Add a sheet to the workbook — Summary, Details, one per region or per month. Answers the workbook.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "4MK59eGEQJoV",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "p3mTptDnqpzG",
+      "name": "name",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "rMyy_K4Vty-_",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "4UMLT8RPn6Kh",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (workbook.addWorksheet(String(name || 'Sheet' + (workbook.worksheets.length + 1))), workbook) }}\"}]"
+      }
+    },
+    {
+      "id": "mrg6vvzEDZrB",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "j2PghubqVs9B",
+      "source": "rMyy_K4Vty-_",
+      "target": "4UMLT8RPn6Kh"
+    },
+    {
+      "id": "taIEuu5ZgRUk",
+      "source": "4UMLT8RPn6Kh",
+      "target": "mrg6vvzEDZrB"
+    }
+  ],
+  "id": "q-0aEytxxOWB",
+  "localVariables": [],
+  "outputParameters": []
+}

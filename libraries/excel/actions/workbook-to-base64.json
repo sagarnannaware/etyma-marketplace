@@ -1,0 +1,60 @@
+{
+  "name": "Workbook To Base64",
+  "description": "The finished workbook as base64 — hand it to a Save File step (encoding base64, a .xlsx name) for a download link, attach it to an email, or return it to a page.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "jWuyFSI6Rowy",
+      "name": "workbook",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "sbMhrIWLFBml",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "D029i6rqUJKU",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= workbook.xlsx.writeBuffer().then((b) => b.toString('base64')) }}\"}]"
+      }
+    },
+    {
+      "id": "W7Ttp-DKVGR-",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "jKoZItE1h0JK",
+      "source": "sbMhrIWLFBml",
+      "target": "D029i6rqUJKU"
+    },
+    {
+      "id": "HqCh-rtE1EjS",
+      "source": "D029i6rqUJKU",
+      "target": "W7Ttp-DKVGR-"
+    }
+  ],
+  "id": "4k3mokTYylkk",
+  "localVariables": [],
+  "outputParameters": []
+}

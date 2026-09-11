@@ -1,0 +1,70 @@
+{
+  "name": "Get Cell",
+  "description": "Read one cell by address from an opened workbook — a total, a date, a name — as a plain value (a formula cell answers its computed result).",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "CBbhEjk0MJKP",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "b_cYi5XcmE4Z",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "6jzh8Vvd7-9R",
+      "name": "address",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "iTge3jMr97Gf",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "B8f3IyRtz5mf",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet); if (!ws) return undefined; const plain = (v) => v && typeof v === 'object' ? ('result' in v ? v.result : Array.isArray(v.richText) ? v.richText.map((t) => t.text).join('') : 'text' in v ? v.text : v) : v; return plain(ws.getCell(String(address)).value); })() }}\"}]"
+      }
+    },
+    {
+      "id": "hpaYjs_ylqKK",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "SWFK-v2JoCaV",
+      "source": "iTge3jMr97Gf",
+      "target": "B8f3IyRtz5mf"
+    },
+    {
+      "id": "xm-CuN7Mz8yz",
+      "source": "B8f3IyRtz5mf",
+      "target": "hpaYjs_ylqKK"
+    }
+  ],
+  "id": "e05swisYsYZB",
+  "localVariables": [],
+  "outputParameters": []
+}

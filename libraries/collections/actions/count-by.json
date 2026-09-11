@@ -4,12 +4,12 @@
   "scope": "server",
   "parameters": [
     {
-      "id": "O0wKZqPdtDCy",
+      "id": "z1CqwYRJZX1p",
       "name": "items",
       "type": "Object"
     },
     {
-      "id": "gvt-mjQD4FTN",
+      "id": "Yv9B9gGpQwjY",
       "name": "field",
       "type": "Text"
     }
@@ -18,7 +18,7 @@
   "isPublic": true,
   "nodes": [
     {
-      "id": "t3itMjE6Dwtf",
+      "id": "mjbTBTCJXDcD",
       "type": "Start",
       "position": {
         "x": 0,
@@ -27,7 +27,7 @@
       "data": {}
     },
     {
-      "id": "WFChesBTjPyu",
+      "id": "tqxSiGTNCzWL",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -38,7 +38,7 @@
       }
     },
     {
-      "id": "3BTm2aNwFW9W",
+      "id": "HEx_GPrF_mjF",
       "type": "End",
       "position": {
         "x": 0,
@@ -49,17 +49,17 @@
   ],
   "edges": [
     {
-      "id": "n2klS-ASfYTS",
-      "source": "t3itMjE6Dwtf",
-      "target": "WFChesBTjPyu"
+      "id": "cGXC0gUEFKwW",
+      "source": "mjbTBTCJXDcD",
+      "target": "tqxSiGTNCzWL"
     },
     {
-      "id": "M6Q-Zhgl8jIf",
-      "source": "WFChesBTjPyu",
-      "target": "3BTm2aNwFW9W"
+      "id": "fFnTqLx6csd4",
+      "source": "tqxSiGTNCzWL",
+      "target": "HEx_GPrF_mjF"
     }
   ],
-  "id": "fMZJBour-rGX",
+  "id": "c2x8GfYAJ_5h",
   "localVariables": [],
   "outputParameters": []
 }

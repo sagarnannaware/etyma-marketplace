@@ -1,11 +1,11 @@
 {
-  "id": "6Hk7hulah0J6",
+  "id": "CMJI445lZLrv",
   "name": "QR Codes",
   "type": "library",
   "references": [],
   "variables": [],
-  "createdAt": "2026-09-11T10:03:17.004Z",
-  "updatedAt": "2026-09-11T10:03:17.004Z",
+  "createdAt": "2026-09-11T11:33:40.011Z",
+  "updatedAt": "2026-09-11T11:33:40.011Z",
   "requirementsDoc": "QR codes for badges, tickets, check-in links and payment references — a PNG data URL or SVG from any text.",
   "npmPackages": [
     {
@@ -18,7 +18,7 @@
       ],
       "components": [],
       "unsupported": [],
-      "introspectedAt": "2026-09-11T10:03:17.371Z",
+      "introspectedAt": "2026-09-11T11:33:40.321Z",
       "functions": [
         {
           "export": "toDataURL",
@@ -57,11 +57,11 @@
   ],
   "_order": {
     "blocks": [
-      "kYaCDXMszGET"
+      "f1qz5YogpNwu"
     ],
     "actions": [
-      "0JnnoswMJCoU",
-      "ciwL6kWW_jx9"
+      "ujrMQs35MxFI",
+      "QVze1RyK1wN_"
     ]
   },
   "schemaVersion": 21

@@ -1,0 +1,26 @@
+{
+  "slug": "excel",
+  "name": "Excel",
+  "tagline": "Build, style and fill Excel workbooks cell by cell; fill a styled template from data; read cells and sheets back.",
+  "description": "Write and read Excel workbooks programmatically, cell by cell, with styling — an invoice, a statement, a report with several sheets, a filled template the finance team designed in Excel — over exceljs. Every function takes the workbook handle New Workbook or Open Workbook answers and gives it back; Workbook To Base64 and a Save File step turn it into a download.",
+  "category": "Documents",
+  "version": "1.0.0",
+  "tags": [
+    "excel",
+    "xlsx",
+    "workbook",
+    "spreadsheet",
+    "sheet",
+    "cell",
+    "style",
+    "template",
+    "invoice",
+    "report",
+    "table",
+    "formula",
+    "merge"
+  ],
+  "license": "MIT",
+  "author": "Etyma",
+  "source": "curated"
+}

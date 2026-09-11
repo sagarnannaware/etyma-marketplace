@@ -1,11 +1,11 @@
 {
-  "id": "VAq-PiIhWMP1",
+  "id": "ojOYnXI8t6D1",
   "name": "Math",
   "type": "library",
   "references": [],
   "variables": [],
-  "createdAt": "2026-09-11T10:03:18.880Z",
-  "updatedAt": "2026-09-11T10:03:18.880Z",
+  "createdAt": "2026-09-11T11:33:41.502Z",
+  "updatedAt": "2026-09-11T11:33:41.502Z",
   "requirementsDoc": "Formulas a business user can edit, rounding for money, sums and averages, unit conversion — over mathjs.",
   "npmPackages": [
     {
@@ -17,7 +17,7 @@
       ],
       "components": [],
       "unsupported": [],
-      "introspectedAt": "2026-09-11T10:03:19.695Z",
+      "introspectedAt": "2026-09-11T11:33:42.422Z",
       "functions": [
         {
           "export": "evaluate",
@@ -93,12 +93,12 @@
   ],
   "_order": {
     "actions": [
-      "r1FTiwpNxSwd",
-      "4B1YHOZUOT1n",
-      "WQFNfyTB_fPk",
-      "yAE73qRZSih1",
-      "oCq_3BA1ERlz",
-      "T-q_8WiLOznu"
+      "3lmDQGrT8l5o",
+      "3BmNmAlSwzbW",
+      "AEg0bbA6bfCi",
+      "aKbDn01aae-p",
+      "bMJc1tKvfnrd",
+      "bVh1CRN8eqQx"
     ]
   },
   "schemaVersion": 21

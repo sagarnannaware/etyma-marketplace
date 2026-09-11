@@ -1,23 +1,23 @@
 {
-  "id": "NTC5iDOZFPnl",
+  "id": "fnErghs47x85",
   "name": "Text",
   "type": "library",
   "references": [],
   "variables": [],
-  "createdAt": "2026-09-11T10:03:19.816Z",
-  "updatedAt": "2026-09-11T10:03:19.816Z",
+  "createdAt": "2026-09-11T11:33:42.525Z",
+  "updatedAt": "2026-09-11T11:33:42.525Z",
   "requirementsDoc": "Text for the parts of an app that people read — a URL slug from a title, a truncated preview, title case, initials for an avatar, a masked account number, HTML stripped from an email body, a message filled from a template, a plural, a similarity score for fuzzy matching.",
   "_order": {
     "actions": [
-      "e-6MkZPVKs0Z",
-      "nev8LM_buIW9",
-      "URMliOWt_P91",
-      "R6WCotjwMHaY",
-      "pyhQoxZ7WkoG",
-      "y6gbq14itAnu",
-      "le5Hl--vjaLg",
-      "xwDDylh61mll",
-      "AZMzQvY9gbE9"
+      "sfpQdWKJsJRQ",
+      "4cdN76rc1lP3",
+      "ipmAySJ0JSmy",
+      "ud0s73Fsy30d",
+      "0oqD7-6oCiSp",
+      "zbSJlAiw3Pso",
+      "mxqpXcc5bL0O",
+      "KjStp6rvlHhA",
+      "DjG6s1SCH9ly"
     ]
   },
   "schemaVersion": 21

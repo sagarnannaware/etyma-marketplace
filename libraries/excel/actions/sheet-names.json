@@ -1,0 +1,60 @@
+{
+  "name": "Sheet Names",
+  "description": "The names of the sheets in a workbook, in order — to pick one, to check a template has the sheet a flow expects.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "bXYJgMWOZJhT",
+      "name": "workbook",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "beF94lw3pRQB",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "XT76yr4AJ6QP",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= workbook.worksheets.map((w) => w.name) }}\"}]"
+      }
+    },
+    {
+      "id": "dG0af0GZNI48",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "Svo-6Sx9im5z",
+      "source": "beF94lw3pRQB",
+      "target": "XT76yr4AJ6QP"
+    },
+    {
+      "id": "TvjzdJlqoT75",
+      "source": "XT76yr4AJ6QP",
+      "target": "dG0af0GZNI48"
+    }
+  ],
+  "id": "twSozhU-ln5E",
+  "localVariables": [],
+  "outputParameters": []
+}

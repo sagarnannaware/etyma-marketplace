@@ -1,0 +1,70 @@
+{
+  "name": "Get Range",
+  "description": "Read a block of cells — 'B2:E10' — as a list of rows of plain values, for a sheet that is not a simple table with a header row.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "UFUJocBcVkPA",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "40KTAAZgKudn",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "9OpBQ5iYDhPK",
+      "name": "range",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "K5JDpmrgxx2D",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "CTQxH-pjG5QV",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet); if (!ws) return []; const plain = (v) => v && typeof v === 'object' ? ('result' in v ? v.result : Array.isArray(v.richText) ? v.richText.map((t) => t.text).join('') : 'text' in v ? v.text : v) : v; const [a, b] = String(range).split(':'); const from = ws.getCell(a), to = ws.getCell(b || a); const out = []; for (let r = from.row; r <= to.row; r++) { const line = []; for (let c = from.col; c <= to.col; c++) line.push(plain(ws.getCell(r, c).value)); out.push(line); } return out; })() }}\"}]"
+      }
+    },
+    {
+      "id": "DIFHKSA0ttjX",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "0gZeesRFS7kG",
+      "source": "K5JDpmrgxx2D",
+      "target": "CTQxH-pjG5QV"
+    },
+    {
+      "id": "uMUxFDnr59zZ",
+      "source": "CTQxH-pjG5QV",
+      "target": "DIFHKSA0ttjX"
+    }
+  ],
+  "id": "s0jOQtz5ge3V",
+  "localVariables": [],
+  "outputParameters": []
+}

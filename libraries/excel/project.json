@@ -1,0 +1,59 @@
+{
+  "id": "eSDKQ3Uevlxp",
+  "name": "Excel",
+  "type": "library",
+  "references": [],
+  "variables": [],
+  "createdAt": "2026-09-11T11:33:50.192Z",
+  "updatedAt": "2026-09-11T11:33:50.192Z",
+  "requirementsDoc": "Write and read Excel workbooks programmatically, cell by cell, with styling — an invoice, a statement, a report with several sheets, a filled template the finance team designed in Excel — over exceljs. Every function takes the workbook handle New Workbook or Open Workbook answers and gives it back; Workbook To Base64 and a Save File step turn it into a download.",
+  "npmPackages": [
+    {
+      "name": "exceljs",
+      "version": "4.4.0",
+      "typesSource": "bundled",
+      "environments": [
+        "node"
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-11T11:33:52.575Z",
+      "functions": [
+        {
+          "export": "Workbook",
+          "params": [],
+          "returns": "Workbook",
+          "jsdoc": "A workbook: a class, constructed with new. addWorksheet(name), getWorksheet(name), worksheets, eachSheet(fn), xlsx.load(bytes) and xlsx.writeBuffer() are its API.",
+          "construct": true
+        }
+      ]
+    }
+  ],
+  "_order": {
+    "actions": [
+      "d2J4H1ELxHp3",
+      "SlP2tY7gnyf2",
+      "4k3mokTYylkk",
+      "twSozhU-ln5E",
+      "q-0aEytxxOWB",
+      "Kt3-UjGhl_xq",
+      "Wfl4ZVGj9r3M",
+      "QLki7mtG1Dg4",
+      "toidP24331E-",
+      "VBgIggPCHH9_",
+      "40Maus-nusVI",
+      "8Ri-oAkMrzO5",
+      "e05swisYsYZB",
+      "s0jOQtz5ge3V",
+      "BKW2oj7i0M58",
+      "uriAZQlJ0E6a",
+      "2iQkZKIxrCOZ",
+      "3ePYGHT8mmp3",
+      "DmXCtEbSeCLg",
+      "RNgw3BQ8G-dm",
+      "1-fDddaXnKBw",
+      "osoX3NEsUKds"
+    ]
+  },
+  "schemaVersion": 21
+}

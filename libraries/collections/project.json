@@ -1,23 +1,23 @@
 {
-  "id": "si_PxFiOy029",
+  "id": "W9wtHALtfHCo",
   "name": "Collections",
   "type": "library",
   "references": [],
   "variables": [],
-  "createdAt": "2026-09-11T10:03:22.885Z",
-  "updatedAt": "2026-09-11T10:03:22.885Z",
+  "createdAt": "2026-09-11T11:33:45.993Z",
+  "updatedAt": "2026-09-11T11:33:45.993Z",
   "requirementsDoc": "Lists of records for dashboards, reports and imports — group orders by customer, sum a column, count by status, de-duplicate, sort by a field, split into batches, pivot rows into a table, keep only some fields, the top N.",
   "_order": {
     "actions": [
-      "gjPXlxizG7Ho",
-      "13TlxbFPoWi9",
-      "fMZJBour-rGX",
-      "OfXI1W4GS1pf",
-      "F3qNK20VwTpu",
-      "nCFCuvO8gy8_",
-      "PHBEH5aIXbcU",
-      "LzQrl5Y4PTLo",
-      "GBZpNneYLH7T"
+      "YxELVq0xYoRw",
+      "wZGbv5k7mfG2",
+      "c2x8GfYAJ_5h",
+      "mYxXVgbBOc8P",
+      "pyCmr_VipjsU",
+      "RDmdAVxJOv1T",
+      "bn1agTElZBtQ",
+      "nOO9tnYsYALw",
+      "pf53jzjpB-tV"
     ]
   },
   "schemaVersion": 21

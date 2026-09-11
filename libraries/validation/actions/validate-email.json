@@ -4,7 +4,7 @@
   "scope": "server",
   "parameters": [
     {
-      "id": "wWfVqLD6pyf6",
+      "id": "ZIQAhx4mT-Y8",
       "name": "email",
       "type": "Text"
     }
@@ -13,7 +13,7 @@
   "isPublic": true,
   "nodes": [
     {
-      "id": "zierDACO9XJc",
+      "id": "KH6U4XiPoFc9",
       "type": "Start",
       "position": {
         "x": 0,
@@ -22,7 +22,7 @@
       "data": {}
     },
     {
-      "id": "V_H7qS25gOGJ",
+      "id": "gOxxz5qMEGv6",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -33,7 +33,7 @@
       }
     },
     {
-      "id": "h30VZgNgrW4l",
+      "id": "Z8Oqyn0mQeaA",
       "type": "End",
       "position": {
         "x": 0,
@@ -44,17 +44,17 @@
   ],
   "edges": [
     {
-      "id": "imEayA1IFLYY",
-      "source": "zierDACO9XJc",
-      "target": "V_H7qS25gOGJ"
+      "id": "1B4V3WORR1SK",
+      "source": "KH6U4XiPoFc9",
+      "target": "gOxxz5qMEGv6"
     },
     {
-      "id": "YfycM5lamQ-l",
-      "source": "V_H7qS25gOGJ",
-      "target": "h30VZgNgrW4l"
+      "id": "Bqee3NG8jkMt",
+      "source": "gOxxz5qMEGv6",
+      "target": "Z8Oqyn0mQeaA"
     }
   ],
-  "id": "7QKRJ4kdsKQT",
+  "id": "CMlf08J4ZRwv",
   "localVariables": [],
   "outputParameters": []
 }

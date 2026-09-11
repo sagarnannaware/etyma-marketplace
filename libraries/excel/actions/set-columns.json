@@ -1,0 +1,70 @@
+{
+  "name": "Set Columns",
+  "description": "Define a sheet's columns once — header text, the record field each column shows, and a width — so Add Rows can take records as they are and the header row is written for you. columns is a list of { header, key, width }.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "SBiS7FI63lYG",
+      "name": "workbook",
+      "type": "Object"
+    },
+    {
+      "id": "PTacp-g9o9Ny",
+      "name": "sheet",
+      "type": "Text"
+    },
+    {
+      "id": "uD6JnfpV17oi",
+      "name": "columns",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "Dm6biT256W1g",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "t2dQQY33p0U5",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const ws = workbook.getWorksheet(sheet) || workbook.addWorksheet(sheet || 'Sheet1'); ws.columns = (Array.isArray(columns) ? columns : []).map((c) => ({ header: String(c.header ?? c.key ?? c.field ?? ''), key: String(c.key ?? c.field ?? c.header ?? ''), ...(c.width ? { width: +c.width } : {}) })); return workbook; })() }}\"}]"
+      }
+    },
+    {
+      "id": "qQyScPZLpj0e",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "j420hIugO3MI",
+      "source": "Dm6biT256W1g",
+      "target": "t2dQQY33p0U5"
+    },
+    {
+      "id": "srqhI95tcnSs",
+      "source": "t2dQQY33p0U5",
+      "target": "qQyScPZLpj0e"
+    }
+  ],
+  "id": "Kt3-UjGhl_xq",
+  "localVariables": [],
+  "outputParameters": []
+}

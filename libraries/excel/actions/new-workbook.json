@@ -1,0 +1,74 @@
+{
+  "name": "New Workbook",
+  "description": "Start a new, empty Excel workbook to build cell by cell — an invoice, a statement, a price list, a report with several sheets. Answers the workbook handle every other function takes; finish with Workbook To Base64 and a Save File step.",
+  "scope": "server",
+  "parameters": [],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "_NpjXq45ydVG",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "e0BvLLSSFF4N",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "exceljs",
+        "exportName": "Workbook",
+        "args": "[]",
+        "outputVariable": "workbook",
+        "construct": true
+      }
+    },
+    {
+      "id": "EmeODKNNp2fu",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{workbook}}\"}]"
+      }
+    },
+    {
+      "id": "Iu6XpBUdw1c3",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "nZjR2JXtfsid",
+      "source": "_NpjXq45ydVG",
+      "target": "e0BvLLSSFF4N"
+    },
+    {
+      "id": "qKyovtbxKJ7l",
+      "source": "e0BvLLSSFF4N",
+      "target": "EmeODKNNp2fu"
+    },
+    {
+      "id": "KO3bZqOSKigD",
+      "source": "EmeODKNNp2fu",
+      "target": "Iu6XpBUdw1c3"
+    }
+  ],
+  "id": "d2J4H1ELxHp3",
+  "localVariables": [],
+  "outputParameters": []
+}
