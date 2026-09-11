@@ -9,7 +9,7 @@
       "tagline": "Format, shift and compare dates — including working days.",
       "description": "Date arithmetic over date-fns: format for humans or for storage, add days and business days, measure the gap between two dates, and ask whether a deadline has passed. Every function takes and returns ISO-8601 text, which is what an Etyma parameter carries.",
       "category": "Data",
-      "kind": "logic",
+      "kind": "library",
       "version": "1.0.0",
       "tags": [
         "dates",
@@ -19,6 +19,7 @@
         "formatting"
       ],
       "notes": "Business-day functions skip weekends only. Public holidays vary by country and change every year, so they need a calendar the app supplies — see the Business Calendar library if you need them.",
+      "moduleId": "BD0vIECdvMQ6",
       "functions": [
         {
           "name": "Format Date",
@@ -26,7 +27,8 @@
           "params": [
             "date",
             "pattern"
-          ]
+          ],
+          "returns": "Text"
         },
         {
           "name": "Format In Time Zone",
@@ -35,7 +37,8 @@
             "date",
             "timeZone",
             "pattern"
-          ]
+          ],
+          "returns": "Text"
         },
         {
           "name": "From Local Time",
@@ -43,7 +46,8 @@
           "params": [
             "localDateTime",
             "timeZone"
-          ]
+          ],
+          "returns": "Text"
         },
         {
           "name": "Add Days",
@@ -51,7 +55,8 @@
           "params": [
             "date",
             "days"
-          ]
+          ],
+          "returns": "Text"
         },
         {
           "name": "Add Business Days",
@@ -59,7 +64,8 @@
           "params": [
             "date",
             "days"
-          ]
+          ],
+          "returns": "Text"
         },
         {
           "name": "Days Between",
@@ -67,7 +73,8 @@
           "params": [
             "from",
             "to"
-          ]
+          ],
+          "returns": "Integer"
         },
         {
           "name": "Business Days Between",
@@ -75,7 +82,8 @@
           "params": [
             "from",
             "to"
-          ]
+          ],
+          "returns": "Integer"
         },
         {
           "name": "Is Overdue",
@@ -83,35 +91,40 @@
           "params": [
             "now",
             "deadline"
-          ]
+          ],
+          "returns": "Boolean"
         },
         {
           "name": "Is Weekend",
           "description": "True on a Saturday or Sunday. The cheap half of a working-day check.",
           "params": [
             "date"
-          ]
+          ],
+          "returns": "Boolean"
         },
         {
           "name": "Age",
           "description": "How long ago, in plain words: '3 days', '2 months'. For a Last updated column.",
           "params": [
             "date"
-          ]
+          ],
+          "returns": "Text"
         },
         {
           "name": "Start Of Day",
           "description": "Midnight at the start of the date, as ISO. Use as the lower bound of a whole-day range.",
           "params": [
             "date"
-          ]
+          ],
+          "returns": "Text"
         },
         {
           "name": "End Of Month",
           "description": "The last moment of the date's month, as ISO. Billing periods, reporting windows, retention cut-offs.",
           "params": [
             "date"
-          ]
+          ],
+          "returns": "Text"
         }
       ],
       "components": [],
@@ -125,6 +138,7 @@
           "version": "3.2.0"
         }
       ],
+      "download": "libraries/dates",
       "source": "curated"
     },
     {
@@ -133,7 +147,7 @@
       "tagline": "The five things every back-office screen needs on day one.",
       "description": "KPI tiles, sparklines, status pills, progress rings and empty states — built on the theme's own tokens, so they take on the colours of whatever app they are dropped into and read correctly in both light and dark.",
       "category": "Display",
-      "kind": "ui",
+      "kind": "library",
       "version": "1.0.0",
       "tags": [
         "dashboard",
@@ -144,6 +158,7 @@
         "theme"
       ],
       "notes": "The sparkline and the ring are hand-drawn SVG because they belong inside a table cell. For a real chart with axes and a tooltip, recharts is on Etyma's allow-list — use it.",
+      "moduleId": "p2H9NzoaFp8C",
       "functions": [],
       "components": [
         {
@@ -205,6 +220,7 @@
         }
       ],
       "packages": [],
+      "download": "libraries/insight",
       "source": "curated"
     }
   ]

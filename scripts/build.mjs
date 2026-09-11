@@ -232,13 +232,48 @@ function contributedMeta({ slug, meta, projectPath }) {
     ...(meta.author ? { author: meta.author } : {}),
     ...(meta.license ? { license: meta.license } : {}),
     ...(meta.notes ? { notes: meta.notes } : {}),
-    functions: actions.map((a) => ({ name: a.name, description: a.description, params: (a.parameters || []).map((x) => x.name) })),
-    components: blocks.map((b) => ({ name: b.name, description: b.description, props: (b.inputParameters || []).map((x) => x.name) })),
+    ...surfaceOf(project, actions, blocks),
+    download: `libraries/${slug}`,
+  };
+}
+
+// ─── The retrieval contract ──────────────────────────────────────────────────
+//
+// What the Assistant searches. This is core's `CatalogEntry` (`catalogEntry` in
+// packages/core/src/marketplaceCatalog.ts): the PUBLIC functions with their
+// descriptions and params, the public components with their props, the npm
+// packages, the module id, and where the folder is. `verify-against-core.mjs`
+// holds every entry here to what the real `catalogEntry` computes from the same
+// folder, so a description the Assistant reads is one a consumer can call.
+function surfaceOf(project, actions, blocks) {
+  const isPublicFn = (a) => a.isPublic && a.scope === "server";
+  return {
+    kind: "library",
+    moduleId: project.id,
+    functions: actions.filter(isPublicFn).map((a) => ({
+      name: a.name,
+      ...(a.description && a.description.trim() ? { description: a.description.trim() } : {}),
+      params: (a.parameters || []).map((x) => x.name),
+      ...(a.returnType ? { returns: String(a.returnType) } : {}),
+    })),
+    components: blocks.filter((b) => b.isPublic).map((b) => ({
+      name: b.name,
+      ...(b.description && b.description.trim() ? { description: b.description.trim() } : {}),
+      props: (b.inputParameters || []).map((x) => x.name),
+    })),
     packages: (project.npmPackages || []).map((x) => ({ name: x.name, version: x.version })),
   };
 }
 
 // ─── Emit ────────────────────────────────────────────────────────────────────
+
+/** A curated library's entry: its declared metadata, then the surface read from the model it built. */
+function curatedEntry(lib) {
+  const { functions: _f, components: _c, packages: _p, ...meta } = lib.meta;
+  const project = lib.project;
+  const surface = surfaceOf({ ...project, slug: lib.meta.slug }, project.actions || [], project.blocks || []);
+  return { ...meta, ...surface, kind: "library", download: `libraries/${lib.meta.slug}` };
+}
 
 const catalog = {
   // The website reads this. It is the ONLY place marketplace metadata lives —
@@ -247,7 +282,7 @@ const catalog = {
   generatedFrom: "libraries-src/*.lib.mjs",
   count: built.length + contributed.length,
   libraries: [
-    ...built.map((l) => ({ ...l.meta, source: "curated" })),
+    ...built.map((l) => ({ ...curatedEntry(l), source: "curated" })),
     ...contributed.map(contributedMeta),
   ].sort((a, b) => a.slug.localeCompare(b.slug)),
 };

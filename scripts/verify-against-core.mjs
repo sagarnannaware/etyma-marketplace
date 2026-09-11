@@ -40,8 +40,13 @@ if (!existsSync(corePath)) {
 const core = await import(pathToFileURL(corePath).href);
 const {
   WorkspaceStorage, MemoryFs, createSolution, validateModule,
-  shareIssues, verifyPlatformSignature, librarySignaturePath,
+  shareIssues, verifyPlatformSignature, librarySignaturePath, catalogEntry,
 } = core.default ?? core;
+
+// The catalogue this repository publishes, held to core's own `catalogEntry`
+// below: the Assistant searches these entries, so a function it is told about
+// must be one the real public surface has, with the same words.
+const catalog = JSON.parse(readFileSync(join(ROOT, "catalog.json"), "utf8"));
 
 // ─── Signatures ──────────────────────────────────────────────────────────────
 //
@@ -132,6 +137,35 @@ for (const slug of slugs) {
     for (const i of share.slice(0, 8)) console.log(`    ${i.code} ${i.where} — ${i.message}`);
     failed++;
     continue;
+  }
+
+  // The catalogue entry is what the Assistant retrieves. Held to what core
+  // computes from the SAME folder — a description in catalog.json that the
+  // model never carries would send the Assistant to a function nobody can call.
+  if (catalogEntry) {
+    const listed = catalog.libraries.find((l) => l.slug === slug);
+    if (!listed) {
+      console.log(`✗ ${slug}: not in catalog.json`);
+      failed++;
+      continue;
+    }
+    const expected = catalogEntry(project, { slug, name: listed.name, tagline: listed.tagline, description: listed.description || "", category: listed.category, version: listed.version, tags: listed.tags || [], license: listed.license || "MIT" });
+    // Compared as SETS by name: this repository lists a definition's functions in
+    // the order they were written, the loader reads the folder's files by name,
+    // and order is not something the Assistant matches against.
+    const byName = (xs) => [...(xs || [])].sort((x, y) => x.name.localeCompare(y.name));
+    const same = (a, b) => JSON.stringify(byName(a)) === JSON.stringify(byName(b));
+    const drift = [];
+    if (!same(listed.functions, expected.functions)) drift.push("functions");
+    if (!same(listed.components, expected.components)) drift.push("components");
+    if (!same(listed.packages, expected.packages)) drift.push("packages");
+    if (listed.moduleId !== expected.moduleId) drift.push("moduleId");
+    if (listed.kind !== "library") drift.push("kind");
+    if (drift.length) {
+      console.log(`✗ ${slug}: catalog.json differs from core's catalogEntry in ${drift.join(", ")} — run node scripts/build.mjs`);
+      failed++;
+      continue;
+    }
   }
 
   // A missing signature is fine (see above); one that does not check out means
