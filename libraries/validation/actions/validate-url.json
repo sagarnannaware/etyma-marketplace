@@ -1,0 +1,60 @@
+{
+  "name": "Validate URL",
+  "description": "Is this a web address (http or https)? Answers { valid, value, host } or { valid: false, reason } — a website on a supplier record, a link in a form, a webhook address.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "NA1_RN8sYqrb",
+      "name": "url",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "fvM972i5WAGS",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "yjmNGuXWU9eR",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { try { const u = new URL(String(url ?? '').trim()); return u.protocol === 'http:' || u.protocol === 'https:' ? { valid: true, value: u.href, host: u.hostname } : { valid: false, reason: 'Only http and https' }; } catch (e) { return { valid: false, reason: 'Not a URL' }; } })() }}\"}]"
+      }
+    },
+    {
+      "id": "Gsd0b5yaQOV4",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "K9nId5iJ99F3",
+      "source": "fvM972i5WAGS",
+      "target": "yjmNGuXWU9eR"
+    },
+    {
+      "id": "fhb3_sMFJ4Vv",
+      "source": "yjmNGuXWU9eR",
+      "target": "Gsd0b5yaQOV4"
+    }
+  ],
+  "id": "XJYQPk2VwDla",
+  "localVariables": [],
+  "outputParameters": []
+}

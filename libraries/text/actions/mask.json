@@ -1,0 +1,65 @@
+{
+  "name": "Mask",
+  "description": "Hide all but the last few characters of a card number, an account number, a phone number or an id — '•••• •••• •••• 4242' on a receipt, a statement or a profile page. visible is how many characters stay (4 unless given).",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "aEXAeXwo3uaP",
+      "name": "text",
+      "type": "Text"
+    },
+    {
+      "id": "belPgba7fPVH",
+      "name": "visible",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "KaaUonSx4omT",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "QoDA4O-7sNVx",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const s = String(text ?? '').replace(/\\\\s+/g, ''); const n = +visible || 4; return s.length <= n ? s : '•'.repeat(s.length - n) + s.slice(-n); })() }}\"}]"
+      }
+    },
+    {
+      "id": "YK4DmVQakkp3",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "pSww7BdFKwR5",
+      "source": "KaaUonSx4omT",
+      "target": "QoDA4O-7sNVx"
+    },
+    {
+      "id": "SdvbLf53Cl1W",
+      "source": "QoDA4O-7sNVx",
+      "target": "YK4DmVQakkp3"
+    }
+  ],
+  "id": "pyhQoxZ7WkoG",
+  "localVariables": [],
+  "outputParameters": []
+}

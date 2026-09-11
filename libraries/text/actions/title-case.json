@@ -1,0 +1,60 @@
+{
+  "name": "Title Case",
+  "description": "Capitalise the first letter of every word — a product name, a heading, a person's name typed in lower case.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "ViguDutL8Pt6",
+      "name": "text",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "qUgkb60whsQF",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "qJbHU-P-m-Oo",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= String(text ?? '').toLowerCase().replace(/(^|\\\\s)\\\\S/g, (c) => c.toUpperCase()) }}\"}]"
+      }
+    },
+    {
+      "id": "ATF4p-f2Dzso",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "QuluPFTJTlG_",
+      "source": "qUgkb60whsQF",
+      "target": "qJbHU-P-m-Oo"
+    },
+    {
+      "id": "Z49acN6Sglna",
+      "source": "qJbHU-P-m-Oo",
+      "target": "ATF4p-f2Dzso"
+    }
+  ],
+  "id": "URMliOWt_P91",
+  "localVariables": [],
+  "outputParameters": []
+}

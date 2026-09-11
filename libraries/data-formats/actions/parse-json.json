@@ -1,0 +1,60 @@
+{
+  "name": "Parse JSON",
+  "description": "An object from JSON text — a webhook body stored as text, a settings blob, a file a system sends. Malformed JSON fails the flow with the parser's message.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "LLdfFQlpU9ff",
+      "name": "text",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "H_VlVCf69scV",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "78rp5x5keX5J",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= JSON.parse(String(text ?? '')) }}\"}]"
+      }
+    },
+    {
+      "id": "9nRng3F9NGsQ",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "z9afhD8wOe4M",
+      "source": "H_VlVCf69scV",
+      "target": "78rp5x5keX5J"
+    },
+    {
+      "id": "Pteo_0SNoQ14",
+      "source": "78rp5x5keX5J",
+      "target": "9nRng3F9NGsQ"
+    }
+  ],
+  "id": "vzI46F8oWsJn",
+  "localVariables": [],
+  "outputParameters": []
+}

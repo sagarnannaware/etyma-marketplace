@@ -1,0 +1,65 @@
+{
+  "name": "Validate Postcode",
+  "description": "Is this a postcode or ZIP code for the country? Knows US, GB, CA, DE, FR, IN, AU, SG, NL, JP and BR; answers { valid, value } or { valid: false, reason } — a shipping address, a billing address, a delivery form. A country without a rule accepts any non-empty value and says so.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "HjZEtGGLxQPd",
+      "name": "postcode",
+      "type": "Text"
+    },
+    {
+      "id": "GVaB_0z3Ac8Q",
+      "name": "country",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "ZunM89KtFizt",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "EQarf4-Qbd9n",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const s = String(postcode ?? '').trim().toUpperCase(); const c = String(country || 'US').toUpperCase(); const rules = { US: /^\\\\d{5}(-\\\\d{4})?$/, GB: /^[A-Z]{1,2}\\\\d[A-Z\\\\d]? ?\\\\d[A-Z]{2}$/, CA: /^[A-Z]\\\\d[A-Z] ?\\\\d[A-Z]\\\\d$/, DE: /^\\\\d{5}$/, FR: /^\\\\d{5}$/, IN: /^\\\\d{6}$/, AU: /^\\\\d{4}$/, SG: /^\\\\d{6}$/, NL: /^\\\\d{4} ?[A-Z]{2}$/, JP: /^\\\\d{3}-?\\\\d{4}$/, BR: /^\\\\d{5}-?\\\\d{3}$/ }; const rule = rules[c]; if (!rule) return s ? { valid: true, value: s, note: 'No rule for ' + c } : { valid: false, reason: 'Empty' }; return rule.test(s) ? { valid: true, value: s } : { valid: false, reason: 'Not a ' + c + ' postcode' }; })() }}\"}]"
+      }
+    },
+    {
+      "id": "-xECWLEe5p-X",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "hLXkuQelMRRv",
+      "source": "ZunM89KtFizt",
+      "target": "EQarf4-Qbd9n"
+    },
+    {
+      "id": "rvx3_fn-OOuh",
+      "source": "EQarf4-Qbd9n",
+      "target": "-xECWLEe5p-X"
+    }
+  ],
+  "id": "Y5AQWZvNDkgG",
+  "localVariables": [],
+  "outputParameters": []
+}

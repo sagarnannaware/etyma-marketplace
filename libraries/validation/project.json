@@ -1,0 +1,53 @@
+{
+  "id": "g5uiOdzA3BHn",
+  "name": "Validation",
+  "type": "library",
+  "references": [],
+  "variables": [],
+  "createdAt": "2026-09-11T10:03:20.972Z",
+  "updatedAt": "2026-09-11T10:03:20.972Z",
+  "requirementsDoc": "Checks for what people type into forms and what arrives in files and API calls — email, phone in international E.164 format, URL, IBAN, card number, postcode by country, required fields — each answering { valid, reason } so a flow can show why.",
+  "npmPackages": [
+    {
+      "name": "libphonenumber-js",
+      "version": "1.13.13",
+      "typesSource": "bundled",
+      "environments": [
+        "node"
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-11T10:03:22.764Z",
+      "functions": [
+        {
+          "export": "parsePhoneNumberFromString",
+          "params": [
+            {
+              "name": "text",
+              "type": "string"
+            },
+            {
+              "name": "defaultCountry",
+              "type": "string",
+              "optional": true
+            }
+          ],
+          "returns": "PhoneNumber | undefined",
+          "jsdoc": "Parse a phone number typed any way people type them; defaultCountry (US, GB, IN, …) resolves a local number. undefined when it cannot be a phone number; the result has isValid(), number (E.164), country, formatNational(), formatInternational()."
+        }
+      ]
+    }
+  ],
+  "_order": {
+    "actions": [
+      "7QKRJ4kdsKQT",
+      "PDb8kNwXiG_p",
+      "XJYQPk2VwDla",
+      "MyNbTusUr1I7",
+      "5Ur4PrZLhy0J",
+      "Y5AQWZvNDkgG",
+      "bfyQVwO0cdE1"
+    ]
+  },
+  "schemaVersion": 21
+}

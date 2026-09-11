@@ -1,0 +1,60 @@
+{
+  "name": "Initials",
+  "description": "The initials of a person's name, up to three letters — for an avatar, a badge or a compact list of assignees.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "-cYDDhicQFAi",
+      "name": "name",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "5eM3OgFnLAR6",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "X_LYd0gWGWI7",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= String(name ?? '').trim().split(/\\\\s+/).filter(Boolean).map((w) => w[0].toUpperCase()).slice(0, 3).join('') }}\"}]"
+      }
+    },
+    {
+      "id": "K2lrt6heYglm",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "wjw1w74nfG8B",
+      "source": "5eM3OgFnLAR6",
+      "target": "X_LYd0gWGWI7"
+    },
+    {
+      "id": "MzoyD4ZL-hKJ",
+      "source": "X_LYd0gWGWI7",
+      "target": "K2lrt6heYglm"
+    }
+  ],
+  "id": "R6WCotjwMHaY",
+  "localVariables": [],
+  "outputParameters": []
+}

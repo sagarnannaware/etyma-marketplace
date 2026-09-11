@@ -1,0 +1,23 @@
+{
+  "slug": "data-formats",
+  "name": "Data Formats",
+  "tagline": "CSV, JSON and XML in and out — the price list a supplier emails, the order feed a warehouse sends.",
+  "description": "The files and feeds other systems send and expect — parse a CSV a supplier emails into records, write records back as CSV, parse and write JSON, read a value at a path inside JSON, parse an XML feed or invoice into an object — over papaparse and xml2js.",
+  "category": "Data",
+  "version": "1.0.0",
+  "tags": [
+    "csv",
+    "json",
+    "xml",
+    "parse",
+    "import",
+    "export",
+    "feed",
+    "file",
+    "convert",
+    "path"
+  ],
+  "license": "MIT",
+  "author": "Etyma",
+  "source": "curated"
+}

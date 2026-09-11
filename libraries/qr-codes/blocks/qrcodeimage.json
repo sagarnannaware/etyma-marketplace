@@ -1,8 +1,8 @@
 {
-  "id": "OCpJKMN2a0ws",
+  "id": "kYaCDXMszGET",
   "name": "QRCodeImage",
   "widgetTree": {
-    "id": "8MlJgdCKP11u",
+    "id": "2O88UdqoMhIA",
     "type": "Box",
     "properties": {
       "className": "flex min-h-full w-full flex-col gap-4 p-6"
@@ -13,17 +13,17 @@
   },
   "inputParameters": [
     {
-      "id": "PhRVPA7wT4LW",
+      "id": "nhiJG0U-oTbt",
       "name": "src",
       "type": "Text"
     },
     {
-      "id": "q_05OaKnROIo",
+      "id": "KHXk-WyOhXiv",
       "name": "label",
       "type": "Text"
     },
     {
-      "id": "ZxhmgNVnFSQ5",
+      "id": "bBKYqbYedKPh",
       "name": "size",
       "type": "Integer"
     }

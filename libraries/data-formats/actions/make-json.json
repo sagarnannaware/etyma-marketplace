@@ -1,0 +1,65 @@
+{
+  "name": "Make JSON",
+  "description": "JSON text from any value — for a request body, a file, a log line or a text column. indent is 0 for compact (the default) or 2 for readable.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "wpy8VtMYsbsv",
+      "name": "value",
+      "type": "Object"
+    },
+    {
+      "id": "DG3WfRcSSMYi",
+      "name": "indent",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "y1NgqpXEwjGt",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "KFN-UF41nFZY",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= JSON.stringify(value, null, +indent || 0) }}\"}]"
+      }
+    },
+    {
+      "id": "Os2I41rGoBPZ",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "T9LLKOLoXhN2",
+      "source": "y1NgqpXEwjGt",
+      "target": "KFN-UF41nFZY"
+    },
+    {
+      "id": "zgCJ_Dq1clW_",
+      "source": "KFN-UF41nFZY",
+      "target": "Os2I41rGoBPZ"
+    }
+  ],
+  "id": "RfQo-kC9bIza",
+  "localVariables": [],
+  "outputParameters": []
+}

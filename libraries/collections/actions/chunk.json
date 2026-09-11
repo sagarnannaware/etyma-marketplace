@@ -1,0 +1,65 @@
+{
+  "name": "Chunk",
+  "description": "Split a list into batches of a size — 100 rows per API call, 50 emails per send, 20 records per page.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "bFKM1MGWFd1-",
+      "name": "items",
+      "type": "Object"
+    },
+    {
+      "id": "ywMkVO-QFytv",
+      "name": "size",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "LjOFK0O5VHFM",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "jrEIBGXPUTiV",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const n = Math.max(1, +size || 1); const out = []; for (let i = 0; i < (items || []).length; i += n) out.push(items.slice(i, i + n)); return out; })() }}\"}]"
+      }
+    },
+    {
+      "id": "sS-3mID_OSLF",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "1wLhTUqZoSzr",
+      "source": "LjOFK0O5VHFM",
+      "target": "jrEIBGXPUTiV"
+    },
+    {
+      "id": "5FQgwY0flEW_",
+      "source": "jrEIBGXPUTiV",
+      "target": "sS-3mID_OSLF"
+    }
+  ],
+  "id": "nCFCuvO8gy8_",
+  "localVariables": [],
+  "outputParameters": []
+}

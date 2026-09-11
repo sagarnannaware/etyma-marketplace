@@ -1,0 +1,65 @@
+{
+  "name": "Group By",
+  "description": "Group a list of records by a field — orders by customer, tickets by status, expenses by month — as a list of { key, items } for a grouped table, a report section per group, or a per-group total.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "Oi-dZjYH9rxV",
+      "name": "items",
+      "type": "Object"
+    },
+    {
+      "id": "NrLwtBg8RyGO",
+      "name": "field",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "Ss255LI_EYk5",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "lhhXolUJVIQP",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const groups = new Map(); for (const it of items || []) { const k = it == null ? '' : it[field]; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(it); } return [...groups].map(([key, list]) => ({ key, items: list })); })() }}\"}]"
+      }
+    },
+    {
+      "id": "Yiws92IIHVDv",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "12vI-0e2hn0x",
+      "source": "Ss255LI_EYk5",
+      "target": "lhhXolUJVIQP"
+    },
+    {
+      "id": "q1otL3vukZnh",
+      "source": "lhhXolUJVIQP",
+      "target": "Yiws92IIHVDv"
+    }
+  ],
+  "id": "gjPXlxizG7Ho",
+  "localVariables": [],
+  "outputParameters": []
+}

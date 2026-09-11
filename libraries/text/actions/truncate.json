@@ -1,0 +1,65 @@
+{
+  "name": "Truncate",
+  "description": "Shorten text to a maximum length at a word boundary with an ellipsis — a preview of a description in a list, a card, a notification or a subject line.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "tY6BHNAdj7-0",
+      "name": "text",
+      "type": "Text"
+    },
+    {
+      "id": "6rYlc85R4Yph",
+      "name": "max",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "VFgIEVSv4zUP",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "oazbLebgAp2i",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const s = String(text ?? ''); const n = +max || 80; return s.length <= n ? s : s.slice(0, n - 1).trimEnd() + '…'; })() }}\"}]"
+      }
+    },
+    {
+      "id": "jA0GdQ4_oaxX",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "s4R7x4YwMiKu",
+      "source": "VFgIEVSv4zUP",
+      "target": "oazbLebgAp2i"
+    },
+    {
+      "id": "7kCWfOjVFi57",
+      "source": "oazbLebgAp2i",
+      "target": "jA0GdQ4_oaxX"
+    }
+  ],
+  "id": "nev8LM_buIW9",
+  "localVariables": [],
+  "outputParameters": []
+}

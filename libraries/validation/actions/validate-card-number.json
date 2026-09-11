@@ -1,0 +1,60 @@
+{
+  "name": "Validate Card Number",
+  "description": "Is this a payment card number? Checks the length and the Luhn checksum and names the brand (visa, mastercard, amex, other); answers { valid, brand, last4 } or { valid: false, reason }. Never store the number — keep last4.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "8dC_m4Bas4fB",
+      "name": "number",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "7wkYUq3aYl-K",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "-rOoASV72PYw",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const s = String(number ?? '').replace(/[\\\\s-]/g, ''); if (!/^\\\\d{12,19}$/.test(s)) return { valid: false, reason: 'Not a card number' }; let sum = 0; for (let i = 0; i < s.length; i++) { let d = +s[s.length - 1 - i]; if (i % 2 === 1) { d *= 2; if (d > 9) d -= 9; } sum += d; } if (sum % 10 !== 0) return { valid: false, reason: 'Checksum failed' }; const brand = /^4/.test(s) ? 'visa' : /^(5[1-5]|2[2-7])/.test(s) ? 'mastercard' : /^3[47]/.test(s) ? 'amex' : 'other'; return { valid: true, brand, last4: s.slice(-4) }; })() }}\"}]"
+      }
+    },
+    {
+      "id": "45mXHVwxMQYf",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "zuchY6Cm1jAa",
+      "source": "7wkYUq3aYl-K",
+      "target": "-rOoASV72PYw"
+    },
+    {
+      "id": "x5IdUGiVv2Gb",
+      "source": "-rOoASV72PYw",
+      "target": "45mXHVwxMQYf"
+    }
+  ],
+  "id": "5Ur4PrZLhy0J",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -1,0 +1,65 @@
+{
+  "name": "Fill Template",
+  "description": "Fill a message template from an object: 'Hi {{name}}, your order {{order.id}} ships {{date}}' with { name, order, date } — for a notification, an SMS, a letter or a subject line. A name the object lacks becomes empty.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "gkY6-s2OPaHL",
+      "name": "template",
+      "type": "Text"
+    },
+    {
+      "id": "qL1XJ-y39l7h",
+      "name": "values",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "UhXR1ClLOsOo",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "L1rv7fe0qeRf",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= String(template ?? '').replace(new RegExp('\\\\\\\\{\\\\\\\\{\\\\\\\\s*([\\\\\\\\w.]+)\\\\\\\\s*\\\\\\\\}\\\\\\\\}', 'g'), (m, k) => { const v = k.split('.').reduce((o, q) => (o == null ? undefined : o[q]), values); return v == null ? '' : String(v); }) }}\"}]"
+      }
+    },
+    {
+      "id": "CIYWz9LleVVH",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "_77dews5TuJ9",
+      "source": "UhXR1ClLOsOo",
+      "target": "L1rv7fe0qeRf"
+    },
+    {
+      "id": "4AbSHoK7Vccd",
+      "source": "L1rv7fe0qeRf",
+      "target": "CIYWz9LleVVH"
+    }
+  ],
+  "id": "le5Hl--vjaLg",
+  "localVariables": [],
+  "outputParameters": []
+}

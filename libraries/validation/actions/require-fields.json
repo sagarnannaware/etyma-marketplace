@@ -1,0 +1,65 @@
+{
+  "name": "Require Fields",
+  "description": "Are these fields present and non-empty on a record? fields is a list or a comma-separated text; answers { valid } or { valid: false, reason, missing } naming what is missing — a form before it is saved, a row before it is imported, a request before it is processed.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "vEPo7Js9X-C_",
+      "name": "record",
+      "type": "Object"
+    },
+    {
+      "id": "2mUEr-bBOSa8",
+      "name": "fields",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "ZuIc2lc_gnPG",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "uOU7gZ5XwaMW",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const keys = Array.isArray(fields) ? fields : String(fields ?? '').split(',').map((f) => f.trim()).filter(Boolean); const missing = keys.filter((k) => record == null || record[k] == null || String(record[k]).trim() === ''); return missing.length ? { valid: false, reason: 'Missing: ' + missing.join(', '), missing } : { valid: true }; })() }}\"}]"
+      }
+    },
+    {
+      "id": "hSx26AD_QHpx",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "GIn8Bthq5-RV",
+      "source": "ZuIc2lc_gnPG",
+      "target": "uOU7gZ5XwaMW"
+    },
+    {
+      "id": "KLL_XA-qEA0h",
+      "source": "uOU7gZ5XwaMW",
+      "target": "hSx26AD_QHpx"
+    }
+  ],
+  "id": "bfyQVwO0cdE1",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -1,0 +1,79 @@
+{
+  "name": "Parse XML",
+  "description": "An object from XML text — an order feed from a warehouse, an invoice in UBL, a SOAP response, a sitemap — as plain nested objects with attributes as fields; repeated elements become a list, an element with both text and attributes keeps its text under '_'.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "j7D-9emoxum9",
+      "name": "xml",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "wpiEmtdldoAj",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "RnCh0yFaHWxk",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "xml2js",
+        "exportName": "parseStringPromise",
+        "args": "[\"{{= String(xml ?? '') }}\",\"{{= ({ explicitArray: false, mergeAttrs: true, trim: true }) }}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "4dAtr3Cv46xr",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{parsed}}\"}]"
+      }
+    },
+    {
+      "id": "OX3HL6KBeEeD",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "MAE-f4uUYlvq",
+      "source": "wpiEmtdldoAj",
+      "target": "RnCh0yFaHWxk"
+    },
+    {
+      "id": "-HovFlz7p8wi",
+      "source": "RnCh0yFaHWxk",
+      "target": "4dAtr3Cv46xr"
+    },
+    {
+      "id": "8H5L2uok5vh4",
+      "source": "4dAtr3Cv46xr",
+      "target": "OX3HL6KBeEeD"
+    }
+  ],
+  "id": "lxI8xDW9Als3",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -1,0 +1,25 @@
+{
+  "slug": "text",
+  "name": "Text",
+  "tagline": "Slugs, truncation, title case, initials, masking, template filling, plurals and fuzzy matching.",
+  "description": "Text for the parts of an app that people read — a URL slug from a title, a truncated preview, title case, initials for an avatar, a masked account number, HTML stripped from an email body, a message filled from a template, a plural, a similarity score for fuzzy matching.",
+  "category": "Text",
+  "version": "1.0.0",
+  "tags": [
+    "text",
+    "string",
+    "slug",
+    "truncate",
+    "title case",
+    "initials",
+    "mask",
+    "strip html",
+    "template",
+    "plural",
+    "similarity",
+    "fuzzy"
+  ],
+  "license": "MIT",
+  "author": "Etyma",
+  "source": "curated"
+}

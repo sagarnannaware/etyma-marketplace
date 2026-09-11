@@ -180,7 +180,11 @@ for (const slug of slugs) {
     }
 
     const calls = nodes.filter((n) => n.type === "CallFunction");
-    if (calls.length < 1) fail(where, "no CallFunction node — the function does nothing");
+    // A function does something when a node other than Start and End is on the path — a
+    // CallFunction over a package, or an Assign whose expression IS the function (a pivot, a
+    // slug, a Luhn check need no package). An empty flow is the one that does nothing.
+    const working = nodes.filter((n) => n.type !== "Start" && n.type !== "End");
+    if (working.length < 1) fail(where, "no node between Start and End — the function does nothing");
     // A straight line of up to four calls. Past that it is application logic
     // wearing a library's clothes, and the consumer should own it.
     if (calls.length > 4) fail(where, `${calls.length} CallFunction nodes — split this; a library function is one idea`);

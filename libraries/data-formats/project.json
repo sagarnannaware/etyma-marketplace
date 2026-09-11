@@ -1,0 +1,99 @@
+{
+  "id": "9zweHSJX45ly",
+  "name": "Data Formats",
+  "type": "library",
+  "references": [],
+  "variables": [],
+  "createdAt": "2026-09-11T10:03:25.422Z",
+  "updatedAt": "2026-09-11T10:03:25.422Z",
+  "requirementsDoc": "The files and feeds other systems send and expect — parse a CSV a supplier emails into records, write records back as CSV, parse and write JSON, read a value at a path inside JSON, parse an XML feed or invoice into an object — over papaparse and xml2js.",
+  "npmPackages": [
+    {
+      "name": "papaparse",
+      "version": "5.7.0",
+      "typesSource": "@types",
+      "typesVersion": "5.5.2",
+      "environments": [
+        "node"
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-11T10:03:27.752Z",
+      "functions": [
+        {
+          "export": "parse",
+          "params": [
+            {
+              "name": "csv",
+              "type": "string"
+            },
+            {
+              "name": "config",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "ParseResult",
+          "jsdoc": "Parse CSV text; { header: true } gives one object per row keyed by the header line, dynamicTyping turns numbers into numbers; the result has data and errors."
+        },
+        {
+          "export": "unparse",
+          "params": [
+            {
+              "name": "data",
+              "type": "array"
+            },
+            {
+              "name": "config",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "string",
+          "jsdoc": "Write a list of objects (or of arrays) as CSV text with a header line."
+        }
+      ]
+    },
+    {
+      "name": "xml2js",
+      "version": "0.6.2",
+      "typesSource": "@types",
+      "typesVersion": "0.4.14",
+      "environments": [
+        "node"
+      ],
+      "components": [],
+      "unsupported": [],
+      "introspectedAt": "2026-09-11T10:03:27.764Z",
+      "functions": [
+        {
+          "export": "parseStringPromise",
+          "params": [
+            {
+              "name": "xml",
+              "type": "string"
+            },
+            {
+              "name": "options",
+              "type": "object",
+              "optional": true
+            }
+          ],
+          "returns": "Promise<object>",
+          "jsdoc": "Parse XML text into an object; { explicitArray: false, mergeAttrs: true } gives plain nested objects with attributes as fields."
+        }
+      ]
+    }
+  ],
+  "_order": {
+    "actions": [
+      "fSv0WR2KvfHm",
+      "VZNjZYdVfmHp",
+      "vzI46F8oWsJn",
+      "RfQo-kC9bIza",
+      "XOkNkoWj5osF",
+      "lxI8xDW9Als3"
+    ]
+  },
+  "schemaVersion": 21
+}

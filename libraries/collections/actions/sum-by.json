@@ -1,0 +1,65 @@
+{
+  "name": "Sum By",
+  "description": "Add up one field across a list of records — the total of an order's lines, the hours on a timesheet, the amount of a month's expenses.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "3JwC3kAl5oRD",
+      "name": "items",
+      "type": "Object"
+    },
+    {
+      "id": "te7uMNUJZ6NW",
+      "name": "field",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Decimal",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "OrLmdj5YXXht",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "AOcwhN5xmmqX",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (items || []).reduce((t, it) => t + (+((it || {})[field]) || 0), 0) }}\"}]"
+      }
+    },
+    {
+      "id": "xKAz_m7spDD0",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "GtI51pCKWlsc",
+      "source": "OrLmdj5YXXht",
+      "target": "AOcwhN5xmmqX"
+    },
+    {
+      "id": "RjwnZswkNRsc",
+      "source": "AOcwhN5xmmqX",
+      "target": "xKAz_m7spDD0"
+    }
+  ],
+  "id": "13TlxbFPoWi9",
+  "localVariables": [],
+  "outputParameters": []
+}

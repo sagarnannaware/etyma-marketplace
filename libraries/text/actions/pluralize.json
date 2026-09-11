@@ -1,0 +1,70 @@
+{
+  "name": "Pluralize",
+  "description": "A count with its noun — '1 item', '3 items', '2 people' — for a summary line, a badge or a sentence in an email. plural is optional; the default adds an s.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "x2zr838dl2_y",
+      "name": "count",
+      "type": "Integer"
+    },
+    {
+      "id": "0lxkwED9sLYZ",
+      "name": "singular",
+      "type": "Text"
+    },
+    {
+      "id": "WQaLzvtSnAYd",
+      "name": "plural",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "UbA08m6W_v2P",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "_KUQkO7VijkQ",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= count + ' ' + (+count === 1 ? singular : (plural || singular + 's')) }}\"}]"
+      }
+    },
+    {
+      "id": "V-rNNT-fT9T3",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "5YBBNvi3JCpJ",
+      "source": "UbA08m6W_v2P",
+      "target": "_KUQkO7VijkQ"
+    },
+    {
+      "id": "cfQamU1rNCnA",
+      "source": "_KUQkO7VijkQ",
+      "target": "V-rNNT-fT9T3"
+    }
+  ],
+  "id": "xwDDylh61mll",
+  "localVariables": [],
+  "outputParameters": []
+}

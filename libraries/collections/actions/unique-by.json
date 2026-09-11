@@ -1,0 +1,65 @@
+{
+  "name": "Unique By",
+  "description": "Remove duplicates from a list of records by a field, keeping the first of each — customers from a list of orders, distinct emails from an import, one row per SKU.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "eQUQNXTK7Xby",
+      "name": "items",
+      "type": "Object"
+    },
+    {
+      "id": "UKusNnw_4lxp",
+      "name": "field",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "ZYgGlNCm8k8H",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "VQNngNOsakjx",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const seen = new Set(); return (items || []).filter((it) => { const k = it == null ? '' : it[field]; if (seen.has(k)) return false; seen.add(k); return true; }); })() }}\"}]"
+      }
+    },
+    {
+      "id": "MtcF1aXon9l6",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "GpQnPt2_saHy",
+      "source": "ZYgGlNCm8k8H",
+      "target": "VQNngNOsakjx"
+    },
+    {
+      "id": "R36Dx0R-qD5x",
+      "source": "VQNngNOsakjx",
+      "target": "MtcF1aXon9l6"
+    }
+  ],
+  "id": "OfXI1W4GS1pf",
+  "localVariables": [],
+  "outputParameters": []
+}

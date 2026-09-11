@@ -1,0 +1,60 @@
+{
+  "name": "Strip HTML",
+  "description": "Plain text from HTML — an email body, a rich-text description or a scraped page, with tags removed and entities decoded — for a preview, a search index or a notification.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "2PkG9CaE5jBM",
+      "name": "html",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "jc8aV-WD87JQ",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "RCQ6bIxcGCMf",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= String(html ?? '').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, String.fromCharCode(34)).replace(/\\\\s+/g, ' ').trim() }}\"}]"
+      }
+    },
+    {
+      "id": "VGeQhnT-BuTL",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "MeYjxvd7BKCo",
+      "source": "jc8aV-WD87JQ",
+      "target": "RCQ6bIxcGCMf"
+    },
+    {
+      "id": "pAo-l226MHpX",
+      "source": "RCQ6bIxcGCMf",
+      "target": "VGeQhnT-BuTL"
+    }
+  ],
+  "id": "y6gbq14itAnu",
+  "localVariables": [],
+  "outputParameters": []
+}

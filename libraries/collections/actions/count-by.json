@@ -1,0 +1,65 @@
+{
+  "name": "Count By",
+  "description": "How many records share each value of a field — tickets per status, orders per country, sign-ups per plan — as a list of { key, count } for a chart, a set of KPI tiles or a summary line.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "O0wKZqPdtDCy",
+      "name": "items",
+      "type": "Object"
+    },
+    {
+      "id": "gvt-mjQD4FTN",
+      "name": "field",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "t3itMjE6Dwtf",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "WFChesBTjPyu",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const counts = new Map(); for (const it of items || []) { const k = it == null ? '' : it[field]; counts.set(k, (counts.get(k) || 0) + 1); } return [...counts].map(([key, count]) => ({ key, count })); })() }}\"}]"
+      }
+    },
+    {
+      "id": "3BTm2aNwFW9W",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "n2klS-ASfYTS",
+      "source": "t3itMjE6Dwtf",
+      "target": "WFChesBTjPyu"
+    },
+    {
+      "id": "M6Q-Zhgl8jIf",
+      "source": "WFChesBTjPyu",
+      "target": "3BTm2aNwFW9W"
+    }
+  ],
+  "id": "fMZJBour-rGX",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -1,0 +1,60 @@
+{
+  "name": "Validate Email",
+  "description": "Is this an email address? Answers { valid, value } with the address in lower case, or { valid: false, reason } — for a sign-up form, a contact record, an invite, an imported list.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "wWfVqLD6pyf6",
+      "name": "email",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "zierDACO9XJc",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "V_H7qS25gOGJ",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const s = String(email ?? '').trim(); return /^[^\\\\s@]+@[^\\\\s@]+\\\\.[^\\\\s@]{2,}$/.test(s) ? { valid: true, value: s.toLowerCase() } : { valid: false, reason: 'Not an email address' }; })() }}\"}]"
+      }
+    },
+    {
+      "id": "h30VZgNgrW4l",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "imEayA1IFLYY",
+      "source": "zierDACO9XJc",
+      "target": "V_H7qS25gOGJ"
+    },
+    {
+      "id": "YfycM5lamQ-l",
+      "source": "V_H7qS25gOGJ",
+      "target": "h30VZgNgrW4l"
+    }
+  ],
+  "id": "7QKRJ4kdsKQT",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -1,0 +1,84 @@
+{
+  "name": "Parse CSV",
+  "description": "Records from CSV text — the price list a supplier emails, an export from another system, a bank statement — one object per row keyed by the header line, numbers as numbers. delimiter is detected unless given (',' ';' or a tab).",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "c1o8yOvJbr8x",
+      "name": "text",
+      "type": "Text"
+    },
+    {
+      "id": "UQb9nqi-S6lC",
+      "name": "delimiter",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "Vut_uFjEech_",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "0w6WifK71fY0",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "papaparse",
+        "exportName": "parse",
+        "args": "[\"{{= String(text ?? '') }}\",\"{{= ({ header: true, skipEmptyLines: true, dynamicTyping: true, delimiter: delimiter || '' }) }}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "Hmz5xnE_a2xc",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= parsed.data }}\"}]"
+      }
+    },
+    {
+      "id": "s03bDVIm84rp",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "rmu9PWrBjPGQ",
+      "source": "Vut_uFjEech_",
+      "target": "0w6WifK71fY0"
+    },
+    {
+      "id": "oWpYs0F2IJL6",
+      "source": "0w6WifK71fY0",
+      "target": "Hmz5xnE_a2xc"
+    },
+    {
+      "id": "uyvA7mHBvufs",
+      "source": "Hmz5xnE_a2xc",
+      "target": "s03bDVIm84rp"
+    }
+  ],
+  "id": "fSv0WR2KvfHm",
+  "localVariables": [],
+  "outputParameters": []
+}

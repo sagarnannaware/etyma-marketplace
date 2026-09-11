@@ -1,0 +1,70 @@
+{
+  "name": "Top N",
+  "description": "The N records with the highest value of a field — best-selling products, largest invoices, most active users — for a leaderboard, a dashboard tile or a highlights email. n is 10 unless given.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "WbY3uckAQoH3",
+      "name": "items",
+      "type": "Object"
+    },
+    {
+      "id": "nqP0CFtvn4r7",
+      "name": "field",
+      "type": "Text"
+    },
+    {
+      "id": "3K5vukpKv7F8",
+      "name": "n",
+      "type": "Integer"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "9kt9ax6pWLqE",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "j_LCftEuwz1g",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= [...(items || [])].sort((a, b) => (+((b || {})[field]) || 0) - (+((a || {})[field]) || 0)).slice(0, Math.max(1, +n || 10)) }}\"}]"
+      }
+    },
+    {
+      "id": "mEPVONPuaPdK",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "3hoYpf1rUpH0",
+      "source": "9kt9ax6pWLqE",
+      "target": "j_LCftEuwz1g"
+    },
+    {
+      "id": "pkUDE9lrw3Er",
+      "source": "j_LCftEuwz1g",
+      "target": "mEPVONPuaPdK"
+    }
+  ],
+  "id": "GBZpNneYLH7T",
+  "localVariables": [],
+  "outputParameters": []
+}

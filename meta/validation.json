@@ -1,0 +1,26 @@
+{
+  "slug": "validation",
+  "name": "Validation",
+  "tagline": "Email, phone (E.164), URL, IBAN, card number, postcode and required fields — each with a reason.",
+  "description": "Checks for what people type into forms and what arrives in files and API calls — email, phone in international E.164 format, URL, IBAN, card number, postcode by country, required fields — each answering { valid, reason } so a flow can show why.",
+  "category": "Data",
+  "version": "1.0.0",
+  "tags": [
+    "validate",
+    "validation",
+    "email",
+    "phone",
+    "e164",
+    "international",
+    "url",
+    "iban",
+    "card number",
+    "luhn",
+    "postcode",
+    "zip",
+    "required"
+  ],
+  "license": "MIT",
+  "author": "Etyma",
+  "source": "curated"
+}

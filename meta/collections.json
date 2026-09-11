@@ -1,0 +1,26 @@
+{
+  "slug": "collections",
+  "name": "Collections",
+  "tagline": "Group by, sum by, count by, unique by, sort by, chunk, pivot, pick fields, top N — over lists of records.",
+  "description": "Lists of records for dashboards, reports and imports — group orders by customer, sum a column, count by status, de-duplicate, sort by a field, split into batches, pivot rows into a table, keep only some fields, the top N.",
+  "category": "Data",
+  "version": "1.0.0",
+  "tags": [
+    "list",
+    "array",
+    "records",
+    "group by",
+    "sum",
+    "count",
+    "unique",
+    "distinct",
+    "sort",
+    "chunk",
+    "batch",
+    "pivot",
+    "top"
+  ],
+  "license": "MIT",
+  "author": "Etyma",
+  "source": "curated"
+}

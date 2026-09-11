@@ -1,0 +1,65 @@
+{
+  "name": "Similarity",
+  "description": "How alike two texts are, from 0 to 1 — for fuzzy matching a typed customer name against the records, spotting a duplicate product, or suggesting 'did you mean'. Case is ignored.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "FZTqENCI6r9_",
+      "name": "a",
+      "type": "Text"
+    },
+    {
+      "id": "1uA6Yl13gQ03",
+      "name": "b",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Decimal",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "FODsfpk69jNI",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "dAIyFi6R13J2",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const x = String(a ?? '').toLowerCase(), y = String(b ?? '').toLowerCase(); if (!x.length && !y.length) return 1; let prev = Array.from({ length: y.length + 1 }, (_, i) => i); for (let i = 1; i <= x.length; i++) { const cur = [i]; for (let j = 1; j <= y.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (x[i - 1] === y[j - 1] ? 0 : 1)); prev = cur; } return 1 - prev[y.length] / Math.max(x.length, y.length); })() }}\"}]"
+      }
+    },
+    {
+      "id": "k1izIBbua6RY",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "_bXAeYmbLH03",
+      "source": "FODsfpk69jNI",
+      "target": "dAIyFi6R13J2"
+    },
+    {
+      "id": "ky_XHAH99UQW",
+      "source": "dAIyFi6R13J2",
+      "target": "k1izIBbua6RY"
+    }
+  ],
+  "id": "AZMzQvY9gbE9",
+  "localVariables": [],
+  "outputParameters": []
+}

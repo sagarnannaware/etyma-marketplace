@@ -1,0 +1,65 @@
+{
+  "name": "Pick Fields",
+  "description": "Keep only some fields of every record — the columns of an export, the fields an API may see, a lighter payload for a page. fields is a list or a comma-separated text.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "B7ABZUJgmAfN",
+      "name": "items",
+      "type": "Object"
+    },
+    {
+      "id": "wiFURtVIBov2",
+      "name": "fields",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "zMmVftXhlEpt",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "nBvotsXNVIGY",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const keys = Array.isArray(fields) ? fields : String(fields ?? '').split(',').map((f) => f.trim()).filter(Boolean); return (items || []).map((it) => Object.fromEntries(keys.map((k) => [k, it == null ? undefined : it[k]]))); })() }}\"}]"
+      }
+    },
+    {
+      "id": "rbkiZIMgBDRR",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "hETCwpdlGzWn",
+      "source": "zMmVftXhlEpt",
+      "target": "nBvotsXNVIGY"
+    },
+    {
+      "id": "7k0y6odsgm1b",
+      "source": "nBvotsXNVIGY",
+      "target": "rbkiZIMgBDRR"
+    }
+  ],
+  "id": "LzQrl5Y4PTLo",
+  "localVariables": [],
+  "outputParameters": []
+}

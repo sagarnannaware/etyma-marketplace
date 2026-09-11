@@ -1,0 +1,65 @@
+{
+  "name": "Get JSON Path",
+  "description": "The value at a path inside an object or parsed JSON — 'order.items[0].sku', 'customer.address.city' — undefined when the path is not there; for reading a nested field out of a webhook payload or an API response without a code component.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "M69fzzOhy5Qz",
+      "name": "value",
+      "type": "Object"
+    },
+    {
+      "id": "9LiD5zZObcTj",
+      "name": "path",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "_a0qySsdtPPD",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "pTfesNEqicQb",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= String(path ?? '').replace(/\\\\[(\\\\d+)\\\\]/g, '.$1').split('.').filter(Boolean).reduce((o, k) => (o == null ? undefined : o[k]), value) }}\"}]"
+      }
+    },
+    {
+      "id": "swMwwmWCJuOd",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "0Zu3-kh3rDSK",
+      "source": "_a0qySsdtPPD",
+      "target": "pTfesNEqicQb"
+    },
+    {
+      "id": "20w-odjqP0Fr",
+      "source": "pTfesNEqicQb",
+      "target": "swMwwmWCJuOd"
+    }
+  ],
+  "id": "XOkNkoWj5osF",
+  "localVariables": [],
+  "outputParameters": []
+}

@@ -1,0 +1,70 @@
+{
+  "name": "Sort By",
+  "description": "Sort a list of records by a field, ascending unless direction is 'desc' — numbers as numbers, text alphabetically, empty values last; for a table before it is shown, a report, a pick list.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "p4AlRtV0TZRy",
+      "name": "items",
+      "type": "Object"
+    },
+    {
+      "id": "Mfk9-oEeUa7A",
+      "name": "field",
+      "type": "Text"
+    },
+    {
+      "id": "L2phYp6JbEcX",
+      "name": "direction",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "570zuzOSLCue",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "3FdppmIgRF_H",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= [...(items || [])].sort((a, b) => { const x = a == null ? undefined : a[field], y = b == null ? undefined : b[field]; const c = x == null ? 1 : y == null ? -1 : (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y), undefined, { numeric: true })); return String(direction || '').toLowerCase() === 'desc' ? -c : c; }) }}\"}]"
+      }
+    },
+    {
+      "id": "Rbsa6dXcuiie",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "TneM0id2feoh",
+      "source": "570zuzOSLCue",
+      "target": "3FdppmIgRF_H"
+    },
+    {
+      "id": "qwNqZCDePMCd",
+      "source": "3FdppmIgRF_H",
+      "target": "Rbsa6dXcuiie"
+    }
+  ],
+  "id": "F3qNK20VwTpu",
+  "localVariables": [],
+  "outputParameters": []
+}

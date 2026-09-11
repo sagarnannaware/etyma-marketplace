@@ -1,0 +1,79 @@
+{
+  "name": "Make CSV",
+  "description": "CSV text from a list of records, with a header line — for a download, an email attachment, an export to a spreadsheet or another system.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "IX8qRacLDJWk",
+      "name": "rows",
+      "type": "Object"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "clAV1-FY1Anv",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "A8994E9V1chT",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "papaparse",
+        "exportName": "unparse",
+        "args": "[\"{{rows}}\"]",
+        "outputVariable": "csv"
+      }
+    },
+    {
+      "id": "0lJfc4sPR88O",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{csv}}\"}]"
+      }
+    },
+    {
+      "id": "H1rFuvyo5nrJ",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "UGsnaAdx2lYL",
+      "source": "clAV1-FY1Anv",
+      "target": "A8994E9V1chT"
+    },
+    {
+      "id": "2Dcso4C7oUeX",
+      "source": "A8994E9V1chT",
+      "target": "0lJfc4sPR88O"
+    },
+    {
+      "id": "tkX83-wLOebR",
+      "source": "0lJfc4sPR88O",
+      "target": "H1rFuvyo5nrJ"
+    }
+  ],
+  "id": "VZNjZYdVfmHp",
+  "localVariables": [],
+  "outputParameters": []
+}

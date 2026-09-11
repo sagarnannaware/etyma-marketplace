@@ -1,0 +1,75 @@
+{
+  "name": "Pivot",
+  "description": "Pivot a list of records into a table: one row per value of rowField, one column per value of columnField, each cell the sum of valueField (or a count when valueField is empty) — sales by region and month, tickets by team and priority. Answers { columns, rows } ready for a table.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "Z96OQx_9U1_I",
+      "name": "items",
+      "type": "Object"
+    },
+    {
+      "id": "UMBFGQwVZAIx",
+      "name": "rowField",
+      "type": "Text"
+    },
+    {
+      "id": "cIcj3Olv6_U5",
+      "name": "columnField",
+      "type": "Text"
+    },
+    {
+      "id": "P-OacYyBb1cP",
+      "name": "valueField",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "hlhyxF_0LPPV",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "uJ0phRu8YD7Q",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const cols = []; const rows = new Map(); for (const it of items || []) { if (it == null) continue; const r = String(it[rowField]), c = String(it[columnField]); if (!cols.includes(c)) cols.push(c); if (!rows.has(r)) rows.set(r, { [rowField]: it[rowField] }); const row = rows.get(r); row[c] = (row[c] || 0) + (valueField ? (+it[valueField] || 0) : 1); } return { columns: [rowField, ...cols], rows: [...rows.values()] }; })() }}\"}]"
+      }
+    },
+    {
+      "id": "PbB4fIXg2dNU",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "nyTA8h-3_rPG",
+      "source": "hlhyxF_0LPPV",
+      "target": "uJ0phRu8YD7Q"
+    },
+    {
+      "id": "LV4VyfnHp_Fl",
+      "source": "uJ0phRu8YD7Q",
+      "target": "PbB4fIXg2dNU"
+    }
+  ],
+  "id": "PHBEH5aIXbcU",
+  "localVariables": [],
+  "outputParameters": []
+}

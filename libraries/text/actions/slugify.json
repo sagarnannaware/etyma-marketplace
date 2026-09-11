@@ -1,0 +1,60 @@
+{
+  "name": "Slugify",
+  "description": "Turn a title or a name into a URL slug — lower case, accents removed, words joined by hyphens: 'Café Menu 2026' becomes 'cafe-menu-2026'. For article URLs, product pages, file names and ids people can read.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "PRhEIwpljjCr",
+      "name": "text",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Text",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "VoOscb7OZzAT",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "iczevnqLi0tC",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= String(text ?? '').normalize('NFKD').replace(/[\\\\u0300-\\\\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') }}\"}]"
+      }
+    },
+    {
+      "id": "kHqKlUinSrfF",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "E2eQUQT17Ui-",
+      "source": "VoOscb7OZzAT",
+      "target": "iczevnqLi0tC"
+    },
+    {
+      "id": "IdsCpuWRjrU1",
+      "source": "iczevnqLi0tC",
+      "target": "kHqKlUinSrfF"
+    }
+  ],
+  "id": "e-6MkZPVKs0Z",
+  "localVariables": [],
+  "outputParameters": []
+}

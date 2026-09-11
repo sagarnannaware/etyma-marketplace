@@ -1,17 +1,17 @@
 {
-  "id": "KB4besP3FOma",
+  "id": "xZV9U83jrZ-H",
   "name": "Verify Token",
   "description": "Verify a JWT and return its payload. Fails when the signature or the expiry does not hold.",
   "scope": "server",
   "isPublic": true,
   "parameters": [
     {
-      "id": "BOoBsVLJd8Xt",
+      "id": "7d1epVMxCoi1",
       "name": "token",
       "type": "Text"
     },
     {
-      "id": "fbKr7vzX-u2O",
+      "id": "dSRKliJcRevm",
       "name": "secret",
       "type": "Text"
     }
@@ -19,7 +19,7 @@
   "variables": [],
   "nodes": [
     {
-      "id": "ltCtwf3y9oWr",
+      "id": "MQf9Kfz2m--8",
       "type": "Start",
       "position": {
         "x": 0,
@@ -28,7 +28,7 @@
       "data": {}
     },
     {
-      "id": "z4r0VX9NxnoA",
+      "id": "SRf2RY94KXf4",
       "type": "CallFunction",
       "position": {
         "x": 0,
@@ -42,7 +42,7 @@
       }
     },
     {
-      "id": "rBghyLMesA4e",
+      "id": "-67kmsQ544_Y",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -53,7 +53,7 @@
       }
     },
     {
-      "id": "z00KEyh0Pvre",
+      "id": "2YMh9XUS_bhN",
       "type": "End",
       "position": {
         "x": 0,
@@ -64,21 +64,21 @@
   ],
   "edges": [
     {
-      "id": "XXHCOEViRvCw",
-      "source": "ltCtwf3y9oWr",
-      "target": "z4r0VX9NxnoA"
+      "id": "Qsh8y1nk97GA",
+      "source": "MQf9Kfz2m--8",
+      "target": "SRf2RY94KXf4"
     },
     {
-      "id": "BICKfyWoHwdM",
-      "source": "z4r0VX9NxnoA",
-      "target": "rBghyLMesA4e"
+      "id": "MuNAXd16NA6d",
+      "source": "SRf2RY94KXf4",
+      "target": "-67kmsQ544_Y"
     },
     {
-      "id": "eSwyzekPYNjq",
-      "source": "rBghyLMesA4e",
-      "target": "z00KEyh0Pvre"
+      "id": "osUW6zZWqJAi",
+      "source": "-67kmsQ544_Y",
+      "target": "2YMh9XUS_bhN"
     }
   ],
-  "createdAt": "2026-09-11T09:23:43.413Z",
-  "updatedAt": "2026-09-11T09:23:43.413Z"
+  "createdAt": "2026-09-11T10:03:32.806Z",
+  "updatedAt": "2026-09-11T10:03:32.806Z"
 }

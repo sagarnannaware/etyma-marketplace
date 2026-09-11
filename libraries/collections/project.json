@@ -1,0 +1,24 @@
+{
+  "id": "si_PxFiOy029",
+  "name": "Collections",
+  "type": "library",
+  "references": [],
+  "variables": [],
+  "createdAt": "2026-09-11T10:03:22.885Z",
+  "updatedAt": "2026-09-11T10:03:22.885Z",
+  "requirementsDoc": "Lists of records for dashboards, reports and imports — group orders by customer, sum a column, count by status, de-duplicate, sort by a field, split into batches, pivot rows into a table, keep only some fields, the top N.",
+  "_order": {
+    "actions": [
+      "gjPXlxizG7Ho",
+      "13TlxbFPoWi9",
+      "fMZJBour-rGX",
+      "OfXI1W4GS1pf",
+      "F3qNK20VwTpu",
+      "nCFCuvO8gy8_",
+      "PHBEH5aIXbcU",
+      "LzQrl5Y4PTLo",
+      "GBZpNneYLH7T"
+    ]
+  },
+  "schemaVersion": 21
+}

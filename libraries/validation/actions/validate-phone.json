@@ -1,0 +1,84 @@
+{
+  "name": "Validate Phone",
+  "description": "Is this a phone number, and what is it in international E.164 format? Answers { valid, e164, country, national, international } or { valid: false, reason } — for a customer's phone on an invoice, an SMS recipient, a contact form; country (US, GB, IN, SG, …) resolves a number typed without its country code.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "65RmkC0b07OE",
+      "name": "phone",
+      "type": "Text"
+    },
+    {
+      "id": "kr3lsb71f0Iw",
+      "name": "country",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "pmZISuMCzVJ6",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "6bi_O1ogi-nh",
+      "type": "CallFunction",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "packageName": "libphonenumber-js",
+        "exportName": "parsePhoneNumberFromString",
+        "args": "[\"{{= String(phone ?? '') }}\",\"{{= country || undefined }}\"]",
+        "outputVariable": "parsed"
+      }
+    },
+    {
+      "id": "qTszL8f92ssF",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= parsed && parsed.isValid() ? { valid: true, e164: parsed.number, country: parsed.country, national: parsed.formatNational(), international: parsed.formatInternational() } : { valid: false, reason: 'Not a phone number' + (country ? ' for ' + country : '') } }}\"}]"
+      }
+    },
+    {
+      "id": "WXophWngOxTu",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "0MssHDtQsvQi",
+      "source": "pmZISuMCzVJ6",
+      "target": "6bi_O1ogi-nh"
+    },
+    {
+      "id": "Zt3jz2F4zyrp",
+      "source": "6bi_O1ogi-nh",
+      "target": "qTszL8f92ssF"
+    },
+    {
+      "id": "ddP404k-_ZJL",
+      "source": "qTszL8f92ssF",
+      "target": "WXophWngOxTu"
+    }
+  ],
+  "id": "PDb8kNwXiG_p",
+  "localVariables": [],
+  "outputParameters": []
+}

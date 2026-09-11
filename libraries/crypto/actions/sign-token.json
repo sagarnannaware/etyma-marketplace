@@ -1,17 +1,17 @@
 {
-  "id": "UeCMFjLbKXmg",
+  "id": "OiMeq8cIIItC",
   "name": "Sign Token",
   "description": "Sign a payload into a JWT that expires in 1 hour. The secret comes from the caller.",
   "scope": "server",
   "isPublic": true,
   "parameters": [
     {
-      "id": "YtUuzgU6UKQF",
+      "id": "3i5ZOnrdbdb4",
       "name": "payload",
       "type": "Text"
     },
     {
-      "id": "4UbJs0HU4OqR",
+      "id": "rSl_Yw6N-4qG",
       "name": "secret",
       "type": "Text"
     }
@@ -19,7 +19,7 @@
   "variables": [],
   "nodes": [
     {
-      "id": "XC05ltBEJZVG",
+      "id": "tg2kAnPg7uQC",
       "type": "Start",
       "position": {
         "x": 0,
@@ -28,7 +28,7 @@
       "data": {}
     },
     {
-      "id": "uFSNA0jNvwIR",
+      "id": "ILtjFUE67Zmj",
       "type": "CallFunction",
       "position": {
         "x": 0,
@@ -42,7 +42,7 @@
       }
     },
     {
-      "id": "2DDIp54uyWXl",
+      "id": "UROl_lHMBtIN",
       "type": "Assign",
       "position": {
         "x": 0,
@@ -53,7 +53,7 @@
       }
     },
     {
-      "id": "PboiYOwyGPbk",
+      "id": "tOlw-hwK7W8-",
       "type": "End",
       "position": {
         "x": 0,
@@ -64,21 +64,21 @@
   ],
   "edges": [
     {
-      "id": "FQWdzIRbiRaA",
-      "source": "XC05ltBEJZVG",
-      "target": "uFSNA0jNvwIR"
+      "id": "bL2MS6YiN401",
+      "source": "tg2kAnPg7uQC",
+      "target": "ILtjFUE67Zmj"
     },
     {
-      "id": "JrY9hV2t6kwe",
-      "source": "uFSNA0jNvwIR",
-      "target": "2DDIp54uyWXl"
+      "id": "HYdt6DhHt25q",
+      "source": "ILtjFUE67Zmj",
+      "target": "UROl_lHMBtIN"
     },
     {
-      "id": "f-MGZI2OESL7",
-      "source": "2DDIp54uyWXl",
-      "target": "PboiYOwyGPbk"
+      "id": "TEtiun5AIVmv",
+      "source": "UROl_lHMBtIN",
+      "target": "tOlw-hwK7W8-"
     }
   ],
-  "createdAt": "2026-09-11T09:23:43.413Z",
-  "updatedAt": "2026-09-11T09:23:43.413Z"
+  "createdAt": "2026-09-11T10:03:32.806Z",
+  "updatedAt": "2026-09-11T10:03:32.806Z"
 }

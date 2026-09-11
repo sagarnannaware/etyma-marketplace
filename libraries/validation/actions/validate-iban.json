@@ -1,0 +1,60 @@
+{
+  "name": "Validate IBAN",
+  "description": "Is this an IBAN (the international bank account number on European payments)? Checks the shape and the mod-97 checksum; answers { valid, value, country } or { valid: false, reason } — a supplier's bank details, a refund, a payroll record.",
+  "scope": "server",
+  "parameters": [
+    {
+      "id": "WrVh7gyzsuVI",
+      "name": "iban",
+      "type": "Text"
+    }
+  ],
+  "returnType": "Object",
+  "isPublic": true,
+  "nodes": [
+    {
+      "id": "H20cVqJ0Ohz6",
+      "type": "Start",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {}
+    },
+    {
+      "id": "MKmwgPS5R9Qr",
+      "type": "Assign",
+      "position": {
+        "x": 0,
+        "y": 120
+      },
+      "data": {
+        "assignments": "[{\"variable\":\"result\",\"value\":\"{{= (() => { const s = String(iban ?? '').replace(/\\\\s+/g, '').toUpperCase(); if (!/^[A-Z]{2}\\\\d{2}[A-Z0-9]{11,30}$/.test(s)) return { valid: false, reason: 'Not an IBAN' }; const r = (s.slice(4) + s.slice(0, 4)).replace(/[A-Z]/g, (c) => String(c.charCodeAt(0) - 55)); let m = 0; for (const d of r) m = (m * 10 + +d) % 97; return m === 1 ? { valid: true, value: s, country: s.slice(0, 2) } : { valid: false, reason: 'Checksum failed' }; })() }}\"}]"
+      }
+    },
+    {
+      "id": "nJjJO5WA2Fwr",
+      "type": "End",
+      "position": {
+        "x": 0,
+        "y": 240
+      },
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "iydcbCPINIuG",
+      "source": "H20cVqJ0Ohz6",
+      "target": "MKmwgPS5R9Qr"
+    },
+    {
+      "id": "sj5sExy0RJDI",
+      "source": "MKmwgPS5R9Qr",
+      "target": "nJjJO5WA2Fwr"
+    }
+  ],
+  "id": "MyNbTusUr1I7",
+  "localVariables": [],
+  "outputParameters": []
+}
