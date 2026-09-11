@@ -105,6 +105,18 @@ What a signature means, exactly: **these are the bytes Etyma published, unchange
 
 Say what a function is **not** good for. A marketplace entry that only sells itself wastes the reader's afternoon before it wastes their evening.
 
+## Themes
+
+`themes/<slug>.json` is the other kind of entry: **a look as data** — shadcn's colour tokens (light, and dark when
+authored), and optionally a style (one of Etyma's four: corporate, friendly, editorial, console; a density) with
+the typography it needs. Nothing installs: the IDE's **Project Settings → Look** lists them under *From the
+marketplace* and applies one in a tap, and the Assistant applies one with `set_theme({ marketplace: "<slug>" })`
+after `search_marketplace` found it by what it looks like ("a warm serif look for the knowledge base"). A theme
+has no folder, no bundle and no module id; `validate.mjs` holds it to every token in both modes and
+`verify-against-core.mjs` applies it through core's own `applyCatalogTheme`. The three here — **Midnight**,
+**Sand**, **Meadow** — were made from the IDE's presets (a colour preset, a style preset) and are the shape a
+contributed one takes.
+
 ## Licence
 
 MIT. The npm packages these libraries wrap keep their own licences, which are listed per library in `docs/`.

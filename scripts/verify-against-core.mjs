@@ -40,7 +40,7 @@ if (!existsSync(corePath)) {
 const core = await import(pathToFileURL(corePath).href);
 const {
   WorkspaceStorage, MemoryFs, createSolution, validateModule,
-  shareIssues, verifyPlatformSignature, librarySignaturePath, catalogEntry,
+  shareIssues, verifyPlatformSignature, librarySignaturePath, catalogEntry, applyCatalogTheme, createDefaultTheme, THEME_COLOR_TOKENS,
 } = core.default ?? core;
 
 // The catalogue this repository publishes, held to core's own `catalogEntry`
@@ -197,8 +197,29 @@ for (const slug of slugs) {
   }
 }
 
-if (failed) {
-  console.log(`\n${failed}/${slugs.length} libraries would not load or validate in the IDE.`);
+// ─── Themes: applied through core's own `applyCatalogTheme` ──────────────────
+//
+// What the Look pane and `set_theme` do with an entry, done here to every
+// theme entry: the patch must exist and carry every colour token, so the theme
+// a person taps is the theme they get.
+const themeEntries = catalog.libraries.filter((l) => l.kind === "theme");
+let themesFailed = 0;
+if (applyCatalogTheme && createDefaultTheme) {
+  for (const entry of themeEntries) {
+    const patch = applyCatalogTheme(createDefaultTheme(), entry);
+    const missing = patch ? (THEME_COLOR_TOKENS ?? []).filter((n) => !patch.tokens?.light?.[n]) : ["everything"];
+    if (!patch || missing.length) {
+      console.log(`✗ theme ${entry.slug}: ${patch ? `light is missing ${missing.join(", ")}` : "core refuses to apply it"}`);
+      themesFailed++;
+    } else {
+      console.log(`✓ theme ${entry.slug}: applies (${patch.tokens.dark ? "light and dark" : "light only"}${patch.style?.preset ? `, ${patch.style.preset}` : ""})`);
+    }
+  }
+}
+
+if (failed || themesFailed) {
+  if (failed) console.log(`\n${failed}/${slugs.length} libraries would not load or validate in the IDE.`);
+  if (themesFailed) console.log(`${themesFailed}/${themeEntries.length} themes would not apply.`);
   process.exit(1);
 }
-console.log(`\nverify-against-core: all ${slugs.length} libraries load and validate against real core.`);
+console.log(`\nverify-against-core: all ${slugs.length} libraries load and validate against real core${themeEntries.length ? `; ${themeEntries.length} themes apply` : ""}.`);

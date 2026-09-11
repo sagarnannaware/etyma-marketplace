@@ -307,15 +307,50 @@ for (const slug of slugs) {
   if (!actionFiles.length && !blockFiles.length) fail(at(), "the library is empty");
 }
 
+// ─── Themes: would this look actually apply? ─────────────────────────────────
+//
+// A theme with a token missing renders that token from shadcn's neutral (the
+// loader fills it in), so nothing breaks — but a "warm" theme whose sidebar is
+// still grey is not the theme somebody chose. Every colour token is required
+// in light; dark, when present, carries the same set. The style names one of
+// the four presets and one of the three densities, or is absent.
+const THEME_TOKENS = [
+  "background", "foreground", "card", "card-foreground", "popover", "popover-foreground", "primary", "primary-foreground",
+  "secondary", "secondary-foreground", "muted", "muted-foreground", "accent", "accent-foreground", "destructive", "border", "input", "ring",
+  "chart-1", "chart-2", "chart-3", "chart-4", "chart-5", "sidebar", "sidebar-foreground", "sidebar-primary", "sidebar-primary-foreground",
+  "sidebar-accent", "sidebar-accent-foreground", "sidebar-border", "sidebar-ring",
+];
+const THEMES = join(ROOT, "themes");
+const themeSlugs = existsSync(THEMES) ? readdirSync(THEMES).filter((f) => f.endsWith(".json")).map((f) => f.slice(0, -5)).sort() : [];
+for (const slug of themeSlugs) {
+  const where = `themes/${slug}.json`;
+  let t;
+  try { t = JSON.parse(readFileSync(join(THEMES, `${slug}.json`), "utf8")); } catch (e) { fail(where, `not JSON: ${e.message}`); continue; }
+  if (!t.tagline) fail(where, "no tagline — a theme nobody can find is a theme nobody applies");
+  if (!t.tokens?.light) { fail(where, "no tokens.light"); continue; }
+  for (const mode of ["light", "dark"]) {
+    if (!t.tokens[mode]) continue;
+    for (const name of [...THEME_TOKENS, "radius"]) if (!t.tokens[mode][name]) fail(where, `${mode} is missing --${name}`);
+    for (const [name, value] of Object.entries(t.tokens[mode])) if (typeof value !== "string" || !value.trim()) fail(where, `${mode} --${name} is not a CSS value`);
+  }
+  if (t.style?.preset && !["corporate", "friendly", "editorial", "console"].includes(t.style.preset)) fail(where, `style.preset "${t.style.preset}" is not one of Etyma's four`);
+  if (t.style?.density && !["compact", "comfortable", "spacious"].includes(t.style.density)) fail(where, `style.density "${t.style.density}" is not compact, comfortable or spacious`);
+  if (t.style?.fontStylesheet && !/^https:\/\/fonts\.googleapis\.com\//.test(t.style.fontStylesheet)) fail(where, "style.fontStylesheet must be a Google Fonts CSS URL — the only origin the IDE's webviews allow");
+}
+
 // ─── catalog.json agrees with what was built ─────────────────────────────────
 const catalogPath = join(ROOT, "catalog.json");
 if (!existsSync(catalogPath)) {
   fail("catalog.json", "missing — run `node scripts/build.mjs`");
 } else {
   const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
-  const listed = new Set((catalog.libraries || []).map((l) => l.slug));
+  const entries = catalog.libraries || [];
+  const listed = new Set(entries.filter((l) => l.kind !== "theme").map((l) => l.slug));
+  const listedThemes = new Set(entries.filter((l) => l.kind === "theme").map((l) => l.slug));
   for (const slug of slugs) if (!listed.has(slug)) fail("catalog.json", `libraries/${slug}/ is not listed`);
   for (const slug of listed) if (!slugs.includes(slug)) fail("catalog.json", `lists "${slug}" with no folder behind it`);
+  for (const slug of themeSlugs) if (!listedThemes.has(slug)) fail("catalog.json", `themes/${slug}.json is not listed`);
+  for (const slug of listedThemes) if (!themeSlugs.includes(slug)) fail("catalog.json", `lists theme "${slug}" with no themes/${slug}.json behind it`);
 }
 
 // ─── Report ──────────────────────────────────────────────────────────────────
@@ -324,7 +359,7 @@ const warnings = problems.filter((p) => p.level === "warn");
 
 for (const p of problems) console.log(`${p.level === "error" ? "✗" : "△"} ${p.where}: ${p.msg}`);
 
-const summary = `${slugs.length} libraries · ${actionCount} functions · ${componentCount} components · ${idOwners.size} ids`;
+const summary = `${slugs.length} libraries · ${actionCount} functions · ${componentCount} components · ${idOwners.size} ids${themeSlugs.length ? ` · ${themeSlugs.length} themes` : ""}`;
 if (errors.length) {
   console.log(`\n${summary}\n${errors.length} error(s), ${warnings.length} warning(s).`);
   process.exit(1);
