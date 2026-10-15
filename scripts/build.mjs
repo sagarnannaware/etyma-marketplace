@@ -262,6 +262,20 @@ function surfaceOf(project, actions, blocks) {
       name: b.name,
       ...(b.description && b.description.trim() ? { description: b.description.trim() } : {}),
       props: (b.inputParameters || []).map((x) => x.name),
+      // The events an instance can bind, as core's catalogEntry writes them (V35): absent for a component with
+      // none; an event's values only when it declares them ([] is "carries none", absent is untyped); `required`
+      // only when true.
+      ...((b.events || []).length
+        ? {
+            events: b.events.map((e) => ({
+              name: e.name,
+              ...(e.parameters
+                ? { parameters: e.parameters.map((x) => ({ name: x.name, type: String(x.type), ...(x.isList ? { isList: true } : {}) })) }
+                : {}),
+              ...(e.required ? { required: true } : {}),
+            })),
+          }
+        : {}),
     })),
     packages: (project.npmPackages || []).map((x) => ({ name: x.name, version: x.version })),
   };
