@@ -200,16 +200,20 @@ for (const slug of slugs) {
 // ─── Themes: applied through core's own `applyCatalogTheme` ──────────────────
 //
 // What the Look pane and `set_theme` do with an entry, done here to every
-// theme entry: the patch must exist and carry every colour token, so the theme
-// a person taps is the theme they get.
+// theme entry: the patch must exist and carry every colour token — in light,
+// and in dark where the entry carries one, since a dark token it lacks shows
+// the LIGHT value on a dark ground — so the theme a person taps is the theme
+// they get. The fix for a missing token is never an edit of the entry: it is
+// packed again from Etyma (`packTheme`), which writes every token core resolves.
 const themeEntries = catalog.libraries.filter((l) => l.kind === "theme");
 let themesFailed = 0;
 if (applyCatalogTheme && createDefaultTheme) {
   for (const entry of themeEntries) {
     const patch = applyCatalogTheme(createDefaultTheme(), entry);
-    const missing = patch ? (THEME_COLOR_TOKENS ?? []).filter((n) => !patch.tokens?.light?.[n]) : ["everything"];
+    const missingIn = (mode) => (THEME_COLOR_TOKENS ?? []).filter((n) => !patch.tokens?.[mode]?.[n]);
+    const missing = patch ? ["light", ...(patch.tokens?.dark ? ["dark"] : [])].map((mode) => [mode, missingIn(mode)]).filter(([, names]) => names.length) : [];
     if (!patch || missing.length) {
-      console.log(`✗ theme ${entry.slug}: ${patch ? `light is missing ${missing.join(", ")}` : "core refuses to apply it"}`);
+      console.log(`✗ theme ${entry.slug}: ${patch ? missing.map(([mode, names]) => `${mode} is missing ${names.join(", ")}`).join("; ") : "core refuses to apply it"}`);
       themesFailed++;
     } else {
       console.log(`✓ theme ${entry.slug}: applies (${patch.tokens.dark ? "light and dark" : "light only"}${patch.style?.preset ? `, ${patch.style.preset}` : ""})`);

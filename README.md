@@ -114,8 +114,11 @@ marketplace* and applies one in a tap, and the Assistant applies one with `set_t
 after `search_marketplace` found it by what it looks like ("a warm serif look for the knowledge base"). A theme
 has no folder, no bundle and no module id; `validate.mjs` holds it to every token in both modes and
 `verify-against-core.mjs` applies it through core's own `applyCatalogTheme`. The three here — **Midnight**,
-**Sand**, **Meadow** — were made from the IDE's presets (a colour preset, a style preset) and are the shape a
-contributed one takes.
+**Sand**, **Meadow** — are the IDE's presets combined (a colour preset, a style preset), **authored in Etyma and
+written by it**: Etyma's `scripts/browser-ide/libraries.drive.mjs` applies each with `set_theme` over MCP and packs
+the solution's theme with the CLI's `packTheme`, which writes every colour token core resolves, in both modes. They
+are the shape a contributed one takes. Nobody edits `themes/<slug>.json` to pass a gate: when core gains a token
+(`success` and `warning`, 2026-10-17), the entries are packed again, and `validate.mjs`'s token list gains it too.
 
 ## Licence
 

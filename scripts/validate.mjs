@@ -314,9 +314,17 @@ for (const slug of slugs) {
 // still grey is not the theme somebody chose. Every colour token is required
 // in light; dark, when present, carries the same set. The style names one of
 // the four presets and one of the three densities, or is absent.
+//
+// This list mirrors core's THEME_COLOR_TOKENS (packages/core/src/theme.ts) by
+// hand, as surfaceOf mirrors catalogEntry: a token core adds is required here
+// the same day, or verify-against-core is the first gate to say so — as it was
+// for success and warning (2026-10-17), the two feedback colours shadcn has no
+// token for. An entry is never edited to pass: it is packed again from Etyma
+// (`packTheme`, from a theme set_theme wrote), which writes every token core
+// resolves.
 const THEME_TOKENS = [
   "background", "foreground", "card", "card-foreground", "popover", "popover-foreground", "primary", "primary-foreground",
-  "secondary", "secondary-foreground", "muted", "muted-foreground", "accent", "accent-foreground", "destructive", "border", "input", "ring",
+  "secondary", "secondary-foreground", "muted", "muted-foreground", "accent", "accent-foreground", "destructive", "success", "warning", "border", "input", "ring",
   "chart-1", "chart-2", "chart-3", "chart-4", "chart-5", "sidebar", "sidebar-foreground", "sidebar-primary", "sidebar-primary-foreground",
   "sidebar-accent", "sidebar-accent-foreground", "sidebar-border", "sidebar-ring",
 ];
